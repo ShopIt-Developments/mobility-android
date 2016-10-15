@@ -20,7 +20,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.mobility.android.R;
 import com.mobility.android.ui.login.LoginActivity;
-import com.mobility.android.ui.map.MapActivity;
+import com.mobility.android.ui.map.MapFragment;
 import com.mobility.android.ui.myvehicles.MyVehiclesActivity;
 import com.trello.rxlifecycle.LifecycleTransformer;
 import com.trello.rxlifecycle.android.ActivityEvent;
@@ -296,7 +296,7 @@ public abstract class BaseActivity extends RxAppCompatActivity implements
     private void goToNavDrawerItem(int item) {
         switch (item) {
             case NAVDRAWER_ITEM_MAP:
-                createBackStack(new Intent(this, MapActivity.class));
+                createBackStack(new Intent(this, MapFragment.class));
                 break;
             case NAVDRAWER_ITEM_MYCARS:
                 createBackStack(new Intent(this, MyVehiclesActivity.class));

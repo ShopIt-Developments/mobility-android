@@ -4,19 +4,21 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Point;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
-import android.view.Menu;
+import android.view.InflateException;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewManager;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
@@ -52,6 +54,7 @@ import com.mobility.android.ui.widget.NestedSwipeRefreshLayout;
 import com.mobility.android.util.DeviceUtils;
 import com.mobility.android.util.MapUtils;
 import com.mobility.android.util.Utils;
+import com.trello.rxlifecycle.components.support.RxFragment;
 import com.trello.rxlifecycle.internal.Preconditions;
 
 import java.net.MalformedURLException;
@@ -69,7 +72,7 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import timber.log.Timber;
 
-public class MapActivity extends BaseActivity implements OnMapReadyCallback,
+public class MapFragment extends RxFragment implements OnMapReadyCallback,
         View.OnClickListener, GoogleMap.OnMarkerClickListener, Observer<MapResponse>,
         GoogleMap.OnInfoWindowCloseListener {
 
@@ -87,7 +90,6 @@ public class MapActivity extends BaseActivity implements OnMapReadyCallback,
     private Snackbar mInternetSnackbar;
 
     private boolean mIsRefreshing;
-    private boolean isBottomSheetOpen;
 
     private int mGplayStatus;
 
@@ -152,23 +154,29 @@ public class MapActivity extends BaseActivity implements OnMapReadyCallback,
         }
     };
 
+    private View view;
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
 
-        setContentView(R.layout.activity_map);
-        ButterKnife.bind(this);
+        if (view != null) {
+            ViewManager parent = (ViewManager) view.getParent();
 
-        int state = BottomSheetBehavior.STATE_HIDDEN;
-        mBusData = new ArrayList<>();
+            if (parent != null) {
+                parent.removeView(view);
+            }
+        }
 
-        setupBottomSheet(state);
+        try {
+            view = inflater.inflate(R.layout.fragment_map, container, false);
+            ButterKnife.bind(this, view);
+        } catch (InflateException ignored) {
+        }
 
-        mRefresh.setColorSchemeResources(Config.REFRESH_COLORS);
-
-        mGplayStatus = MapsInitializer.initialize(getApplicationContext());
+        mGplayStatus = MapsInitializer.initialize(getActivity());
         if (mGplayStatus == 0) {
-            SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.googlemap);
+            SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.googlemap);
 
             if (mapFragment != null) {
                 mapFragment.getMapAsync(this);
@@ -176,6 +184,20 @@ public class MapActivity extends BaseActivity implements OnMapReadyCallback,
         } else {
             Timber.e("Couldn't initialize google map: error=%s", mGplayStatus);
         }
+
+        return view;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        int state = BottomSheetBehavior.STATE_HIDDEN;
+        mBusData = new ArrayList<>();
+
+        setupBottomSheet(state);
+
+        mRefresh.setColorSchemeResources(Config.REFRESH_COLORS);
 
         iconBike = BitmapDescriptorFactory.defaultMarker(125);
         iconCar = BitmapDescriptorFactory.defaultMarker(230);
@@ -189,7 +211,7 @@ public class MapActivity extends BaseActivity implements OnMapReadyCallback,
         if (mGoogleMap != null) {
             mGoogleMap.clear();
 
-            if (ContextCompat.checkSelfPermission(this,
+            if (ContextCompat.checkSelfPermission(getActivity(),
                     Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                 mGoogleMap.setMyLocationEnabled(false);
             }
@@ -220,73 +242,31 @@ public class MapActivity extends BaseActivity implements OnMapReadyCallback,
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.map, menu);
-
-        MenuItem menuItem = menu.findItem(R.id.action_refresh);
-
-        Drawable drawable = menuItem.getIcon();
-        if (drawable != null) {
-            drawable.mutate();
-            drawable.setColorFilter(ContextCompat.getColor(this, R.color.color_control), PorterDuff.Mode.SRC_ATOP);
-        }
-
-        return true;
-    }
-
-    @Override
-    public void onBackPressed() {
-        if (isBottomSheetOpen) {
-            behavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-        } else {
-            super.onBackPressed();
-        }
-    }
-
-    @Override
     public void onClick(View v) {
         switch (v.getId()) {
         }
     }
 
     @Override
-    public int getNavItem() {
-        return NAVDRAWER_ITEM_MAP;
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        // TODO: 15/10/16 Add filter
-        /*if (requestCode == REQUEST_FILTER && resultCode == Activity.RESULT_OK) {
-            mFilterEnabled = data.getBooleanExtra(FilterActivity.EXTRA_FILTER_ENABLED, true);
-            mFilter = data.getIntegerArrayListExtra(FilterActivity.EXTRA_FILTER_LIST);
-
-            updateFilterMarkers();
-        }*/
-    }
-
-    @Override
     public void onMapReady(GoogleMap map) {
         mGoogleMap = map;
 
-        map.moveCamera(MapUtils.getDefaultPosition(this));
+        map.moveCamera(MapUtils.getDefaultPosition(getActivity()));
 
-        if (DeviceUtils.hasPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)) {
+        if (DeviceUtils.hasPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION)) {
             //noinspection MissingPermission
             map.setMyLocationEnabled(true);
         }
 
-        map.setMapType(MapUtils.getType(this));
-        map.setMapStyle(MapUtils.getStyle(this));
+        map.setMapType(MapUtils.getType(getActivity()));
+        map.setMapStyle(MapUtils.getStyle(getActivity()));
 
         map.setOnMarkerClickListener(this);
         map.setOnInfoWindowCloseListener(this);
 
         parseData();
 
-        if (MapUtils.areOverlaysEnabled(this)) {
+        if (MapUtils.areOverlaysEnabled(getActivity())) {
             tileOverlay = mGoogleMap.addTileOverlay(new TileOverlayOptions()
                     .tileProvider(tileProvider));
         }
@@ -421,7 +401,7 @@ public class MapActivity extends BaseActivity implements OnMapReadyCallback,
             return;
         }
 
-        if (!NetUtils.isOnline(this)) {
+        if (!NetUtils.isOnline(getActivity())) {
             showInternetSnackbar();
         } else {
             mIsRefreshing = true;
@@ -429,7 +409,7 @@ public class MapActivity extends BaseActivity implements OnMapReadyCallback,
 
             VehiclesApi api = RestClient.ADAPTER.create(VehiclesApi.class);
             api.getAvailableVehicles()
-                    .compose(bindToActivity())
+                    .compose(bindToLifecycle())
                     .subscribeOn(Schedulers.io())
                     .compose(bindToLifecycle())
                     .observeOn(AndroidSchedulers.mainThread())
@@ -469,13 +449,13 @@ public class MapActivity extends BaseActivity implements OnMapReadyCallback,
     private void showErrorSnackbar(@StringRes int message) {
         if (mErrorSnackbar != null && mErrorSnackbar.isShown()) return;
 
-        mErrorSnackbar = Snackbar.make(getMainContent(), message, Snackbar.LENGTH_INDEFINITE);
+        mErrorSnackbar = Snackbar.make(((BaseActivity) getActivity()).getMainContent(), message, Snackbar.LENGTH_INDEFINITE);
 
         View snackbarView = mErrorSnackbar.getView();
         TextView textView = (TextView) snackbarView.findViewById(android.support.design.R.id.snackbar_text);
-        textView.setTextColor(ContextCompat.getColor(this, R.color.white));
+        textView.setTextColor(ContextCompat.getColor(getActivity(), R.color.white));
 
-        runOnUiThread(() -> {
+        getActivity().runOnUiThread(() -> {
             if (mInternetSnackbar != null) {
                 mInternetSnackbar.dismiss();
             }
@@ -486,13 +466,13 @@ public class MapActivity extends BaseActivity implements OnMapReadyCallback,
     private void showInternetSnackbar() {
         if (mInternetSnackbar != null && mInternetSnackbar.isShown()) return;
 
-        mInternetSnackbar = Snackbar.make(getMainContent(), R.string.error_wifi, Snackbar.LENGTH_INDEFINITE);
+        mInternetSnackbar = Snackbar.make(((BaseActivity) getActivity()).getMainContent(), R.string.error_wifi, Snackbar.LENGTH_INDEFINITE);
 
         View snackbarView = mInternetSnackbar.getView();
         TextView textView = (TextView) snackbarView.findViewById(android.support.design.R.id.snackbar_text);
-        textView.setTextColor(ContextCompat.getColor(this, R.color.white));
+        textView.setTextColor(ContextCompat.getColor(getActivity(), R.color.white));
 
-        runOnUiThread(() -> {
+        getActivity().runOnUiThread(() -> {
             if (mErrorSnackbar != null) {
                 mErrorSnackbar.dismiss();
             }
@@ -515,13 +495,12 @@ public class MapActivity extends BaseActivity implements OnMapReadyCallback,
         behavior = BottomSheet.from(bottomSheet, state);
 
         bottomSheet.setOnClickListener(v -> {
-            startActivity(new Intent(this, VehicleDetailsActivity.class));
+            startActivity(new Intent(getActivity(), VehicleDetailsActivity.class));
         });
 
         behavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
             @Override
             public void onStateChanged(@NonNull View bottomSheet, int newState) {
-                isBottomSheetOpen = newState == BottomSheetBehavior.STATE_EXPANDED;
             }
 
             @Override

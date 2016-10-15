@@ -49,8 +49,8 @@ public class MyVehiclesAdapter extends RecyclerView.Adapter<MyVehiclesAdapter.My
 
         holder.name.setText(item.name);
         holder.description.setText(item.description);
-        holder.price.setText(String.format(Locale.getDefault(), "%.2f %s", item.price_per_hour, item.currency));
-        holder.licence_plate.setText(item.licence_plate);
+        holder.price.setText(String.format(Locale.getDefault(), "%.2f %s", item.pricePerHour, item.currency));
+        holder.licence_plate.setText(item.licencePlate);
     }
 
     @Override

@@ -18,7 +18,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.mobility.android.AppApplication;
 import com.mobility.android.R;
-import com.mobility.android.ui.map.MapActivity;
+import com.mobility.android.ui.MainActivity;
 
 import butterknife.ButterKnife;
 import timber.log.Timber;
@@ -52,7 +52,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
             mAuth.removeAuthStateListener(this);
 
-            startActivity(new Intent(this, MapActivity.class));
+            startActivity(new Intent(this, MainActivity.class));
             finish();
         }
     }

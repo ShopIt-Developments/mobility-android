@@ -41,7 +41,7 @@
         </activity>
 
         <activity
-            android:name=".ui.map.MapActivity"
+            android:name=".ui.MainActivity"
             android:label="Map"/>
 
         <activity
