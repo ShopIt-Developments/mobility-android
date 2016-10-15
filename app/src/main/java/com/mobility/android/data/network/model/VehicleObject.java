@@ -1,5 +1,7 @@
 package com.mobility.android.data.network.model;
 
+import android.os.Parcel;
+
 import com.google.gson.annotations.SerializedName;
 
 public class VehicleObject extends MapObject {
@@ -22,4 +24,50 @@ public class VehicleObject extends MapObject {
 
     @SerializedName("qr_code")
     public String qrCode;
+
+    private VehicleObject(Parcel in) {
+        super(in);
+
+        address = in.readString();
+        availability = in.readString();
+        currency = in.readString();
+        image = in.readString();
+        type = in.readString();
+        userId = in.readString();
+        pricePerHour = in.readFloat();
+        licencePlate = in.readString();
+        qrCode = in.readString();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        super.writeToParcel(dest, flags);
+
+        dest.writeString(address);
+        dest.writeString(availability);
+        dest.writeString(currency);
+        dest.writeString(image);
+        dest.writeString(type);
+        dest.writeString(userId);
+        dest.writeFloat(pricePerHour);
+        dest.writeString(licencePlate);
+        dest.writeString(qrCode);
+    }
+
+    @Override
+    public int describeContents() {
+        return super.describeContents();
+    }
+
+    public static final Creator<VehicleObject> CREATOR = new Creator<VehicleObject>() {
+        @Override
+        public VehicleObject createFromParcel(Parcel in) {
+            return new VehicleObject(in);
+        }
+
+        @Override
+        public VehicleObject[] newArray(int size) {
+            return new VehicleObject[size];
+        }
+    };
 }

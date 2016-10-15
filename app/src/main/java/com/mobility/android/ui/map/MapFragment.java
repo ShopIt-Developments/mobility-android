@@ -495,7 +495,9 @@ public class MapFragment extends RxFragment implements OnMapReadyCallback,
         behavior = BottomSheet.from(bottomSheet, state);
 
         bottomSheet.setOnClickListener(v -> {
-            startActivity(new Intent(getActivity(), VehicleDetailsActivity.class));
+            Intent intent = new Intent(getActivity(), VehicleDetailsActivity.class);
+            intent.putExtra(Config.EXTRA_VEHICLE, selectedItem);
+            startActivity(intent);
         });
 
         behavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
