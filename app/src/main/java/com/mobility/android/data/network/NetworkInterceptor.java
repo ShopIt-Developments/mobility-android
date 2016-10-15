@@ -52,7 +52,10 @@ class NetworkInterceptor implements Interceptor {
                 Timber.w("Token is invalid, skipping auth header");
             }
         }
-        newRequest.addHeader("Authorization", "jesus");
+
+        String uid = AuthHelper.getUserId(mContext);
+
+        newRequest.addHeader("Authorization", uid != null ? uid : "");
 
         Request request = newRequest.build();
 

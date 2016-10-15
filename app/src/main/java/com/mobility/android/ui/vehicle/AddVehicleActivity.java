@@ -80,6 +80,8 @@ public class AddVehicleActivity extends AppCompatActivity implements
 
     @BindView(R.id.add_vehicle_location) TextView location;
 
+    private VehicleObject mVehicle;
+
     @BindView(R.id.add_vehicle_add_image) FrameLayout addImage;
     @BindView(R.id.backdrop) ImageView imageBackground;
 

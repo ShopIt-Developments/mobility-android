@@ -2,7 +2,6 @@ package com.mobility.android.ui.vehicle;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -30,9 +29,11 @@ public class BookedVehiclesAdapter extends RecyclerView.Adapter<BookedVehiclesAd
         mItems = new ArrayList<>();
     }
 
-    void setItems(@NonNull List<VehicleObject> items) {
-        this.mItems = items;
-        notifyDataSetChanged();
+    void setItems(List<VehicleObject> items) {
+        if (items != null) {
+            this.mItems = items;
+            notifyDataSetChanged();
+        }
     }
 
     @Override

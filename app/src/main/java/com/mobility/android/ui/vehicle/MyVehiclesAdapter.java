@@ -2,7 +2,6 @@ package com.mobility.android.ui.vehicle;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -16,6 +15,7 @@ import com.mobility.android.data.network.model.VehicleObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -31,9 +31,11 @@ public class MyVehiclesAdapter extends RecyclerView.Adapter<MyVehiclesAdapter.My
         mItems = new ArrayList<>();
     }
 
-    void setItems(@NonNull List<VehicleObject> items) {
-        this.mItems = items;
-        notifyDataSetChanged();
+    void setItems(List<VehicleObject> items) {
+        if (items != null) {
+            this.mItems = items;
+            notifyDataSetChanged();
+        }
     }
 
     @Override
@@ -49,7 +51,7 @@ public class MyVehiclesAdapter extends RecyclerView.Adapter<MyVehiclesAdapter.My
 
         holder.name.setText(item.name);
         holder.description.setText(item.description);
-        holder.price.setText((int) item.pricePerHour + "€/h");
+        holder.price.setText(String.format(Locale.getDefault(), "%d €/h", (int) item.pricePerHour)/*(int) item.pricePerHour + "€/h"*/);
     }
 
     @Override
