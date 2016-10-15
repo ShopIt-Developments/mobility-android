@@ -17,7 +17,7 @@ import timber.log.Timber;
 
 /**
  * Intercepts each call to the rest api and adds the user agent header to the request.
- * The user agent consists of the app title, followed by the app version title and code.
+ * The user agent consists of the app name, followed by the app version name and code.
  * A token is needed to identify the user which made the request when trying to download trips.
  * The auth header is used to check if the request was made from a valid client and block
  * 3rd party users from using the api.

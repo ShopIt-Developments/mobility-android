@@ -20,9 +20,9 @@ public final class DeviceUtils {
     }
 
     /**
-     * Gets the devices bluetooth title
+     * Gets the devices bluetooth name
      *
-     * @return bluetooth title, or {@code none} when no adapter is available
+     * @return bluetooth name, or {@code none} when no adapter is available
      */
     static boolean isBluetoothEnabled() {
         BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();

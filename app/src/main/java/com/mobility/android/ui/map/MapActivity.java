@@ -36,6 +36,8 @@ import com.mobility.android.Config;
 import com.mobility.android.R;
 import com.mobility.android.data.network.Endpoint;
 import com.mobility.android.data.network.NetUtils;
+import com.mobility.android.data.network.RestClient;
+import com.mobility.android.data.network.api.VehiclesApi;
 import com.mobility.android.data.network.model.BusObject;
 import com.mobility.android.data.network.model.MapObject;
 import com.mobility.android.data.network.response.MapResponse;
@@ -57,6 +59,8 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import rx.Observer;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 import timber.log.Timber;
 
 public class MapActivity extends BaseActivity implements OnMapReadyCallback,
@@ -332,7 +336,7 @@ public class MapActivity extends BaseActivity implements OnMapReadyCallback,
 
             if (marker == null) {
                 marker = mGoogleMap.addMarker(new MarkerOptions()
-                        .title(bus.title)
+                        .title(bus.name)
                         .position(new LatLng(bus.lat, bus.lng))
                         .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
                         /*.visible(!mFilterEnabled || mFilter.contains(bus.lineId))*/);
@@ -341,7 +345,31 @@ public class MapActivity extends BaseActivity implements OnMapReadyCallback,
             } else {
                 animateMarker(marker, new LatLng(bus.lat, bus.lng));
 
-                marker.setTitle(bus.title);
+                marker.setTitle(bus.name);
+                marker.setTag(bus);
+            }
+
+            updatedMarkers.put(bus.trip, marker);
+            mMarkers.remove(bus.trip);
+        }
+
+        for (MapObject mapObject : realtimeResponse.buses) {
+            BusObject bus = (BusObject) mapObject;
+
+            Marker marker = mMarkers.get(bus.trip);
+
+            if (marker == null) {
+                marker = mGoogleMap.addMarker(new MarkerOptions()
+                                .title(bus.name)
+                                .position(new LatLng(bus.lat, bus.lng))
+                                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
+                        /*.visible(!mFilterEnabled || mFilter.contains(bus.lineId))*/);
+
+                marker.setTag(bus);
+            } else {
+                animateMarker(marker, new LatLng(bus.lat, bus.lng));
+
+                marker.setTitle(bus.name);
                 marker.setTag(bus);
             }
 
@@ -381,12 +409,11 @@ public class MapActivity extends BaseActivity implements OnMapReadyCallback,
     }
 
 
-    /**
-     * This method makes the network request to the api using
-     * OkHttp's async networking.
-     */
     private void parseData() {
-        if (mIsRefreshing) return;
+        if (mIsRefreshing) {
+            Timber.w("Already loading data");
+            return;
+        }
 
         if (!NetUtils.isOnline(this)) {
             showInternetSnackbar();
@@ -394,44 +421,16 @@ public class MapActivity extends BaseActivity implements OnMapReadyCallback,
             mIsRefreshing = true;
             mRefresh.setRefreshing(true);
 
-            /*RealtimeApi realtimeApi = RestClient.ADAPTER.create(RealtimeApi.class);
-            realtimeApi.get()
+            VehiclesApi api = RestClient.ADAPTER.create(VehiclesApi.class);
+            api.getAvailableVehicles()
                     .compose(bindToActivity())
-                    .subscribeOn(Schedulers.newThread())
-                    .map(realtimeResponse -> {
-                        for (RealtimeBus bus : realtimeResponse.buses) {
-                            String code = null;
-                            Bus aBus = Buses.getBus(bus.vehicle);
-
-                            if (aBus != null) {
-                                code = aBus.getVehicle().getCode();
-                            }
-
-                            LatLng position = new LatLng(bus.latitude, bus.longitude);
-
-                            String currentStopName = BusStopRealmHelper.getName(bus.busStop);
-                            String lastStopName = BusStopRealmHelper.getName(bus.destination);
-
-                            bus.setCode(code);
-                            bus.setPosition(position);
-                            bus.setCurrentStopName(currentStopName);
-                            bus.setLastStopName(lastStopName);
-                        }
-
-                        return realtimeResponse;
-                    })
+                    .subscribeOn(Schedulers.io())
                     .compose(bindToLifecycle())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(this);*/
+                    .subscribe(this);
         }
     }
 
-    /**
-     * Animates the movement of a marker by using a linear interpolator.
-     *
-     * @param marker      the marker to animate
-     * @param endPosition the position to animate the marker to.
-     */
     private void animateMarker(Marker marker, LatLng endPosition) {
         Projection projection = mGoogleMap.getProjection();
         LatLng startPosition = projection.fromScreenLocation(projection.toScreenLocation(marker.getPosition()));
@@ -461,12 +460,6 @@ public class MapActivity extends BaseActivity implements OnMapReadyCallback,
     }
 
 
-    /**
-     * Shows a error snackbar when something happened. Also used to display the "bus not driving"
-     * snackbar.
-     *
-     * @param message the message string resource to display as text.
-     */
     private void showErrorSnackbar(@StringRes int message) {
         if (mErrorSnackbar != null && mErrorSnackbar.isShown()) return;
 
@@ -484,10 +477,6 @@ public class MapActivity extends BaseActivity implements OnMapReadyCallback,
         });
     }
 
-    /**
-     * Shows a snackbar when no internet access is available and the network data fetch
-     * failed.
-     */
     private void showInternetSnackbar() {
         if (mInternetSnackbar != null && mInternetSnackbar.isShown()) return;
 
@@ -505,9 +494,6 @@ public class MapActivity extends BaseActivity implements OnMapReadyCallback,
         });
     }
 
-    /**
-     * Call this method to hide all {@link Snackbar}s currently being displayed.
-     */
     private void hideSnackbar() {
         if (mErrorSnackbar != null) {
             mErrorSnackbar.dismiss();
@@ -519,9 +505,6 @@ public class MapActivity extends BaseActivity implements OnMapReadyCallback,
     }
 
 
-    /**
-     * Sets up the bottom sheet, which contains all the bus informations and background image.
-     */
     private void setupBottomSheet(@BottomSheetBehavior.State int state) {
         behavior = BottomSheet.from(bottomSheet, state);
 
@@ -545,14 +528,9 @@ public class MapActivity extends BaseActivity implements OnMapReadyCallback,
         behavior.setPeekHeight((int) getResources().getDimension(R.dimen.peek_height));
     }
 
-    /**
-     * Sets the bottom sheet data to the one corresponding to marker which has been clicked.
-     *
-     * @param bus {@link MapObject} representing the marker which has been clicked.
-     */
     private void updateBottomSheet(MapObject bus) {
         selectedItem = bus;
-        bottomSheetTitle.setText("Line " + bus.title);
-        bottomSheetSub.setText(bus.subtitle);
+        bottomSheetTitle.setText("Line " + bus.name);
+        bottomSheetSub.setText(bus.description);
     }
 }

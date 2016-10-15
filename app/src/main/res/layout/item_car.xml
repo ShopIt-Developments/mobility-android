@@ -24,7 +24,7 @@
                 android:id="@+id/item_car_image"
                 android:layout_width="match_parent"
                 android:layout_height="192dp"
-                android:src="@drawable/car_example2"/>
+                android:src="@drawable/car_example"/>
 
             <TextView
                 android:layout_marginTop="24dp"
