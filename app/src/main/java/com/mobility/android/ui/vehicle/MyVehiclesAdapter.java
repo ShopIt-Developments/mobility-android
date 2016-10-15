@@ -59,10 +59,10 @@ public class MyVehiclesAdapter extends RecyclerView.Adapter<MyVehiclesAdapter.My
 
     class MyVehicleViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        @BindView(R.id.item_car_card) CardView cardView;
-        @BindView(R.id.item_car_manufacturer_model) TextView name;
-        @BindView(R.id.item_car_description) TextView description;
-        @BindView(R.id.item_car_price) TextView price;
+        @BindView(R.id.item_vehicle_card) CardView cardView;
+        @BindView(R.id.item_vehicle_manufacturer_model) TextView name;
+        @BindView(R.id.item_vehicle_description) TextView description;
+        @BindView(R.id.item_vehicle_price) TextView price;
 
         MyVehicleViewHolder(View itemView) {
             super(itemView);
