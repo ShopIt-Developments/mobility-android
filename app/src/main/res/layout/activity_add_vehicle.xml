@@ -130,7 +130,7 @@
                         app:hintTextAppearance="@style/TextInputLayout.Hint">
 
                         <EditText
-                            android:id="@+id/add_car_name"
+                            android:id="@+id/add_vehicle_name"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/manufacturer_model"
@@ -150,7 +150,7 @@
                         app:hintTextAppearance="@style/TextInputLayout.Hint">
 
                         <EditText
-                            android:id="@+id/add_car_availability"
+                            android:id="@+id/add_vehicle_availability"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/availability"
@@ -170,7 +170,7 @@
                         app:hintTextAppearance="@style/TextInputLayout.Hint">
 
                         <EditText
-                            android:id="@+id/add_car_licence_plate"
+                            android:id="@+id/add_vehicle_licence_plate"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/licence_plate"
@@ -190,7 +190,7 @@
                         app:hintTextAppearance="@style/TextInputLayout.Hint">
 
                         <EditText
-                            android:id="@+id/add_car_description"
+                            android:id="@+id/add_vehicle_description"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/description"
@@ -210,7 +210,7 @@
                         app:hintTextAppearance="@style/TextInputLayout.Hint">
 
                         <EditText
-                            android:id="@+id/add_car_price"
+                            android:id="@+id/add_vehicle_price"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/price_per_hour"

@@ -57,30 +57,28 @@ public class AddVehicleActivity extends AppCompatActivity implements
 
     @BindView(R.id.toolbar) Toolbar toolbar;
 
-    @BindView(R.id.add_car_name) EditText name;
+    @BindView(R.id.add_vehicle_name) EditText name;
     @BindView(R.id.add_vehicle_name_layout) TextInputLayout nameLayout;
 
     @BindView(R.id.radio_group_car_bicycle) RadioGroup radioGroup;
     @BindView(R.id.radio_button_car) RadioButton radioCar;
     @BindView(R.id.radio_button_bicycle) RadioButton radioBicycle;
 
-    @BindView(R.id.add_car_availability) EditText availability;
+    @BindView(R.id.add_vehicle_availability) EditText availability;
     @BindView(R.id.add_vehicle_availability_layout) TextInputLayout availabilityLayout;
 
-    @BindView(R.id.add_car_licence_plate) EditText licencePlate;
+    @BindView(R.id.add_vehicle_licence_plate) EditText licencePlate;
     @BindView(R.id.add_vehicle_licence_plate_layout) TextInputLayout licencePlateLayout;
 
-    @BindView(R.id.add_car_description) EditText description;
+    @BindView(R.id.add_vehicle_description) EditText description;
     @BindView(R.id.add_vehicle_description_layout) TextInputLayout descriptionLayout;
 
-    @BindView(R.id.add_car_price) EditText price;
+    @BindView(R.id.add_vehicle_price) EditText price;
     @BindView(R.id.add_vehicle_price_layout) TextInputLayout priceLayout;
 
     @BindView(R.id.add_vehicle_accept) CardView accept;
 
     @BindView(R.id.add_vehicle_location) TextView location;
-
-    private VehicleObject mVehicle;
 
     @BindView(R.id.add_vehicle_add_image) FrameLayout addImage;
     @BindView(R.id.backdrop) ImageView imageBackground;
