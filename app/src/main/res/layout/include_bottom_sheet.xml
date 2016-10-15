@@ -45,18 +45,16 @@
             android:textColor="@color/text_secondary"
             android:textSize="16sp"/>
 
-        <TextView
-            android:id="@+id/bottom_sheet_peek_delay"
-            android:layout_width="match_parent"
+        <ImageView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
+            android:layout_gravity="center_vertical|end"
             android:layout_marginEnd="16dp"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             android:layout_marginStart="16dp"
-            android:gravity="end"
-            android:textColor="@color/material_red_500"
-            android:textSize="36sp"/>
+            android:src="@drawable/ic_info_outline_white_24dp"
+            android:tint="?colorAccent"/>
 
     </FrameLayout>
 

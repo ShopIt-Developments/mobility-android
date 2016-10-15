@@ -155,4 +155,17 @@
         <item name="android:textStyle">bold</item>
     </style>
 
+
+    <!-- =================================== COLLAPSING TOOLBAR =================================-->
+
+    <style name="CollapsingToolbar.Expanded"
+           parent="TextAppearance.Design.CollapsingToolbar.Expanded">
+        <item name="android:textSize">24sp</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="CollapsingToolbar.Collapsed" parent="Base.TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <item name="android:textColor">@color/text_secondary</item>
+    </style>
+
 </resources>

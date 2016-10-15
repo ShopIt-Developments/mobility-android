@@ -4,6 +4,8 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Point;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
@@ -24,6 +26,7 @@ import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.Projection;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
@@ -40,8 +43,10 @@ import com.mobility.android.data.network.RestClient;
 import com.mobility.android.data.network.api.VehiclesApi;
 import com.mobility.android.data.network.model.BusObject;
 import com.mobility.android.data.network.model.MapObject;
+import com.mobility.android.data.network.model.VehicleObject;
 import com.mobility.android.data.network.response.MapResponse;
 import com.mobility.android.ui.BaseActivity;
+import com.mobility.android.ui.vehicle.VehicleDetailsActivity;
 import com.mobility.android.ui.widget.BottomSheet;
 import com.mobility.android.ui.widget.NestedSwipeRefreshLayout;
 import com.mobility.android.util.DeviceUtils;
@@ -53,6 +58,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -71,7 +77,6 @@ public class MapActivity extends BaseActivity implements OnMapReadyCallback,
     @BindView(R.id.bottom_sheet) FrameLayout bottomSheet;
     @BindView(R.id.bottom_sheet_peek_title) TextView bottomSheetTitle;
     @BindView(R.id.bottom_sheet_peek_sub) TextView bottomSheetSub;
-    @BindView(R.id.bottom_sheet_peek_delay) TextView bottomSheetDelayPeek;
 
     private Map<String, Marker> mMarkers = new HashMap<>();
     private ArrayList<MapObject> mBusData;
@@ -89,6 +94,10 @@ public class MapActivity extends BaseActivity implements OnMapReadyCallback,
     private MapObject selectedItem;
     private TileOverlay tileOverlay;
     private BottomSheetBehavior<FrameLayout> behavior;
+
+    private BitmapDescriptor iconBus;
+    private BitmapDescriptor iconBike;
+    private BitmapDescriptor iconCar;
 
     private final Handler HANDLER = new Handler();
 
@@ -167,6 +176,10 @@ public class MapActivity extends BaseActivity implements OnMapReadyCallback,
         } else {
             Timber.e("Couldn't initialize google map: error=%s", mGplayStatus);
         }
+
+        iconBike = BitmapDescriptorFactory.defaultMarker(125);
+        iconCar = BitmapDescriptorFactory.defaultMarker(230);
+        iconBus = BitmapDescriptorFactory.defaultMarker(30);
     }
 
     @Override
@@ -209,6 +222,14 @@ public class MapActivity extends BaseActivity implements OnMapReadyCallback,
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.map, menu);
+
+        MenuItem menuItem = menu.findItem(R.id.action_refresh);
+
+        Drawable drawable = menuItem.getIcon();
+        if (drawable != null) {
+            drawable.mutate();
+            drawable.setColorFilter(ContextCompat.getColor(this, R.color.color_control), PorterDuff.Mode.SRC_ATOP);
+        }
 
         return true;
     }
@@ -325,27 +346,41 @@ public class MapActivity extends BaseActivity implements OnMapReadyCallback,
 
         Map<String, Marker> updatedMarkers = new HashMap<>();
 
-        for (MapObject mapObject : response.buses) {
-            BusObject bus = (BusObject) mapObject;
+        List<MapObject> joined = new ArrayList<>();
+        joined.addAll(response.buses);
+        joined.addAll(response.vehicles);
 
-            Marker marker = mMarkers.get(String.valueOf(bus.trip));
+        for (MapObject object : joined) {
+            Marker marker = mMarkers.get(object.id);
 
             if (marker == null) {
+                BitmapDescriptor icon = null;
+                String name = object.name;
+
+                if (object instanceof BusObject) {
+                    icon = iconBus;
+                    name = "Line " + object.name;
+                } else if (object instanceof VehicleObject) {
+                    VehicleObject vehicle = (VehicleObject) object;
+                    if (vehicle.type.equals("car")) {
+                        icon = iconCar;
+                    } else {
+                        icon = iconBike;
+                    }
+                }
+
                 marker = mGoogleMap.addMarker(new MarkerOptions()
-                        .title(bus.name)
-                        .position(new LatLng(bus.lat, bus.lng))
-                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
+                        .title(name)
+                        .position(new LatLng(object.lat, object.lng))
+                        .icon(icon));
 
-                marker.setTag(bus);
+                marker.setTag(object);
             } else {
-                animateMarker(marker, new LatLng(bus.lat, bus.lng));
-
-                marker.setTitle(bus.name);
-                marker.setTag(bus);
+                animateMarker(marker, new LatLng(object.lat, object.lng));
             }
 
-            updatedMarkers.put(String.valueOf(bus.trip), marker);
-            mMarkers.remove(String.valueOf(bus.trip));
+            updatedMarkers.put(object.id, marker);
+            mMarkers.remove(object.id);
         }
 
         for (Marker marker : mMarkers.values()) {
@@ -480,9 +515,7 @@ public class MapActivity extends BaseActivity implements OnMapReadyCallback,
         behavior = BottomSheet.from(bottomSheet, state);
 
         bottomSheet.setOnClickListener(v -> {
-            if (behavior.getState() == BottomSheetBehavior.STATE_COLLAPSED) {
-                behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-            }
+            startActivity(new Intent(this, VehicleDetailsActivity.class));
         });
 
         behavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
@@ -499,9 +532,15 @@ public class MapActivity extends BaseActivity implements OnMapReadyCallback,
         behavior.setPeekHeight((int) getResources().getDimension(R.dimen.peek_height));
     }
 
-    private void updateBottomSheet(MapObject bus) {
-        selectedItem = bus;
-        bottomSheetTitle.setText("Line " + bus.name);
-        bottomSheetSub.setText(bus.description);
+    private void updateBottomSheet(MapObject object) {
+        String name = object.name;
+
+        if (object instanceof BusObject) {
+            name = "Line " + object.name;
+        }
+
+        selectedItem = object;
+        bottomSheetTitle.setText(name);
+        bottomSheetSub.setText(object.description);
     }
 }
