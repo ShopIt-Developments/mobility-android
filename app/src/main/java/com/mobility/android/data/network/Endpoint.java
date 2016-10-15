@@ -11,6 +11,7 @@ public final class Endpoint {
     public static final String VEHICLES_MY = "vehicles/my";
 
     public static final String VEHICLE_ORDER = "order/{vehicle_id}";
+    public static final String VEHICLE_ADD = "vehicle";
 
     public static final String FCM_TOKEN = "fcm/token/{token}";
 

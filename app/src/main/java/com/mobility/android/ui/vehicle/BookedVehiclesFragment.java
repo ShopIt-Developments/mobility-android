@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 import com.mobility.android.Config;
 import com.mobility.android.R;
 import com.mobility.android.data.network.RestClient;
-import com.mobility.android.data.network.api.VehiclesApi;
+import com.mobility.android.data.network.api.VehicleApi;
 import com.mobility.android.data.network.model.VehicleObject;
 import com.trello.rxlifecycle.components.support.RxFragment;
 
@@ -31,7 +31,7 @@ public class BookedVehiclesFragment extends RxFragment {
 
     private BookedVehiclesAdapter mAdapter;
 
-    VehiclesApi mApi;
+    VehicleApi mApi;
 
     @Nullable
     @Override
@@ -50,7 +50,7 @@ public class BookedVehiclesFragment extends RxFragment {
         mRefresh.setOnRefreshListener(this::loadData);
         mRefresh.setColorSchemeResources(Config.REFRESH_COLORS);
 
-        mApi = RestClient.ADAPTER.create(VehiclesApi.class);
+        mApi = RestClient.ADAPTER.create(VehicleApi.class);
 
         loadData();
 

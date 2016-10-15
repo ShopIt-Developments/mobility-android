@@ -11,7 +11,7 @@ import android.view.View;
 import com.mobility.android.Config;
 import com.mobility.android.R;
 import com.mobility.android.data.network.RestClient;
-import com.mobility.android.data.network.api.VehiclesApi;
+import com.mobility.android.data.network.api.VehicleApi;
 import com.mobility.android.data.network.model.VehicleObject;
 import com.mobility.android.ui.BaseActivity;
 
@@ -31,7 +31,7 @@ public class MyVehiclesActivity extends BaseActivity implements View.OnClickList
 
     private MyVehiclesAdapter mAdapter;
 
-    private VehiclesApi mApi;
+    private VehicleApi mApi;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +46,7 @@ public class MyVehiclesActivity extends BaseActivity implements View.OnClickList
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setHasFixedSize(true);
 
-        mApi = RestClient.ADAPTER.create(VehiclesApi.class);
+        mApi = RestClient.ADAPTER.create(VehicleApi.class);
 
         mFab.setOnClickListener(this);
 
