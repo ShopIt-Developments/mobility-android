@@ -15,7 +15,6 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.view.InflateException;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewManager;
@@ -157,8 +156,8 @@ public class MapFragment extends RxFragment implements OnMapReadyCallback,
     private View view;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
 
         if (view != null) {
             ViewManager parent = (ViewManager) view.getParent();
@@ -226,19 +225,6 @@ public class MapFragment extends RxFragment implements OnMapReadyCallback,
         super.onPause();
 
         HANDLER.removeCallbacks(REFRESH_RUNNABLE);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_refresh:
-                if (mGoogleMap != null) {
-                    parseData();
-                }
-                return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -395,7 +381,7 @@ public class MapFragment extends RxFragment implements OnMapReadyCallback,
     }
 
 
-    private void parseData() {
+    public void parseData() {
         if (mIsRefreshing) {
             Timber.w("Already loading data");
             return;

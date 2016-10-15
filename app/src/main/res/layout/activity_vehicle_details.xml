@@ -299,9 +299,9 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
                         android:text="BOOK"
                         android:textColor="@color/white"
-                        android:layout_gravity="center_vertical"
                         android:textSize="18sp"
                         android:textStyle="bold"/>
 

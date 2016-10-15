@@ -61,6 +61,17 @@ public class MainActivity extends BaseActivity {
     }
 
     @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_refresh:
+                mapFragment.parseData();
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     public int getNavItem() {
         return NAVDRAWER_ITEM_MAP;
     }
