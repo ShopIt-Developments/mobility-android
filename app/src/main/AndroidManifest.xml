@@ -1,6 +1,6 @@
 <manifest
-    package="com.mobility.android"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.mobility.android">
 
     <permission
         android:name="com.mobility.android.permission.MAPS_RECEIVE"
@@ -44,6 +44,9 @@
             android:name=".ui.map.MapActivity"
             android:label="Map"/>
 
+        <activity
+            android:name=".ui.myCars.MyCarsActivity"
+            android:label="@string/my_cars"/>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"

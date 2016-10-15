@@ -21,6 +21,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.mobility.android.R;
 import com.mobility.android.ui.login.LoginActivity;
 import com.mobility.android.ui.map.MapActivity;
+import com.mobility.android.ui.myCars.MyCarsActivity;
 import com.trello.rxlifecycle.LifecycleTransformer;
 import com.trello.rxlifecycle.android.ActivityEvent;
 import com.trello.rxlifecycle.components.support.RxAppCompatActivity;
@@ -61,6 +62,7 @@ public abstract class BaseActivity extends RxAppCompatActivity implements
     protected static final int NAVDRAWER_ITEM_INVALID = -1;
 
     protected static final int NAVDRAWER_ITEM_MAP = R.id.nav_orders;
+    protected static final int NAVDRAWER_ITEM_MYCARS = R.id.nav_my_cars;
 
     /**
      * Delay to launch nav drawer item, to allow close animation to play
@@ -295,6 +297,9 @@ public abstract class BaseActivity extends RxAppCompatActivity implements
         switch (item) {
             case NAVDRAWER_ITEM_MAP:
                 createBackStack(new Intent(this, MapActivity.class));
+                break;
+            case NAVDRAWER_ITEM_MYCARS:
+                createBackStack(new Intent(this, MyCarsActivity.class));
                 break;
             /*case NAVDRAWER_ITEM_DELIVERIES:
                 createBackStack(new Intent(this, DeliveriesActivity.class));
