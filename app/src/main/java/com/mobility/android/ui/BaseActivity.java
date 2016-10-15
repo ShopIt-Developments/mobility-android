@@ -21,7 +21,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.mobility.android.R;
 import com.mobility.android.ui.login.LoginActivity;
 import com.mobility.android.ui.map.MapFragment;
-import com.mobility.android.ui.myvehicles.MyVehiclesActivity;
+import com.mobility.android.ui.vehicle.MyVehiclesActivity;
 import com.trello.rxlifecycle.LifecycleTransformer;
 import com.trello.rxlifecycle.android.ActivityEvent;
 import com.trello.rxlifecycle.components.support.RxAppCompatActivity;

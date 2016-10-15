@@ -1,4 +1,4 @@
-package com.mobility.android.ui.myvehicles;
+package com.mobility.android.ui.vehicle;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -16,12 +16,6 @@ import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
-/**
- * Created on 15.10.2016.
- *
- * @author Martin
- */
 
 public class MyVehiclesAdapter extends RecyclerView.Adapter<MyVehiclesAdapter.MyVehicleViewHolder> {
 

@@ -1,5 +1,4 @@
-package com.mobility.android.ui.myvehicles;
-
+package com.mobility.android.ui.vehicle;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -9,12 +8,6 @@ import com.mobility.android.R;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
-/**
- * Created on 15.10.2016.
- *
- * @author Martin
- */
 
 public class AddVehicleActivity extends AppCompatActivity {
 

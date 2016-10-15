@@ -1,4 +1,4 @@
-package com.mobility.android.ui.myvehicles;
+package com.mobility.android.ui.vehicle;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -22,12 +22,6 @@ import butterknife.ButterKnife;
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
-
-/**
- * Created on 15.10.2016.
- *
- * @author Martin
- */
 
 public class MyVehiclesActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener, View.OnClickListener {
 

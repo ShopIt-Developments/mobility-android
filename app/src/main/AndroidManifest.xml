@@ -45,7 +45,7 @@
             android:label="Map"/>
 
         <activity
-            android:name=".ui.myvehicles.MyVehiclesActivity"
+            android:name=".ui.vehicle.MyVehiclesActivity"
             android:label="@string/my_cars"/>
 
         <activity
@@ -53,7 +53,7 @@
             android:label="Tesla Model S"/>
 
         <activity
-            android:name=".ui.myvehicles.AddVehicleActivity"
+            android:name=".ui.vehicle.AddVehicleActivity"
             android:label="@string/borrow_vehicle"/>
 
         <meta-data
