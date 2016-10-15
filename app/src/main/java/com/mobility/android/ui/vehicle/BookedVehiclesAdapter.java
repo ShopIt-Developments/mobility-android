@@ -20,18 +20,17 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MyVehiclesAdapter extends RecyclerView.Adapter<MyVehiclesAdapter.MyVehicleViewHolder> {
+public class BookedVehiclesAdapter extends RecyclerView.Adapter<BookedVehiclesAdapter.MyVehicleViewHolder> {
 
-    private List<VehicleObject> mItems;
     private Context mContext;
+    private List<VehicleObject> mItems;
 
-    MyVehiclesAdapter(Context context) {
+    public BookedVehiclesAdapter(Context context) {
         mContext = context;
-
         mItems = new ArrayList<>();
     }
 
-    void setItems(@NonNull List<VehicleObject> items) {
+    public void setItems(@NonNull List<VehicleObject> items) {
         this.mItems = items;
         notifyDataSetChanged();
     }

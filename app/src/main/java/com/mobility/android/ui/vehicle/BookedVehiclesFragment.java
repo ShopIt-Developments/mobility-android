@@ -1,19 +1,20 @@
 package com.mobility.android.ui.vehicle;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
+import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 
 import com.mobility.android.Config;
 import com.mobility.android.R;
 import com.mobility.android.data.network.RestClient;
 import com.mobility.android.data.network.api.VehiclesApi;
 import com.mobility.android.data.network.model.VehicleObject;
-import com.mobility.android.ui.BaseActivity;
+import com.trello.rxlifecycle.components.support.RxFragment;
 
 import java.util.List;
 
@@ -23,55 +24,44 @@ import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-public class MyVehiclesActivity extends BaseActivity implements View.OnClickListener {
+public class BookedVehiclesFragment extends RxFragment {
 
     @BindView(R.id.refresh) SwipeRefreshLayout mRefresh;
     @BindView(R.id.activity_my_cars_recycler) RecyclerView mRecyclerView;
-    @BindView(R.id.activity_my_cars_add) FloatingActionButton mFab;
 
-    private MyVehiclesAdapter mAdapter;
+    private BookedVehiclesAdapter mAdapter;
 
-    private VehiclesApi mApi;
+    VehiclesApi mApi;
 
+    @Nullable
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
 
-        setContentView(R.layout.activity_my_vehicles);
-        ButterKnife.bind(this);
+        View view = inflater.inflate(R.layout.fragment_booked_vehicles, container, false);
+        ButterKnife.bind(this, view);
 
-        mAdapter = new MyVehiclesAdapter(this);
+        mAdapter = new BookedVehiclesAdapter(getActivity());
 
         mRecyclerView.setAdapter(mAdapter);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRecyclerView.setHasFixedSize(true);
-
-        mApi = RestClient.ADAPTER.create(VehiclesApi.class);
-
-        mFab.setOnClickListener(this);
 
         mRefresh.setOnRefreshListener(this::loadData);
         mRefresh.setColorSchemeResources(Config.REFRESH_COLORS);
 
-        mRefresh.setRefreshing(true);
+        mApi = RestClient.ADAPTER.create(VehiclesApi.class);
+
         loadData();
-    }
 
-    @Override
-    protected int getNavItem() {
-        return NAVDRAWER_ITEM_MYCARS;
-    }
-
-    @Override
-    public void onClick(View v) {
-        startActivity(new Intent(this, AddVehicleActivity.class));
+        return view;
     }
 
     private void loadData() {
         mRefresh.setRefreshing(true);
 
         mApi.getMyVehicles()
-                .compose(bindToActivity())
+                .compose(bindToLifecycle())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<List<VehicleObject>>() {

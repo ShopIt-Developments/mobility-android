@@ -13,6 +13,7 @@ import android.view.MenuItem;
 
 import com.mobility.android.R;
 import com.mobility.android.ui.map.MapFragment;
+import com.mobility.android.ui.vehicle.BookedVehiclesFragment;
 import com.mobility.android.ui.widget.TabsAdapter;
 
 import butterknife.BindView;
@@ -25,7 +26,7 @@ public class MainActivity extends BaseActivity {
     @BindView(R.id.toolbar) Toolbar toolbar;
 
     private MapFragment mapFragment;
-    private MapFragment mapFragment1;
+    private BookedVehiclesFragment bookedFragment;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -35,11 +36,11 @@ public class MainActivity extends BaseActivity {
         ButterKnife.bind(this);
 
         mapFragment = new MapFragment();
-        mapFragment1 = new MapFragment();
+        bookedFragment = new BookedVehiclesFragment();
 
         TabsAdapter mAdapter = new TabsAdapter(getSupportFragmentManager());
         mAdapter.addFragment(mapFragment, "Available");
-        mAdapter.addFragment(mapFragment1, "Booked");
+        mAdapter.addFragment(bookedFragment, "Booked");
 
         mViewPager.setAdapter(mAdapter);
         mTabs.setupWithViewPager(mViewPager);
