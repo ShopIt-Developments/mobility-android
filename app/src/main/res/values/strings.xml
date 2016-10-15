@@ -31,5 +31,6 @@
     <string name="car">Car</string>
     <string name="bicycle">Bicycle</string>
     <string name="type">Type</string>
+    <string name="accept">Accept</string>
 
 </resources>
