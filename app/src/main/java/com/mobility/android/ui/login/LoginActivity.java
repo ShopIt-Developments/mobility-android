@@ -4,38 +4,29 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.TextInputLayout;
-import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Patterns;
 import android.view.View;
-import android.widget.EditText;
-import android.widget.ProgressBar;
-import android.widget.TextView;
+import android.widget.FrameLayout;
+import android.widget.Toast;
 
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInResult;
+import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GoogleAuthProvider;
+import com.mobility.android.AppApplication;
 import com.mobility.android.R;
 import com.mobility.android.ui.map.MapActivity;
-import com.mobility.android.util.UIUtils;
 
-import butterknife.BindView;
 import butterknife.ButterKnife;
 import timber.log.Timber;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener,
         FirebaseAuth.AuthStateListener {
 
-    @BindView(R.id.login_form_email_layout) TextInputLayout emailLayout;
-    @BindView(R.id.login_form_password_layout) TextInputLayout passwordLayout;
-
-    @BindView(R.id.login_form_email) EditText email;
-    @BindView(R.id.login_form_password) EditText password;
-
-    @BindView(R.id.login_form_forgot_password) TextView forgotPassword;
-    @BindView(R.id.login_form_submit) FloatingActionButton submit;
-    @BindView(R.id.login_form_loading) ProgressBar loading;
+    public static final int RC_SIGN_IN = 100;
 
     private FirebaseAuth mAuth;
 
@@ -49,13 +40,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         mAuth = FirebaseAuth.getInstance();
         mAuth.addAuthStateListener(this);
 
-        submit.setOnClickListener(this);
-
-        emailLayout.setError("error");
-        emailLayout.setError(null);
-
-        passwordLayout.setError("error");
-        passwordLayout.setError(null);
+        FrameLayout signInButton = (FrameLayout) findViewById(R.id.main_login_button);
+        signInButton.setOnClickListener(this);
     }
 
     @Override
@@ -72,10 +58,29 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
+        if (requestCode == RC_SIGN_IN) {
+            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+            if (result.isSuccess()) {
+                Timber.e("Google sign in successful: %s", result.getStatus().toString());
+
+                // Google Sign In was successful, authenticate with Firebase
+                GoogleSignInAccount account = result.getSignInAccount();
+                firebaseAuthWithGoogle(account);
+            } else {
+                Timber.e("Google sign in unsuccessful: %s", result.getStatus().toString());
+            }
+        }
+    }
+
+    @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.login_form_submit:
-                login();
+            case R.id.main_login_button:
+                signIn();
                 break;
         }
     }
@@ -94,72 +99,28 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         mAuth.removeAuthStateListener(this);
     }
 
-    private void animateViews(boolean showProgress) {
-        if (showProgress) {
-            submit.setClickable(false);
-            submit.animate()
-                    .alpha(0)
-                    .setDuration(250)
-                    .start();
+    private void signIn() {
+        Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(
+                ((AppApplication) getApplication()).getGoogleApiClient());
 
-            loading.setVisibility(View.VISIBLE);
-            ViewCompat.setAlpha(loading, 0);
-
-            loading.animate()
-                    .alpha(1)
-                    .setDuration(250)
-                    .setStartDelay(150)
-                    .start();
-
-            emailLayout.setError(null);
-            passwordLayout.setError(null);
-        } else {
-            loading.animate()
-                    .alpha(0)
-                    .setDuration(250)
-                    .start();
-
-            submit.setVisibility(View.VISIBLE);
-            ViewCompat.setAlpha(submit, 0);
-
-            submit.setClickable(true);
-            submit.animate()
-                    .alpha(1)
-                    .setDuration(250)
-                    .setStartDelay(150)
-                    .start();
-
-        }
+        startActivityForResult(signInIntent, RC_SIGN_IN);
     }
 
-    private void login() {
-        String emailString = email.getText().toString();
-        String passwordString = password.getText().toString();
+    private void firebaseAuthWithGoogle(GoogleSignInAccount account) {
+        Timber.e("Google account id: %s", account.getId());
 
-        if (emailString.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(emailString).matches()) {
-            emailLayout.setError("Invalid email");
-            return;
-        }
+        AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
+        mAuth.signInWithCredential(credential).addOnCompleteListener(this, task -> {
+            Timber.e("signInWithCredential:onComplete: %s", task.isSuccessful());
 
-        if (passwordString.isEmpty()) {
-            passwordLayout.setError("Enter a valid password");
-            return;
-        }
+            // If sign in fails, display a message to the user. If sign in succeeds
+            // the auth state listener will be notified and logic to handle the
+            // signed in user can be handled in the listener.
+            if (!task.isSuccessful()) {
+                Timber.e("signInWithCredential %s", task.getException());
 
-        animateViews(true);
-
-        emailLayout.setError(null);
-        passwordLayout.setError(null);
-
-        mAuth.signInWithEmailAndPassword(emailString, passwordString).addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                Timber.w("Login successful");
-            } else {
-                Timber.w(task.getException(), "Login failed");
-
-                animateViews(false);
-                UIUtils.okDialog(this, "Login failed",
-                        "Could not complete login. Please retry in a few minutes.");
+                Toast.makeText(LoginActivity.this, "Authentication failed.",
+                        Toast.LENGTH_SHORT).show();
             }
         });
     }

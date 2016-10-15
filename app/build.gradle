@@ -71,6 +71,7 @@ dependencies {
     compile "com.google.android.gms:play-services-maps:$PLAY_SERVICES_VERSION"
     compile "com.google.android.gms:play-services-location:$PLAY_SERVICES_VERSION"
     compile "com.google.android.gms:play-services-places:$PLAY_SERVICES_VERSION"
+    compile "com.google.android.gms:play-services-auth:$PLAY_SERVICES_VERSION"
 
     // Firebase
     compile "com.google.firebase:firebase-messaging:$PLAY_SERVICES_VERSION"

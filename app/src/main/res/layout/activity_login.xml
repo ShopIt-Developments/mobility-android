@@ -10,21 +10,21 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginBottom="@dimen/round_background_margin_bottom"
-        android:layout_marginStart="@dimen/round_background_margin_side"
-        android:layout_marginEnd="@dimen/round_background_margin_side"
+        android:layout_marginLeft="@dimen/round_background_margin_side"
+        android:layout_marginRight="@dimen/round_background_margin_side"
         android:layout_marginTop="@dimen/round_background_margin_side"
         android:background="@drawable/bg_round_grey"/>
 
     <FrameLayout
-        android:layout_width="128dp"
-        android:layout_height="128dp"
+        android:layout_width="210dp"
+        android:layout_height="210dp"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="64dp"
         android:background="@drawable/bg_round_grey_small">
 
         <ImageView
-            android:layout_width="64dp"
-            android:layout_height="64dp"
+            android:layout_width="128dp"
+            android:layout_height="128dp"
             android:layout_gravity="center"
             android:src="@mipmap/ic_launcher"/>
 
@@ -41,15 +41,15 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:fontFamily="sans-serif-thin"
-            android:text="Login"
+            android:text="Sign in"
             android:textColor="@color/text_primary_light"
-            android:textSize="@dimen/title_large"/>
+            android:textSize="36sp"/>
 
         <android.support.v7.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            android:layout_marginBottom="16dp"
+            android:layout_marginBottom="32dp"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             android:layout_marginTop="12dp"
@@ -58,94 +58,50 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="32dp"
-                android:layout_marginRight="32dp"
-                android:orientation="vertical">
-
-                <android.support.design.widget.TextInputLayout
-                    android:id="@+id/login_form_email_layout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="48dp"
-                    android:textColorHint="@color/text_hint"
-                    android:theme="@style/TextInputLayout.Grey"
-                    app:errorTextAppearance="@style/TextInputLayout.Error">
-
-                    <android.support.design.widget.TextInputEditText
-                        android:id="@+id/login_form_email"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="E-mail"
-                        android:inputType="textEmailAddress"
-                        android:lines="1"
-                        android:maxLines="1"
-                        android:textColor="@color/text_primary"
-                        android:textSize="14sp"/>
-
-                </android.support.design.widget.TextInputLayout>
-
-                <android.support.design.widget.TextInputLayout
-                    android:id="@+id/login_form_password_layout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:textColorHint="@color/text_hint"
-                    android:theme="@style/TextInputLayout.Grey"
-                    app:errorTextAppearance="@style/TextInputLayout.Error">
-
-                    <android.support.design.widget.TextInputEditText
-                        android:id="@+id/login_form_password"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Password"
-                        android:inputType="textPassword"
-                        android:lines="1"
-                        android:maxLines="1"
-                        android:textColor="@color/text_primary"
-                        android:textSize="14sp"/>
-
-                </android.support.design.widget.TextInputLayout>
-
-                <TextView
-                    android:id="@+id/login_form_forgot_password"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="end"
-                    android:layout_marginTop="-36dp"
-                    android:background="?attr/selectableItemBackground"
-                    android:clickable="true"
-                    android:padding="4dp"
-                    android:text="Forgot password?"
-                    android:textColor="@color/text_secondary"
-                    android:textSize="12sp"/>
+                android:orientation="vertical"
+                android:paddingBottom="8dp"
+                android:paddingTop="8dp">
 
                 <FrameLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="bottom|center_horizontal"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginTop="24dp">
+                    android:id="@+id/main_login_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="72dp"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="true">
 
-                    <android.support.design.widget.FloatingActionButton
-                        android:id="@+id/login_form_submit"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_margin="8dp"
-                        android:src="@drawable/ic_chevron_right_black_24dp"
-                        android:tint="@color/white"
-                        app:backgroundTint="@color/dark_gray_default"/>
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="16dp"
+                        android:src="@drawable/google"/>
 
-                    <ProgressBar
-                        android:id="@+id/login_form_loading"
-                        style="@style/Widget.AppCompat.ProgressBar"
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_margin="8dp"
-                        android:indeterminate="true"
-                        android:indeterminateTint="@color/text_secondary_light"
-                        android:visibility="invisible"/>
+                        android:layout_marginTop="16dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="72dp"
+                            android:text="Sign in using Google"
+                            android:textColor="@color/text_primary"
+                            android:textSize="16sp"
+                            android:textStyle="bold"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="bottom"
+                            android:layout_marginBottom="16dp"
+                            android:layout_marginLeft="72dp"
+                            android:layout_marginRight="16dp"
+                            android:text="Use your Google account to sign in"
+                            android:textColor="@color/text_secondary"/>
+
+                    </LinearLayout>
 
                 </FrameLayout>
 
