@@ -45,7 +45,7 @@
             android:label="Map"/>
 
         <activity
-            android:name=".ui.myCars.MyCarsActivity"
+            android:name=".ui.myvehicles.MyVehiclesActivity"
             android:label="@string/my_cars"/>
 
         <activity

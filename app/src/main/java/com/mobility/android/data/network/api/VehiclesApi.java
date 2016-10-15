@@ -1,8 +1,10 @@
 package com.mobility.android.data.network.api;
 
 import com.mobility.android.data.network.Endpoint;
+import com.mobility.android.data.network.model.VehicleObject;
 import com.mobility.android.data.network.response.MapResponse;
-import com.mobility.android.data.network.response.VehicleResponse;
+
+import java.util.List;
 
 import retrofit2.http.GET;
 import rx.Observable;
@@ -13,5 +15,5 @@ public interface VehiclesApi {
     Observable<MapResponse> getAvailableVehicles();
 
     @GET(Endpoint.VEHICLES_MY)
-    Observable<VehicleResponse> getMyVehicles();
+    Observable<List<VehicleObject>> getMyVehicles();
 }

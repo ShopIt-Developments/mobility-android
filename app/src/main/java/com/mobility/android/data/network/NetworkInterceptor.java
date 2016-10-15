@@ -50,10 +50,9 @@ class NetworkInterceptor implements Interceptor {
 
             if (token == null) {
                 Timber.w("Token is invalid, skipping auth header");
-            } else {
-                newRequest.addHeader("Authorization", "Bearer " + token);
             }
         }
+        newRequest.addHeader("Authorization", "jesus");
 
         Request request = newRequest.build();
 
