@@ -10,6 +10,7 @@ public class VehicleObject extends MapObject {
     public String availability;
     public String currency;
     public String image;
+    public String owner;
 
     public String type;
 
@@ -40,6 +41,7 @@ public class VehicleObject extends MapObject {
         pricePerHour = in.readFloat();
         licencePlate = in.readString();
         qrCode = in.readString();
+        owner = in.readString();
     }
 
     @Override
@@ -55,6 +57,7 @@ public class VehicleObject extends MapObject {
         dest.writeFloat(pricePerHour);
         dest.writeString(licencePlate);
         dest.writeString(qrCode);
+        dest.writeString(owner);
     }
 
     @Override

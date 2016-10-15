@@ -12,6 +12,8 @@ import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.mobility.android.Config;
 import com.mobility.android.R;
 import com.mobility.android.data.network.RestClient;
@@ -45,6 +47,8 @@ public class VehicleDetailsActivity extends AppCompatActivity {
 
     private NumberFormat format = NumberFormat.getCurrencyInstance(Locale.ITALY);
 
+    private boolean userIsOwner;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,6 +59,7 @@ public class VehicleDetailsActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 
         setSupportActionBar(toolbar);
+        //noinspection ConstantConditions
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         Intent intent = getIntent();
@@ -66,10 +71,17 @@ public class VehicleDetailsActivity extends AppCompatActivity {
             return;
         }
 
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            userIsOwner = vehicle.owner.equals(user.getUid());
+        }
+
         toolbar.setNavigationOnClickListener(v -> finish());
         collapsingToolbarLayout.setTitle(vehicle.name);
 
-        bookButton.setOnClickListener(v -> bookCarConfirmation());
+        if (userIsOwner) {
+            bookButton.setOnClickListener(v -> bookCarConfirmation());
+        }
 
         name.setText(vehicle.name);
         description.setText(vehicle.description);

@@ -61,6 +61,8 @@ public class AddVehicleActivity extends AppCompatActivity implements RadioGroup.
 
     @BindView(R.id.add_vehicle_accept) CardView accept;
 
+    private VehicleObject mVehicle;
+
     @BindView(R.id.add_vehicle_add_image) FrameLayout addImage;
     @BindView(R.id.backdrop) ImageView imageBackground;
 
@@ -80,13 +82,23 @@ public class AddVehicleActivity extends AppCompatActivity implements RadioGroup.
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.setNavigationOnClickListener((v) -> finish());
 
+        //Fixing measure bug so the views don't expand in size when a error is displayed
+        nameLayout.setError("error");
+        nameLayout.setError(null);
+        availabilityLayout.setError("error");
+        availabilityLayout.setError(null);
+        licencePlateLayout.setError("error");
+        licencePlateLayout.setError(null);
+        descriptionLayout.setError("error");
+        descriptionLayout.setError(null);
+        priceLayout.setError("error");
+        priceLayout.setError(null);
+
+
         radioGroup.setOnCheckedChangeListener(this);
 
         accept.setOnClickListener(this);
         addImage.setOnClickListener(this);
-
-        nameLayout.setError("error");
-        nameLayout.setError(null);
     }
 
     @Override
