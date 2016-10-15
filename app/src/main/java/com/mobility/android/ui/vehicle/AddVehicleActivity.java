@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.design.widget.TextInputLayout;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
@@ -19,8 +20,15 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlacePicker;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.mobility.android.R;
 import com.mobility.android.data.network.RestClient;
 import com.mobility.android.data.network.api.VehicleApi;
@@ -39,33 +47,38 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import timber.log.Timber;
 
-public class AddVehicleActivity extends AppCompatActivity implements RadioGroup.OnCheckedChangeListener, View.OnClickListener {
+public class AddVehicleActivity extends AppCompatActivity implements
+        RadioGroup.OnCheckedChangeListener, View.OnClickListener {
+
+    public static final int ACTION_PICK_LOCATION = 100;
 
     private static final int CAMERA_REQUEST = 101;
     private static final int GALLERY_REQUEST = 102;
 
     @BindView(R.id.toolbar) Toolbar toolbar;
 
-    @BindView(R.id.add_car_name_layout) TextInputLayout nameLayout;
     @BindView(R.id.add_car_name) EditText name;
+    @BindView(R.id.add_vehicle_name_layout) TextInputLayout nameLayout;
 
     @BindView(R.id.radio_group_car_bicycle) RadioGroup radioGroup;
     @BindView(R.id.radio_button_car) RadioButton radioCar;
     @BindView(R.id.radio_button_bicycle) RadioButton radioBicycle;
 
-    @BindView(R.id.add_car_availability_layout) TextInputLayout availabilityLayout;
     @BindView(R.id.add_car_availability) EditText availability;
+    @BindView(R.id.add_vehicle_availability_layout) TextInputLayout availabilityLayout;
 
-    @BindView(R.id.add_car_licence_plate_layout) TextInputLayout licencePlateLayout;
     @BindView(R.id.add_car_licence_plate) EditText licencePlate;
+    @BindView(R.id.add_vehicle_licence_plate_layout) TextInputLayout licencePlateLayout;
 
-    @BindView(R.id.add_car_description_layout) TextInputLayout descriptionLayout;
     @BindView(R.id.add_car_description) EditText description;
+    @BindView(R.id.add_vehicle_description_layout) TextInputLayout descriptionLayout;
 
-    @BindView(R.id.add_car_price_layout) TextInputLayout priceLayout;
     @BindView(R.id.add_car_price) EditText price;
+    @BindView(R.id.add_vehicle_price_layout) TextInputLayout priceLayout;
 
     @BindView(R.id.add_vehicle_accept) CardView accept;
+
+    @BindView(R.id.add_vehicle_location) TextView location;
 
     @BindView(R.id.add_vehicle_add_image) FrameLayout addImage;
     @BindView(R.id.backdrop) ImageView imageBackground;
@@ -73,6 +86,8 @@ public class AddVehicleActivity extends AppCompatActivity implements RadioGroup.
     private File imageFile;
 
     private VehicleObject object = new VehicleObject();
+
+    private Place place;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,9 +105,22 @@ public class AddVehicleActivity extends AppCompatActivity implements RadioGroup.
 
         accept.setOnClickListener(this);
         addImage.setOnClickListener(this);
+        location.setOnClickListener(this);
 
         nameLayout.setError("error");
         nameLayout.setError(null);
+
+        availabilityLayout.setError("error");
+        availabilityLayout.setError(null);
+
+        licencePlateLayout.setError("error");
+        licencePlateLayout.setError(null);
+
+        descriptionLayout.setError("error");
+        descriptionLayout.setError(null);
+
+        priceLayout.setError("error");
+        priceLayout.setError(null);
     }
 
     @Override
@@ -116,6 +144,9 @@ public class AddVehicleActivity extends AppCompatActivity implements RadioGroup.
         switch (v.getId()) {
             case R.id.add_vehicle_add_image:
                 showPictureDialog();
+                break;
+            case R.id.add_vehicle_location:
+                showPlacesPopup();
                 break;
             case R.id.add_vehicle_accept:
                 if (!validateInput()) {
@@ -174,6 +205,16 @@ public class AddVehicleActivity extends AppCompatActivity implements RadioGroup.
     }
 
     private void uploadVehicle() {
+        object.lat = (float) place.getLatLng().latitude;
+        object.lng = (float) place.getLatLng().longitude;
+        object.address = place.getAddress().toString();
+
+        object.name = name.getText().toString();
+        object.availability = availability.getText().toString();
+        object.licencePlate = licencePlate.getText().toString();
+        object.description = description.getText().toString();
+        object.pricePerHour = Float.parseFloat(price.getText().toString());
+
         VehicleApi api = RestClient.ADAPTER.create(VehicleApi.class);
         api.addVehicle(object)
                 .subscribeOn(Schedulers.io())
@@ -197,20 +238,46 @@ public class AddVehicleActivity extends AppCompatActivity implements RadioGroup.
     }
 
 
+    // ================================== PLACE PICKER =============================================
+
+    private void showPlacesPopup() {
+        try {
+            PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder()
+                    .setLatLngBounds(new LatLngBounds(
+                            new LatLng(46.3711, 11.0510),
+                            new LatLng(46.7257, 11.4240)));
+
+            startActivityForResult(builder.build(this), ACTION_PICK_LOCATION);
+        } catch (Exception e) {
+            GoogleApiAvailability api = GoogleApiAvailability.getInstance();
+            int googleStatus = api.isGooglePlayServicesAvailable(this);
+
+            if (googleStatus != ConnectionResult.SUCCESS) {
+                api.showErrorDialogFragment(this, googleStatus, 100);
+            }
+
+            e.printStackTrace();
+        }
+    }
+
+
     // ================================= PROFILE PICTURE ===========================================
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
-            Timber.w("Got camera result intent");
+            if (requestCode == ACTION_PICK_LOCATION) {
+                place = PlacePicker.getPlace(this, data);
 
-            if (requestCode == CAMERA_REQUEST) {
-                Timber.w("Got picture from camera: %s", imageFile.getAbsolutePath());
-                uploadPicture(imageFile);
-            } else if (requestCode == GALLERY_REQUEST) {
-                Timber.w("Got picture from gallery: %s", data.getData().toString());
-                uploadPicture(getFileFromUri(data.getData()));
+                location.setText(place.getName());
+                location.setTextColor(ContextCompat.getColor(this, R.color.text_primary));
             }
+        } else if (requestCode == CAMERA_REQUEST) {
+            Timber.w("Got picture from camera: %s", imageFile.getAbsolutePath());
+            uploadPicture(imageFile);
+        } else if (requestCode == GALLERY_REQUEST) {
+            Timber.w("Got picture from gallery: %s", data.getData().toString());
+            uploadPicture(getFileFromUri(data.getData()));
         }
     }
 
