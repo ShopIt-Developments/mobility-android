@@ -80,4 +80,13 @@ public final class Utils {
     private static boolean isBetweenAndroidVersions(int min, int max) {
         return Build.VERSION.SDK_INT >= min && Build.VERSION.SDK_INT <= max;
     }
+
+    public static int getToolbarHeight(Context context) {
+        int result = 0;
+        int resourceId = context.getResources().getIdentifier("status_bar_height", "dimen", "android");
+        if (resourceId > 0) {
+            result = context.getResources().getDimensionPixelSize(resourceId);
+        }
+        return result;
+    }
 }

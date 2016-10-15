@@ -21,7 +21,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.mobility.android.R;
 import com.mobility.android.ui.login.LoginActivity;
 import com.mobility.android.ui.map.MapActivity;
-import com.mobility.android.ui.myCars.MyCarsActivity;
+import com.mobility.android.ui.myvehicles.MyVehiclesActivity;
 import com.trello.rxlifecycle.LifecycleTransformer;
 import com.trello.rxlifecycle.android.ActivityEvent;
 import com.trello.rxlifecycle.components.support.RxAppCompatActivity;
@@ -299,7 +299,7 @@ public abstract class BaseActivity extends RxAppCompatActivity implements
                 createBackStack(new Intent(this, MapActivity.class));
                 break;
             case NAVDRAWER_ITEM_MYCARS:
-                createBackStack(new Intent(this, MyCarsActivity.class));
+                createBackStack(new Intent(this, MyVehiclesActivity.class));
                 break;
             /*case NAVDRAWER_ITEM_DELIVERIES:
                 createBackStack(new Intent(this, DeliveriesActivity.class));
