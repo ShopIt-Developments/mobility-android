@@ -36,5 +36,7 @@
     <string name="error_price_invalid">Price must be between 1 and 150!</string>
     <string name="add_vehicle_information">Add vehicle information</string>
     <string name="points">Points:</string>
+    <string name="avoided_co_emissions">Avoided CO² emissions:</string>
+    <string name="reputation">Reputation:</string>
 
 </resources>
