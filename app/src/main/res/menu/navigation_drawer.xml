@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_orders"
+            android:icon="@drawable/ic_map_white_24dp"
+            android:title="Map"/>
+
+    </group>
+
+    <!--<item android:title="Support">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/nav_settings"
+                    android:checkable="false"
+                    android:icon="@drawable/ic_settings_white_24dp"
+                    android:title="Settings"/>
+
+                <item
+                    android:id="@+id/nav_help"
+                    android:checkable="false"
+                    android:icon="@drawable/ic_info_outline_white_24dp"
+                    android:title="Help &amp; Feedback"/>
+
+            </group>
+        </menu>
+    </item>-->
+
+</menu>

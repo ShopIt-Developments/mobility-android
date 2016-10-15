@@ -1,6 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+
+    <color name="primary">#FFFFFF</color>
+    <color name="primary_dark">#F5F5F5</color>
+    <color name="accent">#388E3C</color>
+
+    <color name="dark_gray_light">#5A676F</color>
+    <color name="dark_gray_default">#4D575E</color>
+    <color name="dark_gray_dark">#3B4548</color>
+
+    <color name="material_orange_500">#FF9800</color>
+    <color name="material_orange_700">#F57C00</color>
+
+    <color name="material_deep_orange_500">#FF7043</color>
+    <color name="material_deep_orange_700">#E64A19</color>
+
+    <color name="material_indigo_500">#3F51B5</color>
+    <color name="material_indigo_700">#303F9F</color>
+
+    <color name="material_light_blue_500">#03A9F4</color>
+    <color name="material_light_blue_700">#0288D1</color>
+
+    <color name="material_pink_A200">#FF4081</color>
+
+    <color name="material_blue_A200">#448AFF</color>
+    <color name="material_blue_A700">#2962FF</color>
+
+    <color name="material_red_400">#EF5350</color>
+    <color name="material_red_500">#F44336</color>
+    <color name="material_red_700">#D32F2F</color>
+
+    <color name="material_green_500">#4CAF50</color>
+    <color name="material_green_700">#388E3C</color>
+
+    <color name="material_amber_500">#FFC107</color>
+    <color name="material_amber_700">#FFA000</color>
+
+    <color name="material_pomegranate_500">#C0392B</color>
+    <color name="material_pomegranate_700">#902B20</color>
+
+    <color name="material_teal_500">#009688</color>
+    <color name="material_teal_700">#00796B</color>
+
+    <color name="primary_light_blue">#34495e</color>
+
+    <color name="material_purple_500">#9C27B0</color>
+    <color name="material_purple_700">#7B1FA2</color>
+
+    <color name="material_blue_grey_500">#607D8B</color>
+    <color name="material_blue_grey_800">#37474F</color>
+    <color name="material_blue_grey_900">#263238</color>
+
+    <color name="app_green_light">#91C753</color>
+    <color name="app_green_dark">#568C30</color>
+
+    <color name="divider">#1F000000</color>
+    <color name="divider_light">#EEEEEE</color>
+
+    <color name="white">#FFFFFF</color>
+    <color name="card_background">#FFFFFF</color>
+    <color name="color_control">#FFFFFF</color>
+    <color name="text_tertiary">#61000000</color>
+    <color name="text_secondary">#8A000000</color>
+    <color name="text_secondary_light">#B3FFFFFF</color>
+    <color name="text_primary">#DE000000</color>
+    <color name="text_primary_light">#FFFFFFFF</color>
+    <color name="text_link">#FF008094</color>
+    <color name="text_hint">#36000000</color>
+
+    <color name="window_background">#EEEEEE</color>
+
+    <color name="icon_grey">#757575</color>
+
 </resources>
