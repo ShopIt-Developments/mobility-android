@@ -67,7 +67,7 @@ public class MapActivity extends BaseActivity implements OnMapReadyCallback,
         View.OnClickListener, GoogleMap.OnMarkerClickListener, Observer<MapResponse>,
         GoogleMap.OnInfoWindowCloseListener {
 
-    private Map<Integer, Marker> mMarkers = new HashMap<>();
+    private Map<String, Marker> mMarkers = new HashMap<>();
     private ArrayList<MapObject> mBusData;
 
     @BindView(R.id.refresh) NestedSwipeRefreshLayout mRefresh;
@@ -309,7 +309,7 @@ public class MapActivity extends BaseActivity implements OnMapReadyCallback,
     }
 
     @Override
-    public void onNext(MapResponse realtimeResponse) {
+    public void onNext(MapResponse response) {
         Preconditions.checkNotNull(mGoogleMap, "googleMap == null");
         Preconditions.checkNotNull(mBusData, "mBusData == null");
         Preconditions.checkNotNull(mRefresh, "mRefresh == null");
@@ -323,23 +323,22 @@ public class MapActivity extends BaseActivity implements OnMapReadyCallback,
         }
 
         mBusData.clear();
-        mBusData.addAll(realtimeResponse.buses);
+        mBusData.addAll(response.buses);
 
         hideSnackbar();
 
-        Map<Integer, Marker> updatedMarkers = new HashMap<>();
+        Map<String, Marker> updatedMarkers = new HashMap<>();
 
-        for (MapObject mapObject : realtimeResponse.buses) {
+        for (MapObject mapObject : response.buses) {
             BusObject bus = (BusObject) mapObject;
 
-            Marker marker = mMarkers.get(bus.trip);
+            Marker marker = mMarkers.get(String.valueOf(bus.trip));
 
             if (marker == null) {
                 marker = mGoogleMap.addMarker(new MarkerOptions()
                         .title(bus.name)
                         .position(new LatLng(bus.lat, bus.lng))
-                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
-                        /*.visible(!mFilterEnabled || mFilter.contains(bus.lineId))*/);
+                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
 
                 marker.setTag(bus);
             } else {
@@ -349,32 +348,8 @@ public class MapActivity extends BaseActivity implements OnMapReadyCallback,
                 marker.setTag(bus);
             }
 
-            updatedMarkers.put(bus.trip, marker);
-            mMarkers.remove(bus.trip);
-        }
-
-        for (MapObject mapObject : realtimeResponse.buses) {
-            BusObject bus = (BusObject) mapObject;
-
-            Marker marker = mMarkers.get(bus.trip);
-
-            if (marker == null) {
-                marker = mGoogleMap.addMarker(new MarkerOptions()
-                                .title(bus.name)
-                                .position(new LatLng(bus.lat, bus.lng))
-                                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
-                        /*.visible(!mFilterEnabled || mFilter.contains(bus.lineId))*/);
-
-                marker.setTag(bus);
-            } else {
-                animateMarker(marker, new LatLng(bus.lat, bus.lng));
-
-                marker.setTitle(bus.name);
-                marker.setTag(bus);
-            }
-
-            updatedMarkers.put(bus.trip, marker);
-            mMarkers.remove(bus.trip);
+            updatedMarkers.put(String.valueOf(bus.trip), marker);
+            mMarkers.remove(String.valueOf(bus.trip));
         }
 
         for (Marker marker : mMarkers.values()) {

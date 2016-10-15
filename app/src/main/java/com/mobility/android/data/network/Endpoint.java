@@ -9,7 +9,7 @@ public final class Endpoint {
     public static final String MAP_TILES_ALL = "map/coordinates/%d/%d/%d";
 
     public static final String VEHICLES_AVAILABLE = "vehicles/available";
-    public static final String MY_VEHICLES = "vehicles/my";
+    public static final String VEHICLES_MY = "vehicles/my";
 
     public static final String FCM_TOKEN = "fcm/token/{token}";
 
