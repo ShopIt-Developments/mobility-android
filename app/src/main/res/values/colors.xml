@@ -75,4 +75,6 @@
 
     <color name="icon_grey">#757575</color>
 
+    <color name="add_vehicle_image_background">#BDBDBD</color>
+
 </resources>

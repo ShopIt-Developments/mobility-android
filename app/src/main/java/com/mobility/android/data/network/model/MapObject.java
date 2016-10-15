@@ -12,6 +12,9 @@ public class MapObject implements Parcelable {
     public float lat;
     public float lng;
 
+    public MapObject() {
+    }
+
     protected MapObject(Parcel in) {
         name = in.readString();
         id = in.readString();

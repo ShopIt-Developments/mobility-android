@@ -25,6 +25,9 @@ public class VehicleObject extends MapObject {
     @SerializedName("qr_code")
     public String qrCode;
 
+    public VehicleObject() {
+    }
+
     private VehicleObject(Parcel in) {
         super(in);
 

@@ -25,12 +25,12 @@ public class BookedVehiclesAdapter extends RecyclerView.Adapter<BookedVehiclesAd
     private Context mContext;
     private List<VehicleObject> mItems;
 
-    public BookedVehiclesAdapter(Context context) {
+    BookedVehiclesAdapter(Context context) {
         mContext = context;
         mItems = new ArrayList<>();
     }
 
-    public void setItems(@NonNull List<VehicleObject> items) {
+    void setItems(@NonNull List<VehicleObject> items) {
         this.mItems = items;
         notifyDataSetChanged();
     }

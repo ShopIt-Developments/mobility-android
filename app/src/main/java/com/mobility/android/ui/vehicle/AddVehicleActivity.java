@@ -1,21 +1,42 @@
 package com.mobility.android.ui.vehicle;
 
+import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.design.widget.TextInputLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
+import android.util.Base64;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
+import com.bumptech.glide.Glide;
 import com.mobility.android.R;
+import com.mobility.android.data.network.model.VehicleObject;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import timber.log.Timber;
 
 public class AddVehicleActivity extends AppCompatActivity implements RadioGroup.OnCheckedChangeListener, View.OnClickListener {
+
+    private static final int CAMERA_REQUEST = 101;
+    private static final int GALLERY_REQUEST = 102;
 
     @BindView(R.id.toolbar) Toolbar toolbar;
 
@@ -40,6 +61,13 @@ public class AddVehicleActivity extends AppCompatActivity implements RadioGroup.
 
     @BindView(R.id.add_vehicle_accept) CardView accept;
 
+    @BindView(R.id.add_vehicle_add_image) FrameLayout addImage;
+    @BindView(R.id.backdrop) ImageView imageBackground;
+
+    private File imageFile;
+
+    private VehicleObject object = new VehicleObject();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,6 +83,10 @@ public class AddVehicleActivity extends AppCompatActivity implements RadioGroup.
         radioGroup.setOnCheckedChangeListener(this);
 
         accept.setOnClickListener(this);
+        addImage.setOnClickListener(this);
+
+        nameLayout.setError("error");
+        nameLayout.setError(null);
     }
 
     @Override
@@ -76,6 +108,9 @@ public class AddVehicleActivity extends AppCompatActivity implements RadioGroup.
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.add_vehicle_add_image:
+                showPictureDialog();
+                break;
             case R.id.add_vehicle_accept:
                 if (!validateInput()) {
                     return;
@@ -130,5 +165,100 @@ public class AddVehicleActivity extends AppCompatActivity implements RadioGroup.
         }
 
         return inputIsValid;
+    }
+
+
+    // ================================= PROFILE PICTURE ===========================================
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == RESULT_OK) {
+            Timber.w("Got camera result intent");
+
+            if (requestCode == CAMERA_REQUEST) {
+                Timber.w("Got picture from camera: %s", imageFile.getAbsolutePath());
+                uploadPicture(imageFile);
+            } else if (requestCode == GALLERY_REQUEST) {
+                Timber.w("Got picture from gallery: %s", data.getData().toString());
+                uploadPicture(getFileFromUri(data.getData()));
+            }
+        }
+    }
+
+
+    private void showPictureDialog() {
+        CharSequence[] options = {
+                "Take picture",
+                "Pick from gallery"
+        };
+
+        new AlertDialog.Builder(this, R.style.DialogStyle)
+                .setItems(options, (dialogInterface, i) -> {
+                    switch (i) {
+                        case 0:
+                            takePicture();
+                            break;
+                        case 1:
+                            pickFromGallery();
+                            break;
+                    }
+                })
+                .create()
+                .show();
+    }
+
+    private void takePicture() {
+        imageFile = new File(getExternalCacheDir(), System.currentTimeMillis() + ".jpg");
+
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(imageFile));
+        startActivityForResult(intent, CAMERA_REQUEST);
+    }
+
+    private void uploadPicture(File file) {
+        Glide.with(this)
+                .load(file)
+                .animate(android.R.anim.fade_in)
+                .into(imageBackground);
+
+        object.image = getBase64Image(file);
+    }
+
+    private void pickFromGallery() {
+        Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+        photoPickerIntent.setType("image/*");
+        startActivityForResult(photoPickerIntent, GALLERY_REQUEST);
+    }
+
+    private File getFileFromUri(Uri contentURI) {
+        String result;
+        Cursor cursor = getContentResolver().query(contentURI, null, null, null, null);
+
+        if (cursor == null) {
+            result = contentURI.getPath();
+        } else {
+            cursor.moveToFirst();
+            int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
+            result = cursor.getString(idx);
+            cursor.close();
+        }
+
+        return new File(result);
+    }
+
+    private String getBase64Image(File file) {
+        try {
+            FileInputStream inputStream = new FileInputStream(file);
+            Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
+
+            return Base64.encodeToString(outputStream.toByteArray(), Base64.DEFAULT);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 }
