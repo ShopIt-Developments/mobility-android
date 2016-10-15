@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<FrameLayout
+    android:id="@+id/bottom_sheet"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/peek_height"
+    android:background="@color/card_background"
+    android:elevation="8dp"
+    android:fitsSystemWindows="true"
+    app:behavior_hideable="true"
+    app:layout_behavior="com.mobility.android.ui.widget.BottomSheet">
+
+    <FrameLayout
+        android:id="@+id/bottom_sheet_peek"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/peek_height"
+        android:background="@color/card_background"
+        android:elevation="2dp">
+
+        <TextView
+            android:id="@+id/bottom_sheet_peek_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="14dp"
+            android:textColor="@color/text_primary"
+            android:textSize="24sp"/>
+
+        <TextView
+            android:id="@+id/bottom_sheet_peek_sub"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|start"
+            android:layout_marginBottom="16dp"
+            android:layout_marginEnd="72dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="72dp"
+            android:layout_marginStart="16dp"
+            android:ellipsize="end"
+            android:lines="1"
+            android:maxLines="1"
+            android:textColor="@color/text_secondary"
+            android:textSize="16sp"/>
+
+        <TextView
+            android:id="@+id/bottom_sheet_peek_delay"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginStart="16dp"
+            android:gravity="end"
+            android:textColor="@color/material_red_500"
+            android:textSize="36sp"/>
+
+    </FrameLayout>
+
+</FrameLayout>

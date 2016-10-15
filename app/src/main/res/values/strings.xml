@@ -5,4 +5,20 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
+    <string name="error_wifi_title">Wi-Fi or Mobile Data required</string>
+    <string name="error_wifi_sub">to get location and update data</string>
+    <string name="error_general_title">An error happened</string>
+    <string name="error_general_sub">Please retry in a few minutes</string>
+
+    <string name="error_route_title">No results</string>
+    <string name="error_route_sub">No connections found</string>
+    <string name="error_not_tracked_title">This line is not tracked</string>
+    <string name="error_not_tracked_sub">There is no GPS data for this line</string>
+    <string name="error_data_title">Data update required</string>
+    <string name="error_data_sub">Please restart the app</string>
+
+    <string name="error_wifi">No internet connection</string>
+    <string name="error_general">An error happened</string>
+    <string name="error_data">Data update required</string>
+
 </resources>
