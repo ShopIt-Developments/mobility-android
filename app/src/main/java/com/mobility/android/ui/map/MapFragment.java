@@ -41,7 +41,7 @@ import com.mobility.android.R;
 import com.mobility.android.data.network.Endpoint;
 import com.mobility.android.data.network.NetUtils;
 import com.mobility.android.data.network.RestClient;
-import com.mobility.android.data.network.api.VehiclesApi;
+import com.mobility.android.data.network.api.VehicleApi;
 import com.mobility.android.data.network.model.BusObject;
 import com.mobility.android.data.network.model.MapObject;
 import com.mobility.android.data.network.model.VehicleObject;
@@ -393,7 +393,7 @@ public class MapFragment extends RxFragment implements OnMapReadyCallback,
             mIsRefreshing = true;
             mRefresh.setRefreshing(true);
 
-            VehiclesApi api = RestClient.ADAPTER.create(VehiclesApi.class);
+            VehicleApi api = RestClient.ADAPTER.create(VehicleApi.class);
             api.getAvailableVehicles()
                     .compose(bindToLifecycle())
                     .subscribeOn(Schedulers.io())

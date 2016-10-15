@@ -22,7 +22,10 @@ import android.widget.RadioGroup;
 
 import com.bumptech.glide.Glide;
 import com.mobility.android.R;
+import com.mobility.android.data.network.RestClient;
+import com.mobility.android.data.network.api.VehicleApi;
 import com.mobility.android.data.network.model.VehicleObject;
+import com.mobility.android.data.network.response.AddVehicleResponse;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -31,6 +34,9 @@ import java.io.FileNotFoundException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import rx.Observer;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 import timber.log.Timber;
 
 public class AddVehicleActivity extends AppCompatActivity implements RadioGroup.OnCheckedChangeListener, View.OnClickListener {
@@ -116,7 +122,7 @@ public class AddVehicleActivity extends AppCompatActivity implements RadioGroup.
                     return;
                 }
 
-                //TODO add car
+                uploadVehicle();
                 break;
         }
     }
@@ -167,6 +173,29 @@ public class AddVehicleActivity extends AppCompatActivity implements RadioGroup.
         return inputIsValid;
     }
 
+    private void uploadVehicle() {
+        VehicleApi api = RestClient.ADAPTER.create(VehicleApi.class);
+        api.addVehicle(object)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<AddVehicleResponse>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        e.printStackTrace();
+                    }
+
+                    @Override
+                    public void onNext(AddVehicleResponse addVehicleResponse) {
+                        Timber.w("Added vehicle");
+                    }
+                });
+    }
+
 
     // ================================= PROFILE PICTURE ===========================================
 
@@ -184,7 +213,6 @@ public class AddVehicleActivity extends AppCompatActivity implements RadioGroup.
             }
         }
     }
-
 
     private void showPictureDialog() {
         CharSequence[] options = {

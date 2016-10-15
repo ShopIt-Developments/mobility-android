@@ -15,7 +15,7 @@ import android.widget.TextView;
 import com.mobility.android.Config;
 import com.mobility.android.R;
 import com.mobility.android.data.network.RestClient;
-import com.mobility.android.data.network.api.VehiclesApi;
+import com.mobility.android.data.network.api.VehicleApi;
 import com.mobility.android.data.network.model.VehicleObject;
 import com.mobility.android.util.UIUtils;
 
@@ -106,7 +106,7 @@ public class VehicleDetailsActivity extends AppCompatActivity {
         dialog.setCancelable(false);
         dialog.show();
 
-        VehiclesApi api = RestClient.ADAPTER.create(VehiclesApi.class);
+        VehicleApi api = RestClient.ADAPTER.create(VehicleApi.class);
         api.order(vehicle.id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
