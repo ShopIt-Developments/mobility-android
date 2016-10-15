@@ -67,10 +67,14 @@ public class MapActivity extends BaseActivity implements OnMapReadyCallback,
         View.OnClickListener, GoogleMap.OnMarkerClickListener, Observer<MapResponse>,
         GoogleMap.OnInfoWindowCloseListener {
 
+    @BindView(R.id.refresh) NestedSwipeRefreshLayout mRefresh;
+    @BindView(R.id.bottom_sheet) FrameLayout bottomSheet;
+    @BindView(R.id.bottom_sheet_peek_title) TextView bottomSheetTitle;
+    @BindView(R.id.bottom_sheet_peek_sub) TextView bottomSheetSub;
+    @BindView(R.id.bottom_sheet_peek_delay) TextView bottomSheetDelayPeek;
+
     private Map<String, Marker> mMarkers = new HashMap<>();
     private ArrayList<MapObject> mBusData;
-
-    @BindView(R.id.refresh) NestedSwipeRefreshLayout mRefresh;
 
     private GoogleMap mGoogleMap;
 
@@ -78,8 +82,13 @@ public class MapActivity extends BaseActivity implements OnMapReadyCallback,
     private Snackbar mInternetSnackbar;
 
     private boolean mIsRefreshing;
+    private boolean isBottomSheetOpen;
 
     private int mGplayStatus;
+
+    private MapObject selectedItem;
+    private TileOverlay tileOverlay;
+    private BottomSheetBehavior<FrameLayout> behavior;
 
     private final Handler HANDLER = new Handler();
 
@@ -91,17 +100,6 @@ public class MapActivity extends BaseActivity implements OnMapReadyCallback,
             selectedItem = null;
         }
     };
-
-    @BindView(R.id.bottom_sheet) FrameLayout bottomSheet;
-    @BindView(R.id.bottom_sheet_peek_title) TextView bottomSheetTitle;
-    @BindView(R.id.bottom_sheet_peek_sub) TextView bottomSheetSub;
-    @BindView(R.id.bottom_sheet_peek_delay) TextView bottomSheetDelayPeek;
-
-    private BottomSheetBehavior<FrameLayout> behavior;
-
-    private boolean isBottomSheetOpen;
-
-    private MapObject selectedItem;
 
     private final TileProvider tileProvider = new UrlTileProvider(512, 512) {
 
@@ -144,8 +142,6 @@ public class MapActivity extends BaseActivity implements OnMapReadyCallback,
             return selectedItem != null;
         }
     };
-
-    private TileOverlay tileOverlay;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
