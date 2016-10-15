@@ -50,7 +50,7 @@ public class MyVehiclesAdapter extends RecyclerView.Adapter<MyVehiclesAdapter.My
         holder.name.setText(item.name);
         holder.description.setText(item.description);
         holder.price.setText(String.format(Locale.getDefault(), "%.2f %s", item.pricePerHour, item.currency));
-        holder.licence_plate.setText(item.licencePlate);
+        holder.licencePlate.setText(item.licencePlate);
     }
 
     @Override
@@ -63,7 +63,7 @@ public class MyVehiclesAdapter extends RecyclerView.Adapter<MyVehiclesAdapter.My
         @BindView(R.id.item_car_manufacturer_model) TextView name;
         @BindView(R.id.item_car_description) TextView description;
         @BindView(R.id.item_car_price) TextView price;
-        @BindView(R.id.item_car_licence_plate) TextView licence_plate;
+        @BindView(R.id.item_car_licence_plate) TextView licencePlate;
 
         MyVehicleViewHolder(View itemView) {
             super(itemView);

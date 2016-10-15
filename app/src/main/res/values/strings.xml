@@ -25,5 +25,11 @@
     <string name="error_wifi">No internet connection</string>
     <string name="error_general">An error happened</string>
     <string name="error_data">Data update required</string>
+    <string name="borrow_vehicle">Borrow vehicle</string>
+    <string name="manufacturer_model">Manufacturer, Model</string>
+    <string name="availibility">Availibility</string>
+    <string name="car">Car</string>
+    <string name="bicycle">Bicycle</string>
+    <string name="type">Type</string>
 
 </resources>

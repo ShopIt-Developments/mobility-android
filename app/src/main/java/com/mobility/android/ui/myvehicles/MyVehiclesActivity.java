@@ -1,8 +1,7 @@
 package com.mobility.android.ui.myvehicles;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -30,7 +29,7 @@ import rx.schedulers.Schedulers;
  * @author Martin
  */
 
-public class MyVehiclesActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener {
+public class MyVehiclesActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener, View.OnClickListener {
 
     @BindView(R.id.refresh) SwipeRefreshLayout mSwipeRefreshLayout;
     @BindView(R.id.activity_my_cars_recycler) RecyclerView mRecyclerView;
@@ -52,6 +51,8 @@ public class MyVehiclesActivity extends BaseActivity implements SwipeRefreshLayo
         mRecyclerView.setHasFixedSize(true);
 
         mApi = RestClient.ADAPTER.create(VehiclesApi.class);
+
+        mFab.setOnClickListener(this);
 
         mSwipeRefreshLayout.setOnRefreshListener(this);
         mSwipeRefreshLayout.setColorSchemeResources(Config.REFRESH_COLORS);
@@ -92,5 +93,10 @@ public class MyVehiclesActivity extends BaseActivity implements SwipeRefreshLayo
                         mAdapter.setItems(vehicles);
                     }
                 });
+    }
+
+    @Override
+    public void onClick(View v) {
+        startActivity(new Intent(this, AddVehicleActivity.class));
     }
 }

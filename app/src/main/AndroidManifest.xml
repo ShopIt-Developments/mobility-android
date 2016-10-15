@@ -52,6 +52,10 @@
             android:name=".ui.vehicle.VehicleDetailsActivity"
             android:label="Tesla Model S"/>
 
+        <activity
+            android:name=".ui.myvehicles.AddVehicleActivity"
+            android:label="@string/borrow_vehicle"/>
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyAlaL9-CoWw7NAE5mvqEvzQaiCgekffS3Y"/>
