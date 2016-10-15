@@ -1,5 +1,6 @@
 package com.mobility.android.ui.vehicle;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -13,6 +14,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Base64;
 import android.view.View;
 import android.widget.EditText;
@@ -34,15 +36,19 @@ import com.mobility.android.data.network.RestClient;
 import com.mobility.android.data.network.api.VehicleApi;
 import com.mobility.android.data.network.model.VehicleObject;
 import com.mobility.android.data.network.response.AddVehicleResponse;
+import com.mobility.android.util.UIUtils;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import rx.Observable;
 import rx.Observer;
+import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import timber.log.Timber;
@@ -76,7 +82,7 @@ public class AddVehicleActivity extends AppCompatActivity implements
     @BindView(R.id.add_vehicle_price) EditText price;
     @BindView(R.id.add_vehicle_price_layout) TextInputLayout priceLayout;
 
-    @BindView(R.id.add_vehicle_accept) CardView accept;
+    @BindView(R.id.add_vehicle_button_add) CardView accept;
 
     @BindView(R.id.add_vehicle_location) TextView location;
 
@@ -85,9 +91,11 @@ public class AddVehicleActivity extends AppCompatActivity implements
 
     private File imageFile;
 
-    private VehicleObject object = new VehicleObject();
+    private VehicleObject vehicle = new VehicleObject();
 
     private Place place;
+
+    private boolean isCar = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,6 +105,7 @@ public class AddVehicleActivity extends AppCompatActivity implements
         ButterKnife.bind(this);
 
         setSupportActionBar(toolbar);
+
         //noinspection ConstantConditions
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.setNavigationOnClickListener((v) -> finish());
@@ -130,11 +139,15 @@ public class AddVehicleActivity extends AppCompatActivity implements
                 if (licencePlateLayout.getVisibility() == View.GONE) {
                     licencePlateLayout.setVisibility(View.VISIBLE);
                 }
+
+                isCar = true;
                 break;
             case R.id.radio_button_bicycle:
                 if (licencePlateLayout.getVisibility() == View.VISIBLE) {
                     licencePlateLayout.setVisibility(View.GONE);
                 }
+
+                isCar = false;
                 break;
         }
     }
@@ -148,75 +161,102 @@ public class AddVehicleActivity extends AppCompatActivity implements
             case R.id.add_vehicle_location:
                 showPlacesPopup();
                 break;
-            case R.id.add_vehicle_accept:
-                if (!validateInput()) {
-                    return;
+            case R.id.add_vehicle_button_add:
+                if (isInputValid()) {
+                    uploadVehicle();
                 }
 
-                uploadVehicle();
                 break;
         }
     }
 
-    private boolean validateInput() {
-        boolean inputIsValid = true;
+    private boolean isInputValid() {
+        boolean error = false;
+
         if (name.getText().toString().isEmpty()) {
-            inputIsValid = false;
-            nameLayout.setError(getString(R.string.error_field_empty));
+            nameLayout.setError("You need to add a name");
+            error = true;
         } else {
             nameLayout.setError(null);
         }
 
         if (availability.getText().toString().isEmpty()) {
-            inputIsValid = false;
-            availabilityLayout.setError(getString(R.string.error_field_empty));
+            availabilityLayout.setError("You need to add an availability date");
+            error = true;
         } else {
             availabilityLayout.setError(null);
         }
 
         if (radioGroup.getCheckedRadioButtonId() == R.id.radio_button_car
                 && licencePlate.getText().toString().isEmpty()) {
-            licencePlateLayout.setError(getString(R.string.error_field_empty));
+            licencePlateLayout.setError("You need to add a license plate");
+            error = true;
         } else {
             licencePlateLayout.setError(null);
         }
 
         if (description.getText().toString().isEmpty()) {
-            inputIsValid = false;
-            descriptionLayout.setError(getString(R.string.error_field_empty));
+            descriptionLayout.setError("You need to add a description");
+            error = true;
         } else {
             descriptionLayout.setError(null);
         }
 
         if (price.getText().toString().isEmpty()) {
-            inputIsValid = false;
-            priceLayout.setError(getString(R.string.error_field_empty));
+            priceLayout.setError("You need to enter a price");
+            error = true;
         } else {
             int enteredPrice = Integer.parseInt(price.getText().toString());
-            if (enteredPrice <= 0 || enteredPrice > 150) {
-                inputIsValid = false;
-                priceLayout.setError(getString(R.string.error_price_invalid));
+            if (enteredPrice <= 5) {
+                priceLayout.setError("The car should cost at least 1€");
+                error = true;
+            } else if (enteredPrice > 100) {
+                priceLayout.setError("The car should cost at most 100€");
+                error = true;
             } else {
                 priceLayout.setError(null);
             }
         }
 
-        return inputIsValid;
+        if (TextUtils.isEmpty(vehicle.image)) {
+            UIUtils.okDialog(this, "Missing image", "You need to provide an image of your vehicle.");
+            error = true;
+        }
+
+        if (place == null) {
+            UIUtils.okDialog(this, "Missing location",
+                    "You need to provide a location where the car is located.");
+            error = true;
+        }
+
+        return !error;
     }
 
     private void uploadVehicle() {
-        object.lat = (float) place.getLatLng().latitude;
-        object.lng = (float) place.getLatLng().longitude;
-        object.address = place.getAddress().toString();
+        ProgressDialog dialog = new ProgressDialog(this, R.style.DialogStyle);
+        dialog.setMessage("Adding vehicle...");
+        dialog.setIndeterminate(true);
+        dialog.setCancelable(false);
+        dialog.show();
 
-        object.name = name.getText().toString();
-        object.availability = availability.getText().toString();
-        object.licencePlate = licencePlate.getText().toString();
-        object.description = description.getText().toString();
-        object.pricePerHour = Float.parseFloat(price.getText().toString());
+        vehicle.lat = (float) place.getLatLng().latitude;
+        vehicle.lng = (float) place.getLatLng().longitude;
+        vehicle.address = place.getAddress().toString();
+        vehicle.country = "IT";
+
+        vehicle.name = name.getText().toString();
+        vehicle.availability = availability.getText().toString();
+        vehicle.licencePlate = licencePlate.getText().toString();
+        vehicle.description = description.getText().toString();
+        vehicle.pricePerHour = Float.parseFloat(price.getText().toString());
+        vehicle.currency = "EUR";
+
+        vehicle.type = isCar ? "car" : "bike";
+
+        Timber.e("Uploading vehicle: %s", vehicle);
 
         VehicleApi api = RestClient.ADAPTER.create(VehicleApi.class);
-        api.addVehicle(object)
+        api.addVehicle(vehicle)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<AddVehicleResponse>() {
@@ -228,11 +268,14 @@ public class AddVehicleActivity extends AppCompatActivity implements
                     @Override
                     public void onError(Throwable e) {
                         e.printStackTrace();
+                        dialog.dismiss();
+                        UIUtils.okDialog(AddVehicleActivity.this, "Error", "Couldn't add vehicle.");
                     }
 
                     @Override
                     public void onNext(AddVehicleResponse addVehicleResponse) {
                         Timber.w("Added vehicle");
+                        dialog.dismiss();
                     }
                 });
     }
@@ -271,13 +314,13 @@ public class AddVehicleActivity extends AppCompatActivity implements
 
                 location.setText(place.getName());
                 location.setTextColor(ContextCompat.getColor(this, R.color.text_primary));
+            } else if (requestCode == CAMERA_REQUEST) {
+                Timber.w("Got picture from camera: %s", imageFile.getAbsolutePath());
+                uploadPicture(imageFile);
+            } else if (requestCode == GALLERY_REQUEST) {
+                Timber.w("Got picture from gallery: %s", data.getData().toString());
+                uploadPicture(getFileFromUri(data.getData()));
             }
-        } else if (requestCode == CAMERA_REQUEST) {
-            Timber.w("Got picture from camera: %s", imageFile.getAbsolutePath());
-            uploadPicture(imageFile);
-        } else if (requestCode == GALLERY_REQUEST) {
-            Timber.w("Got picture from gallery: %s", data.getData().toString());
-            uploadPicture(getFileFromUri(data.getData()));
         }
     }
 
@@ -311,12 +354,42 @@ public class AddVehicleActivity extends AppCompatActivity implements
     }
 
     private void uploadPicture(File file) {
-        Glide.with(this)
+        ProgressDialog dialog = new ProgressDialog(this, R.style.DialogStyle);
+        dialog.setMessage("Loading image...");
+        dialog.setIndeterminate(true);
+        dialog.setCancelable(false);
+        dialog.show();
+
+        Glide.with(AddVehicleActivity.this)
                 .load(file)
                 .animate(android.R.anim.fade_in)
                 .into(imageBackground);
 
-        object.image = getBase64Image(file);
+        base64(file)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<String>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        e.printStackTrace();
+                        dialog.dismiss();
+
+                        UIUtils.okDialog(AddVehicleActivity.this, "Error", "Couldn't load image.");
+                    }
+
+                    @Override
+                    public void onNext(String s) {
+                        Timber.w("Loaded image base64, size: %s KB", s.length() / 1024);
+                        vehicle.image = s;
+
+                        dialog.dismiss();
+                    }
+                });
     }
 
     private void pickFromGallery() {
@@ -341,19 +414,33 @@ public class AddVehicleActivity extends AppCompatActivity implements
         return new File(result);
     }
 
-    private String getBase64Image(File file) {
-        try {
-            FileInputStream inputStream = new FileInputStream(file);
-            Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+    private Observable<String> base64(File file) {
+        return Observable.create(new Observable.OnSubscribe<String>() {
+            @Override
+            public void call(Subscriber<? super String> subscriber) {
+                try {
+                    FileInputStream in = new FileInputStream(file);
+                    ByteArrayOutputStream out = new ByteArrayOutputStream();
 
-            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
+                    Bitmap bitmap = BitmapFactory.decodeStream(in);
 
-            return Base64.encodeToString(outputStream.toByteArray(), Base64.DEFAULT);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
+                    try {
+                        in.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
 
-        return null;
+                    Bitmap scaled = Bitmap.createScaledBitmap(bitmap, 960, 720, false);
+                    bitmap.recycle();
+
+                    scaled.compress(Bitmap.CompressFormat.JPEG, 60, out);
+
+                    subscriber.onNext(Base64.encodeToString(out.toByteArray(), Base64.DEFAULT));
+                    subscriber.onCompleted();
+                } catch (FileNotFoundException e) {
+                    subscriber.onError(e);
+                }
+            }
+        });
     }
 }

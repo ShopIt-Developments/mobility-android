@@ -12,10 +12,10 @@ public class MapObject implements Parcelable {
     public float lat;
     public float lng;
 
-    public MapObject() {
+    MapObject() {
     }
 
-    protected MapObject(Parcel in) {
+    MapObject(Parcel in) {
         name = in.readString();
         id = in.readString();
         description = in.readString();
@@ -48,4 +48,15 @@ public class MapObject implements Parcelable {
             return new MapObject[size];
         }
     };
+
+    @Override
+    public String toString() {
+        return "MapObject{" +
+                "name='" + name + '\'' +
+                ", id='" + id + '\'' +
+                ", description='" + description + '\'' +
+                ", lat=" + lat +
+                ", lng=" + lng +
+                '}';
+    }
 }

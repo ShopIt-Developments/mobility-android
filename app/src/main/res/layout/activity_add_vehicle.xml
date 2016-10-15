@@ -103,16 +103,14 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="16dp"
                     android:orientation="vertical">
 
                     <TextView
                         android:id="@+id/bus_details_card_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="2dp"
                         android:layout_marginStart="16dp"
-                        android:layout_marginTop="12dp"
+                        android:layout_marginTop="16dp"
                         android:text="@string/add_vehicle_information"
                         android:textColor="?colorAccent"
                         android:textStyle="bold"/>
@@ -121,9 +119,9 @@
                         android:id="@+id/add_vehicle_name_layout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="16dp"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginTop="16dp"
+                        android:layout_marginEnd="32dp"
+                        android:layout_marginStart="32dp"
+                        android:layout_marginTop="24dp"
                         android:textColorHint="@color/text_hint"
                         android:theme="@style/TextInputLayout.Green"
                         app:errorTextAppearance="@style/TextInputLayout.Error"
@@ -133,8 +131,7 @@
                             android:id="@+id/add_vehicle_name"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="@string/manufacturer_model"
-                            android:inputType="text"/>
+                            android:hint="@string/manufacturer_model"/>
 
                     </android.support.design.widget.TextInputLayout>
 
@@ -142,8 +139,8 @@
                         android:id="@+id/add_vehicle_availability_layout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="16dp"
-                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="32dp"
+                        android:layout_marginStart="32dp"
                         android:textColorHint="@color/text_hint"
                         android:theme="@style/TextInputLayout.Green"
                         app:errorTextAppearance="@style/TextInputLayout.Error"
@@ -153,28 +150,7 @@
                             android:id="@+id/add_vehicle_availability"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="@string/availability"
-                            android:inputType="text"/>
-
-                    </android.support.design.widget.TextInputLayout>
-
-                    <android.support.design.widget.TextInputLayout
-                        android:id="@+id/add_vehicle_licence_plate_layout"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="16dp"
-                        android:layout_marginStart="16dp"
-                        android:textColorHint="@color/text_hint"
-                        android:theme="@style/TextInputLayout.Green"
-                        app:errorTextAppearance="@style/TextInputLayout.Error"
-                        app:hintTextAppearance="@style/TextInputLayout.Hint">
-
-                        <EditText
-                            android:id="@+id/add_vehicle_licence_plate"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="@string/licence_plate"
-                            android:inputType="text"/>
+                            android:hint="@string/availability"/>
 
                     </android.support.design.widget.TextInputLayout>
 
@@ -182,8 +158,8 @@
                         android:id="@+id/add_vehicle_description_layout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="16dp"
-                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="32dp"
+                        android:layout_marginStart="32dp"
                         android:textColorHint="@color/text_hint"
                         android:theme="@style/TextInputLayout.Green"
                         app:errorTextAppearance="@style/TextInputLayout.Error"
@@ -193,8 +169,7 @@
                             android:id="@+id/add_vehicle_description"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="@string/description"
-                            android:inputType="text"/>
+                            android:hint="@string/description"/>
 
                     </android.support.design.widget.TextInputLayout>
 
@@ -202,8 +177,8 @@
                         android:id="@+id/add_vehicle_price_layout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="16dp"
-                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="32dp"
+                        android:layout_marginStart="32dp"
                         android:textColorHint="@color/text_hint"
                         android:theme="@style/TextInputLayout.Green"
                         app:errorTextAppearance="@style/TextInputLayout.Error"
@@ -218,11 +193,31 @@
 
                     </android.support.design.widget.TextInputLayout>
 
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/add_vehicle_licence_plate_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="32dp"
+                        android:layout_marginStart="32dp"
+                        android:textColorHint="@color/text_hint"
+                        android:theme="@style/TextInputLayout.Green"
+                        app:errorTextAppearance="@style/TextInputLayout.Error"
+                        app:hintTextAppearance="@style/TextInputLayout.Hint">
+
+                        <EditText
+                            android:id="@+id/add_vehicle_licence_plate"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/licence_plate"
+                            android:inputType="textCapCharacters"/>
+
+                    </android.support.design.widget.TextInputLayout>
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="16dp"
-                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="32dp"
+                        android:layout_marginStart="32dp"
                         android:text="@string/type"
                         android:textColor="@color/black"/>
 
@@ -230,8 +225,8 @@
                         android:id="@+id/radio_group_car_bicycle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="16dp"
-                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="32dp"
+                        android:layout_marginStart="32dp"
                         android:layout_marginTop="8dp"
                         android:checkedButton="@id/radio_button_car"
                         android:orientation="horizontal">
@@ -255,13 +250,14 @@
                     <FrameLayout
                         android:layout_width="match_parent"
                         android:layout_height="56dp"
+                        android:layout_marginBottom="8dp"
                         android:layout_marginTop="16dp">
 
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
-                            android:layout_marginLeft="16dp"
+                            android:layout_marginLeft="32dp"
                             android:src="@drawable/ic_place_white_24dp"
                             android:tint="@color/icon_grey"/>
 
@@ -284,7 +280,7 @@
             </android.support.v7.widget.CardView>
 
             <android.support.v7.widget.CardView
-                android:id="@+id/add_vehicle_accept"
+                android:id="@+id/add_vehicle_button_add"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:layout_marginBottom="16dp"
@@ -303,9 +299,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="@string/accept"
+                    android:text="@string/button_add"
                     android:textColor="@color/white"
-                    android:textSize="24sp"
+                    android:textSize="18sp"
                     android:textStyle="bold"/>
 
             </android.support.v7.widget.CardView>

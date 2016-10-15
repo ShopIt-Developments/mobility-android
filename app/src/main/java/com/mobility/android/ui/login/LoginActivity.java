@@ -18,6 +18,8 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.mobility.android.AppApplication;
 import com.mobility.android.R;
+import com.mobility.android.fcm.FcmSettings;
+import com.mobility.android.fcm.FcmUtils;
 import com.mobility.android.ui.MainActivity;
 
 import butterknife.ButterKnife;
@@ -51,6 +53,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             Timber.e("Got user: %s", user.getEmail());
 
             mAuth.removeAuthStateListener(this);
+
+            String token = FcmSettings.getToken(this);
+            if (token != null && FcmSettings.shouldSendToken(this)) {
+                FcmUtils.uploadToken(this, token);
+            }
 
             startActivity(new Intent(this, MainActivity.class));
             finish();

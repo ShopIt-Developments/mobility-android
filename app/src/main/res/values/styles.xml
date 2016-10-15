@@ -78,7 +78,7 @@
     <!-- ===================================== TEXTINPUTLAYOUT ==================================-->
 
     <style name="TextInputLayout.Hint" parent="Widget.Design.TextInputLayout">
-        <item name="android:textColor">@color/material_teal_500</item>
+        <item name="android:textColor">@color/accent</item>
         <item name="android:textSize">14sp</item>
     </style>
 
@@ -88,8 +88,9 @@
         <item name="colorControlActivated">@color/text_primary_light</item>
     </style>
 
-    <style name="TextInputLayout.Green" parent="Theme.AppCompat.DayNight.NoActionBar">
+    <style name="TextInputLayout.Green" parent="Widget.Design.TextInputLayout">
         <item name="android:textSize">14sp</item>
+
         <item name="colorControlNormal">@color/accent</item>
         <item name="colorControlHighlight">@color/accent</item>
         <item name="colorControlActivated">@color/accent</item>

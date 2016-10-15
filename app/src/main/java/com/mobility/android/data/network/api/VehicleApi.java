@@ -21,9 +21,12 @@ public interface VehicleApi {
     @GET(Endpoint.VEHICLES_MY)
     Observable<List<VehicleObject>> getMyVehicles();
 
-    @POST(Endpoint.VEHICLE_ORDER)
-    Observable<Void> order(@Path("vehicle_id") String vehicleId);
+    @GET(Endpoint.VEHICLES_BOOKED)
+    Observable<List<VehicleObject>> getBookedVehicles();
 
     @POST(Endpoint.VEHICLE_ADD)
     Observable<AddVehicleResponse> addVehicle(@Body VehicleObject object);
+
+    @POST(Endpoint.VEHICLE_ORDER)
+    Observable<Void> order(@Path("vehicle_id") String vehicleId);
 }

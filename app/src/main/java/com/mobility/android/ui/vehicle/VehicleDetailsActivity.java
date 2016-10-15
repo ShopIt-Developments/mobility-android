@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
+import android.view.View;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -19,6 +20,7 @@ import com.mobility.android.R;
 import com.mobility.android.data.network.RestClient;
 import com.mobility.android.data.network.api.VehicleApi;
 import com.mobility.android.data.network.model.VehicleObject;
+import com.mobility.android.ui.payment.client.ClientPagerActivity;
 import com.mobility.android.util.UIUtils;
 
 import java.text.NumberFormat;
@@ -35,7 +37,8 @@ public class VehicleDetailsActivity extends AppCompatActivity {
 
     @BindView(R.id.collapsing_toolbar) CollapsingToolbarLayout collapsingToolbarLayout;
 
-    @BindView(R.id.vehicle_details_book_car) CardView bookButton;
+    @BindView(R.id.vehicle_details_button_book) CardView bookButton;
+    @BindView(R.id.vehicle_details_button_pay) CardView payButton;
 
     @BindView(R.id.vehicle_details_name) TextView name;
     @BindView(R.id.vehicle_details_description) TextView description;
@@ -76,12 +79,23 @@ public class VehicleDetailsActivity extends AppCompatActivity {
             userIsOwner = vehicle.owner.equals(user.getUid());
         }
 
-        toolbar.setNavigationOnClickListener(v -> finish());
-        collapsingToolbarLayout.setTitle(vehicle.name);
+        bookButton.setOnClickListener(v -> bookCarConfirmation());
+        payButton.setOnClickListener(v -> payCar());
 
         if (userIsOwner) {
-            bookButton.setOnClickListener(v -> bookCarConfirmation());
+            bookButton.setVisibility(View.VISIBLE);
+        } else {
+            bookButton.setVisibility(View.GONE);
         }
+
+        if (vehicle.booked) {
+            payButton.setVisibility(View.VISIBLE);
+        } else {
+            payButton.setVisibility(View.GONE);
+        }
+
+        toolbar.setNavigationOnClickListener(v -> finish());
+        collapsingToolbarLayout.setTitle(vehicle.name);
 
         name.setText(vehicle.name);
         description.setText(vehicle.description);
@@ -109,6 +123,10 @@ public class VehicleDetailsActivity extends AppCompatActivity {
                 })
                 .create()
                 .show();
+    }
+
+    private void payCar() {
+        startActivity(new Intent(this, ClientPagerActivity.class));
     }
 
     private void bookCar() {

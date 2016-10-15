@@ -9,13 +9,11 @@ public class VehicleObject extends MapObject {
     public String address;
     public String availability;
     public String currency;
+    public String country;
     public String image;
     public String owner;
 
     public String type;
-
-    @SerializedName("user_id")
-    public String userId;
 
     @SerializedName("price_per_hour")
     public float pricePerHour;
@@ -26,6 +24,8 @@ public class VehicleObject extends MapObject {
     @SerializedName("qr_code")
     public String qrCode;
 
+    public boolean booked;
+
     public VehicleObject() {
     }
 
@@ -35,13 +35,14 @@ public class VehicleObject extends MapObject {
         address = in.readString();
         availability = in.readString();
         currency = in.readString();
+        country = in.readString();
         image = in.readString();
         type = in.readString();
-        userId = in.readString();
         pricePerHour = in.readFloat();
         licencePlate = in.readString();
         qrCode = in.readString();
         owner = in.readString();
+        booked = in.readByte() == 1;
     }
 
     @Override
@@ -51,18 +52,36 @@ public class VehicleObject extends MapObject {
         dest.writeString(address);
         dest.writeString(availability);
         dest.writeString(currency);
+        dest.writeString(country);
         dest.writeString(image);
         dest.writeString(type);
-        dest.writeString(userId);
         dest.writeFloat(pricePerHour);
         dest.writeString(licencePlate);
         dest.writeString(qrCode);
         dest.writeString(owner);
+        dest.writeByte((byte) (booked ? 1 : 0));
     }
 
     @Override
     public int describeContents() {
         return super.describeContents();
+    }
+
+    @Override
+    public String toString() {
+        return "VehicleObject{" +
+                "address='" + address + '\'' +
+                ", availability='" + availability + '\'' +
+                ", currency='" + currency + '\'' +
+                ", country='" + country + '\'' +
+                ", image='" + (image.length() > 10 ? image.substring(0, 10) : image) + '\'' +
+                ", owner='" + owner + '\'' +
+                ", type='" + type + '\'' +
+                ", pricePerHour=" + pricePerHour +
+                ", licencePlate='" + licencePlate + '\'' +
+                ", qrCode='" + qrCode + '\'' +
+                ", booked='" + booked + '\'' +
+                "} " + super.toString();
     }
 
     public static final Creator<VehicleObject> CREATOR = new Creator<VehicleObject>() {

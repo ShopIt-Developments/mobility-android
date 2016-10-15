@@ -20,7 +20,7 @@ import java.util.Locale;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MyVehiclesAdapter extends RecyclerView.Adapter<MyVehiclesAdapter.MyVehicleViewHolder> {
+class MyVehiclesAdapter extends RecyclerView.Adapter<MyVehiclesAdapter.MyVehicleViewHolder> {
 
     private List<VehicleObject> mItems;
     private Context mContext;
@@ -32,10 +32,8 @@ public class MyVehiclesAdapter extends RecyclerView.Adapter<MyVehiclesAdapter.My
     }
 
     void setItems(List<VehicleObject> items) {
-        if (items != null) {
-            this.mItems = items;
-            notifyDataSetChanged();
-        }
+        mItems.addAll(items);
+        notifyDataSetChanged();
     }
 
     @Override

@@ -1,8 +1,7 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="192dp">
+    android:layout_height="156dp">
 
     <ImageView
         android:id="@+id/partial_nav_header_bg"
@@ -14,27 +13,45 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/semi_transparent" />
+        android:background="@color/semi_transparent"/>
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/partial_nav_header_profile_pic"
-            android:layout_width="64dp"
-            android:layout_height="64dp"
-            android:layout_marginBottom="16dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="32dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/car_example"/>
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/partial_nav_header_profile_pic"
+        android:layout_width="72dp"
+        android:layout_height="72dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/car_example"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/partial_nav_header_profile_pic"
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/partial_nav_header_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Otto Normalverbraucher"
             android:layout_marginStart="16dp"
-            android:textSize="20sp"
-            android:textColor="@color/white"
-            android:layout_below="@id/partial_nav_header_profile_pic"
-            tools:ignore="HardcodedText"/>
+            android:fontFamily="sans-serif-medium"
+            android:text="Otto Normalverbraucher"
+            android:textColor="@color/text_primary_light"
+            android:textSize="16sp"/>
+
+        <TextView
+            android:id="@+id/partial_nav_header_points"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:fontFamily="sans-serif"
+            android:text="100 points"
+            android:textColor="@color/text_secondary_light"
+            android:textSize="14sp"
+            android:textStyle="normal"/>
+
+    </LinearLayout>
 
 </RelativeLayout>

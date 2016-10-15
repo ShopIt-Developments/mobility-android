@@ -60,7 +60,7 @@ public class BookedVehiclesFragment extends RxFragment {
     private void loadData() {
         mRefresh.setRefreshing(true);
 
-        mApi.getMyVehicles()
+        mApi.getBookedVehicles()
                 .compose(bindToLifecycle())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
