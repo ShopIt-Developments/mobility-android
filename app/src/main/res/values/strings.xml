@@ -32,5 +32,7 @@
     <string name="bicycle">Bicycle</string>
     <string name="type">Type</string>
     <string name="accept">Accept</string>
+    <string name="error_field_empty">Field cannot be empty</string>
+    <string name="error_price_invalid">Price must be between 1 and 150!</string>
 
 </resources>
