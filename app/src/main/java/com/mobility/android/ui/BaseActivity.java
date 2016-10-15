@@ -15,16 +15,20 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.mobility.android.R;
 import com.mobility.android.ui.login.LoginActivity;
+import com.mobility.android.ui.profile.ProfileActivity;
 import com.mobility.android.ui.vehicle.MyVehiclesActivity;
 import com.trello.rxlifecycle.LifecycleTransformer;
 import com.trello.rxlifecycle.android.ActivityEvent;
 import com.trello.rxlifecycle.components.support.RxAppCompatActivity;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import timber.log.Timber;
 
 /**
@@ -284,6 +288,16 @@ public abstract class BaseActivity extends RxAppCompatActivity implements
 
             menu.findItem(getNavItem()).setChecked(true);
             navigationView.setNavigationItemSelectedListener(this);
+
+            CircleImageView userProfilePicture = (CircleImageView) navigationView.getHeaderView(0).findViewById(R.id.partial_nav_header_profile_pic);
+            TextView name = (TextView) navigationView.getHeaderView(0).findViewById(R.id.partial_nav_header_name);
+            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+            if (user != null) {
+                name.setText(user.getDisplayName());
+                Glide.with(this).load(user.getPhotoUrl()).into(userProfilePicture);
+            }
+            userProfilePicture.setOnClickListener((v) -> startActivity(new Intent(BaseActivity.this, ProfileActivity.class)));
         }
     }
 

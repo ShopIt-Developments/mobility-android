@@ -63,8 +63,7 @@ public class AuthHelper {
         FirebaseUser user = auth.getCurrentUser();
 
         if (user == null) {
-            Timber.e("We do not have a logged in user. " +
-                    "Did you forget to call signInWithEmailAndPassword() first?");
+            Timber.e("We do not have a logged in user. Did you forget to call signInWithEmailAndPassword() first?");
             return;
         }
 
@@ -83,5 +82,12 @@ public class AuthHelper {
     public static boolean isLoggedIn() {
         FirebaseAuth auth = FirebaseAuth.getInstance();
         return auth.getCurrentUser() != null;
+    }
+
+    @Nullable
+    public static String getUsername(Context context) {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        return user == null ? null : user.getDisplayName();
     }
 }

@@ -1,6 +1,40 @@
-<ImageView
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="192dp"
-    android:scaleType="centerCrop"
-    android:background="@drawable/tesla_background" />
+    android:layout_height="192dp">
+
+    <ImageView
+        android:id="@+id/partial_nav_header_bg"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/tesla_background"
+        android:scaleType="centerCrop"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/semi_transparent" />
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/partial_nav_header_profile_pic"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_marginBottom="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="32dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/car_example"/>
+
+        <TextView
+            android:id="@+id/partial_nav_header_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Otto Normalverbraucher"
+            android:layout_marginStart="16dp"
+            android:textSize="20sp"
+            android:textColor="@color/white"
+            android:layout_below="@id/partial_nav_header_profile_pic"
+            tools:ignore="HardcodedText"/>
+
+</RelativeLayout>

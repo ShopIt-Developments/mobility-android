@@ -56,6 +56,9 @@
             android:name=".ui.vehicle.AddVehicleActivity"
             android:label="@string/borrow_vehicle"/>
 
+        <activity
+            android:name=".ui.profile.ProfileActivity" />
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyAlaL9-CoWw7NAE5mvqEvzQaiCgekffS3Y"/>
