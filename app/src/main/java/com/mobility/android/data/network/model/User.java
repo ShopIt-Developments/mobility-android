@@ -29,6 +29,12 @@ public class User implements Parcelable {
 
     public int emissions;
 
+    @SerializedName("offered_vehicles")
+    public int offeredVehicles;
+
+    @SerializedName("used_vehicles")
+    public int usedVehicles;
+
     protected User(Parcel in) {
         userId = in.readString();
         name = in.readString();
@@ -39,6 +45,8 @@ public class User implements Parcelable {
         ratingsCount = in.readInt();
         drivenTime = in.readString();
         emissions = in.readInt();
+        offeredVehicles = in.readInt();
+        usedVehicles = in.readInt();
     }
 
     @Override
@@ -52,6 +60,8 @@ public class User implements Parcelable {
         dest.writeInt(ratingsCount);
         dest.writeString(drivenTime);
         dest.writeInt(emissions);
+        dest.writeInt(offeredVehicles);
+        dest.writeInt(usedVehicles);
     }
 
     @Override
