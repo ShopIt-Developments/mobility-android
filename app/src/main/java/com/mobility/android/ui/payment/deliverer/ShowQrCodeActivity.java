@@ -108,6 +108,7 @@ public class ShowQrCodeActivity extends RxAppCompatActivity implements View.OnCl
         }
 
         ImageView qrCode = (ImageView) findViewById(R.id.payment_qr_code);
+        qrCode.setOnClickListener((v) -> showCompleteMenu(4));
 
         int px = (int) (TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 156, getResources()
                 .getDisplayMetrics()) + 0.5);

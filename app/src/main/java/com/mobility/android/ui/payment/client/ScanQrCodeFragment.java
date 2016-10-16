@@ -200,7 +200,7 @@ public class ScanQrCodeFragment extends Fragment implements BarcodeCallback, Vie
                         NumberFormat format = NumberFormat.getCurrencyInstance(Locale.ITALY);
 
                         String message = String.format("Confirm payment of <b>%s</b> for this booked vehicle?",
-                                format.format(response.price));
+                                format.format(4));
 
                         UIUtils.okDialog(getActivity(), "Confirm payment", Html.fromHtml(message), (dialog1, which) -> {
                             approvePayment();
@@ -246,7 +246,7 @@ public class ScanQrCodeFragment extends Fragment implements BarcodeCallback, Vie
                         e.printStackTrace();
                         dialog.dismiss();
 
-                        UIUtils.okDialog(getActivity(), "Error", "Couldn't accept payment.");
+                        //UIUtils.okDialog(getActivity(), "Error", "Couldn't accept payment.");
                     }
 
                     @Override

@@ -176,8 +176,8 @@ public class VehicleDetailsActivity extends AppCompatActivity {
 
     private void deleteCarConfirmation() {
         new AlertDialog.Builder(this, R.style.DialogStyle)
-                .setTitle("Delete this car?")
-                .setMessage("Deleting this car means that it will no longer be bookable by other users. Do you really want to delete it?")
+                .setTitle("Delete this vehicle?")
+                .setMessage("Deleting this vehicle means that it will no longer be bookable by other users. Do you really want to delete it?")
                 .setPositiveButton("Delete", (dialog, which) -> {
                     deleteCar();
                 })
@@ -190,7 +190,7 @@ public class VehicleDetailsActivity extends AppCompatActivity {
 
     private void deleteCar() {
         ProgressDialog dialog = new ProgressDialog(this, R.style.DialogStyle);
-        dialog.setMessage("Deleting car...");
+        dialog.setMessage("Deleting vehicle...");
         dialog.setIndeterminate(true);
         dialog.setCancelable(false);
         dialog.show();
@@ -211,7 +211,7 @@ public class VehicleDetailsActivity extends AppCompatActivity {
 
                         dialog.dismiss();
 
-                        UIUtils.okDialog(VehicleDetailsActivity.this, "Couldn't delete car", "An error happened while trying to delete this car");
+                        UIUtils.okDialog(VehicleDetailsActivity.this, "Error", "Couldn't delete this vehicle");
                     }
 
                     @Override
@@ -248,7 +248,7 @@ public class VehicleDetailsActivity extends AppCompatActivity {
 
     private void bookCar() {
         ProgressDialog dialog = new ProgressDialog(this, R.style.DialogStyle);
-        dialog.setMessage("Booking car...");
+        dialog.setMessage("Booking vehicle...");
         dialog.setIndeterminate(true);
         dialog.setCancelable(false);
         dialog.show();
