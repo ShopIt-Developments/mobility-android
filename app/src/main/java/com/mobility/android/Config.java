@@ -8,4 +8,5 @@ public class Config {
     };
 
     public static final String EXTRA_VEHICLE = "com.mobility.android.EXTRA_VEHICLE";
+    public static final String EXTRA_BUS = "com.mobility.android.EXTRA_BUS";
 }

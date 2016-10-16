@@ -47,6 +47,7 @@ import com.mobility.android.data.network.model.MapObject;
 import com.mobility.android.data.network.model.VehicleObject;
 import com.mobility.android.data.network.response.MapResponse;
 import com.mobility.android.ui.BaseActivity;
+import com.mobility.android.ui.bus.BusDetailsActivity;
 import com.mobility.android.ui.vehicle.VehicleDetailsActivity;
 import com.mobility.android.ui.widget.BottomSheet;
 import com.mobility.android.ui.widget.NestedSwipeRefreshLayout;
@@ -481,8 +482,16 @@ public class MapFragment extends RxFragment implements OnMapReadyCallback,
         behavior = BottomSheet.from(bottomSheet, state);
 
         bottomSheet.setOnClickListener(v -> {
-            Intent intent = new Intent(getActivity(), VehicleDetailsActivity.class);
-            intent.putExtra(Config.EXTRA_VEHICLE, selectedItem);
+            Intent intent;
+            if (selectedItem instanceof VehicleObject) {
+                intent = new Intent(getActivity(), VehicleDetailsActivity.class);
+                intent.putExtra(Config.EXTRA_VEHICLE, selectedItem);
+            } else if (selectedItem instanceof BusObject){
+                intent = new Intent(getActivity(), BusDetailsActivity.class);
+                intent.putExtra(Config.EXTRA_BUS, selectedItem);
+            } else {
+                return;
+            }
             startActivity(intent);
         });
 

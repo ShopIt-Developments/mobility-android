@@ -23,10 +23,10 @@ public class MainActivity extends BaseActivity {
 
     @BindView(R.id.viewpager) ViewPager mViewPager;
     @BindView(R.id.tabs) TabLayout mTabs;
-    @BindView(R.id.toolbar) Toolbar toolbar;
+    @BindView(R.id.toolbar) Toolbar mToolbar;
 
-    private MapFragment mapFragment;
-    private BookedVehiclesFragment bookedFragment;
+    private MapFragment mMapFragment;
+    private BookedVehiclesFragment mBookedFragment;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -35,12 +35,12 @@ public class MainActivity extends BaseActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-        mapFragment = new MapFragment();
-        bookedFragment = new BookedVehiclesFragment();
+        mMapFragment = new MapFragment();
+        mBookedFragment = new BookedVehiclesFragment();
 
         TabsAdapter mAdapter = new TabsAdapter(getSupportFragmentManager());
-        mAdapter.addFragment(mapFragment, "Available");
-        mAdapter.addFragment(bookedFragment, "Booked");
+        mAdapter.addFragment(mMapFragment, "Available");
+        mAdapter.addFragment(mBookedFragment, "Booked");
 
         mViewPager.setAdapter(mAdapter);
         mTabs.setupWithViewPager(mViewPager);
@@ -65,7 +65,7 @@ public class MainActivity extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_refresh:
-                mapFragment.parseData();
+                mMapFragment.parseData();
                 return true;
         }
 

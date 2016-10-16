@@ -24,7 +24,7 @@ public class VehicleObject extends MapObject {
     @SerializedName("qr_code")
     public String qrCode;
 
-    public boolean booked;
+    public String borrower;
 
     public VehicleObject() {
     }
@@ -42,7 +42,7 @@ public class VehicleObject extends MapObject {
         licencePlate = in.readString();
         qrCode = in.readString();
         owner = in.readString();
-        booked = in.readByte() == 1;
+        borrower = in.readString();
     }
 
     @Override
@@ -59,7 +59,7 @@ public class VehicleObject extends MapObject {
         dest.writeString(licencePlate);
         dest.writeString(qrCode);
         dest.writeString(owner);
-        dest.writeByte((byte) (booked ? 1 : 0));
+        dest.writeString(borrower);
     }
 
     @Override
@@ -80,7 +80,7 @@ public class VehicleObject extends MapObject {
                 ", pricePerHour=" + pricePerHour +
                 ", licencePlate='" + licencePlate + '\'' +
                 ", qrCode='" + qrCode + '\'' +
-                ", booked='" + booked + '\'' +
+                ", borrower='" + borrower + '\'' +
                 "} " + super.toString();
     }
 

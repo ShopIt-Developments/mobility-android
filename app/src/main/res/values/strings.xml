@@ -41,5 +41,6 @@
     <string name="driven_time">Driven time</string>
     <string name="rented_cars">Rented cars</string>
     <string name="borrowed_cars">Borrowed cars</string>
+    <string name="bus_info">Bus info</string>
 
 </resources>

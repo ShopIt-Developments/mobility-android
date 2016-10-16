@@ -31,7 +31,9 @@ class BookedVehiclesAdapter extends RecyclerView.Adapter<BookedVehiclesAdapter.M
 
     void setItems(List<VehicleObject> items) {
         mItems.clear();
-        mItems.addAll(items);
+        if (items != null) {
+            mItems.addAll(items);
+        }
         notifyDataSetChanged();
     }
 

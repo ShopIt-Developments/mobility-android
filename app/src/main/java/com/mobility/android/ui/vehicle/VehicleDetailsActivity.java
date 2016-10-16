@@ -93,7 +93,7 @@ public class VehicleDetailsActivity extends AppCompatActivity {
             bookButton.setVisibility(View.VISIBLE);
         }
 
-        if (vehicle.booked) {
+        if (vehicle.borrower != null && !vehicle.borrower.isEmpty()) { // TODO: 16.10.2016 Check if this works
             payButton.setVisibility(View.VISIBLE);
         } else {
             payButton.setVisibility(View.GONE);

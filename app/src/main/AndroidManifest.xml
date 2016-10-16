@@ -27,6 +27,7 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:screenOrientation="portrait"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.Light">
 
@@ -42,22 +43,31 @@
 
         <activity
             android:name=".ui.MainActivity"
-            android:label="Map"/>
+            android:label="Map"
+            android:screenOrientation="portrait"/>
 
         <activity
             android:name=".ui.vehicle.MyVehiclesActivity"
-            android:label="@string/my_cars"/>
+            android:label="@string/my_cars"
+            android:screenOrientation="portrait"/>
 
         <activity
             android:name=".ui.vehicle.VehicleDetailsActivity"
-            android:label="Tesla Model S"/>
+            android:label="Tesla Model S"
+            android:screenOrientation="portrait"/>
 
         <activity
             android:name=".ui.vehicle.AddVehicleActivity"
-            android:label="@string/add_vehicle"/>
+            android:label="@string/add_vehicle"
+            android:screenOrientation="portrait"/>
 
         <activity
-            android:name=".ui.profile.ProfileActivity" />
+            android:name=".ui.profile.ProfileActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name=".ui.bus.BusDetailsActivity"
+            android:screenOrientation="portrait"/>
 
 
         <!-- =================================================================================== -->
@@ -65,17 +75,18 @@
         <activity
             android:name=".ui.payment.client.ClientPagerActivity"
             android:exported="true"
-            android:launchMode="singleTop"
             android:label="Payment client"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Dark"/>
 
         <activity
             android:name=".ui.payment.deliverer.DelivererPagerActivity"
             android:exported="true"
-            android:launchMode="singleTop"
             android:label="Payment deliverer"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Dark"/>
-
 
         <!-- =================================================================================== -->
 
