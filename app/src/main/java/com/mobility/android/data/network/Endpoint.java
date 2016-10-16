@@ -26,6 +26,7 @@ public final class Endpoint {
     public static final String USER = "user";
 
     public static final String TRIP_ADD = "trip";
+    public static final String LEADERBOARD = "leaderboard";
 
     private Endpoint() {
     }

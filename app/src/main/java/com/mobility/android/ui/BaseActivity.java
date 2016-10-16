@@ -24,6 +24,7 @@ import com.mobility.android.R;
 import com.mobility.android.data.network.RestClient;
 import com.mobility.android.data.network.api.UserApi;
 import com.mobility.android.data.network.model.User;
+import com.mobility.android.ui.leaderboard.LeaderboardActivity;
 import com.mobility.android.ui.login.LoginActivity;
 import com.mobility.android.ui.profile.ProfileActivity;
 import com.mobility.android.ui.vehicle.MyVehiclesActivity;
@@ -73,6 +74,7 @@ public abstract class BaseActivity extends RxAppCompatActivity implements
     protected static final int NAVDRAWER_ITEM_MAP = R.id.nav_orders;
     protected static final int NAVDRAWER_ITEM_MY_VEHICLES = R.id.nav_my_vehicles;
     protected static final int NAVDRAWER_ITEM_PROFILE = R.id.nav_profile;
+    protected static final int NAVDRAWER_ITEM_LEADERBOARD = R.id.nav_leaderboard;
 
     /**
      * Delay to launch nav drawer item, to allow close animation to play
@@ -339,6 +341,9 @@ public abstract class BaseActivity extends RxAppCompatActivity implements
                 break;
             case NAVDRAWER_ITEM_PROFILE:
                 createBackStack(new Intent(this, ProfileActivity.class));
+                break;
+            case NAVDRAWER_ITEM_LEADERBOARD:
+                createBackStack(new Intent(this, LeaderboardActivity.class));
                 break;
             /*case NAVDRAWER_ITEM_SETTINGS:
                 Intent intent = new Intent(this, SettingsActivity.class);
