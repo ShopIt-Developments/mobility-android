@@ -185,7 +185,7 @@
                 android:orientation="vertical">
 
                 <FrameLayout
-                    android:id="@+id/payment_button_view_map"
+                    android:id="@+id/payment_button_leave_feedback"
                     android:layout_width="match_parent"
                     android:layout_height="64dp"
                     android:background="?attr/selectableItemBackground"
@@ -196,7 +196,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="16dp"
-                        android:src="@drawable/ic_map_white_24dp"
+                        android:src="@drawable/ic_star_white_24dp"
                         android:tint="@color/icon_grey"/>
 
                     <TextView
@@ -204,7 +204,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="72dp"
                         android:layout_marginTop="13dp"
-                        android:text="Go to the map"
+                        android:text="Leave a review"
                         android:textColor="@color/text_primary"
                         android:textSize="16sp"
                         android:textStyle="bold"/>
@@ -215,7 +215,7 @@
                         android:layout_gravity="bottom"
                         android:layout_marginBottom="13dp"
                         android:layout_marginLeft="72dp"
-                        android:text="View all available vehicles on the map"
+                        android:text="Leave a feedback about this car"
                         android:textColor="@color/text_secondary"/>
 
                 </FrameLayout>
