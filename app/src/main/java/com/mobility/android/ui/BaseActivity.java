@@ -76,6 +76,8 @@ public abstract class BaseActivity extends RxAppCompatActivity implements
     protected static final int NAVDRAWER_ITEM_PROFILE = R.id.nav_profile;
     protected static final int NAVDRAWER_ITEM_LEADERBOARD = R.id.nav_leaderboard;
 
+    protected static final int NAVDRAWER_ITEM_SETTINGS = R.id.nav_settings;
+    protected static final int NAVDRAWER_ITEM_HELP = R.id.nav_help;
     protected static final int NAVDRAWER_ITEM_SIGN_OUT = R.id.nav_signout;
 
     /**
@@ -348,6 +350,9 @@ public abstract class BaseActivity extends RxAppCompatActivity implements
                 break;
             case NAVDRAWER_ITEM_SIGN_OUT:
                 mAuth.signOut();
+                break;
+            case NAVDRAWER_ITEM_SETTINGS:
+            case NAVDRAWER_ITEM_HELP:
                 break;
             /*case NAVDRAWER_ITEM_SETTINGS:
                 Intent intent = new Intent(this, SettingsActivity.class);
