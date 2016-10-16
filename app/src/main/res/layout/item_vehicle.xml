@@ -27,8 +27,7 @@
             android:layout_width="match_parent"
             android:layout_height="200dp"
             android:adjustViewBounds="true"
-            android:scaleType="fitXY"
-            android:src="@drawable/tesla_background"/>
+            android:scaleType="fitXY"/>
 
         <FrameLayout
             android:layout_width="match_parent"

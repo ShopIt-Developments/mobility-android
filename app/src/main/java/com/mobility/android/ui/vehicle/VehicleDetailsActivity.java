@@ -2,14 +2,19 @@ package com.mobility.android.ui.vehicle;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
@@ -83,9 +88,9 @@ public class VehicleDetailsActivity extends AppCompatActivity {
         payButton.setOnClickListener(v -> payCar());
 
         if (userIsOwner) {
-            bookButton.setVisibility(View.VISIBLE);
-        } else {
             bookButton.setVisibility(View.GONE);
+        } else {
+            bookButton.setVisibility(View.VISIBLE);
         }
 
         if (vehicle.booked) {
@@ -105,6 +110,91 @@ public class VehicleDetailsActivity extends AppCompatActivity {
         price.setText(format.format(vehicle.pricePerHour));
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        if (!userIsOwner) {
+            return false;
+        }
+
+        getMenuInflater().inflate(R.menu.menu_vehicle_details, menu);
+
+        MenuItem menuItem = menu.findItem(R.id.menu_delete);
+
+        Drawable drawable = menuItem.getIcon();
+        if (drawable != null) {
+            drawable.mutate();
+            drawable.setColorFilter(ContextCompat.getColor(this, R.color.color_control), PorterDuff.Mode.SRC_ATOP);
+        }
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_delete:
+                deleteCarConfirmation();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+
+    // ===================================== DELETE CAR ============================================
+
+    private void deleteCarConfirmation() {
+        new AlertDialog.Builder(this, R.style.DialogStyle)
+                .setTitle("Delete this car?")
+                .setMessage("Deleting this car means that it will no longer be bookable by other users. Do you really want to delete it?")
+                .setPositiveButton("Delete", (dialog, which) -> {
+                    deleteCar();
+                })
+                .setNegativeButton("Cancel", (dialog, which) -> {
+                    dialog.dismiss();
+                })
+                .create()
+                .show();
+    }
+
+    private void deleteCar() {
+        ProgressDialog dialog = new ProgressDialog(this, R.style.DialogStyle);
+        dialog.setMessage("Deleting car...");
+        dialog.setIndeterminate(true);
+        dialog.setCancelable(false);
+        dialog.show();
+
+        VehicleApi api = RestClient.ADAPTER.create(VehicleApi.class);
+        api.deleteCar(vehicle.id)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<Void>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        e.printStackTrace();
+
+                        dialog.dismiss();
+
+                        UIUtils.okDialog(VehicleDetailsActivity.this, "Couldn't delete car", "An error happened while trying to delete this car");
+                    }
+
+                    @Override
+                    public void onNext(Void aVoid) {
+                        Timber.e("Deleted vehicle: %s", vehicle.id);
+                        dialog.dismiss();
+                        finish();
+                    }
+                });
+    }
+
+
+    // ====================================== BOOK CAR =============================================
+
     private void bookCarConfirmation() {
         price.setText(format.format(vehicle.pricePerHour));
 
@@ -123,10 +213,6 @@ public class VehicleDetailsActivity extends AppCompatActivity {
                 })
                 .create()
                 .show();
-    }
-
-    private void payCar() {
-        startActivity(new Intent(this, ClientPagerActivity.class));
     }
 
     private void bookCar() {
@@ -165,4 +251,12 @@ public class VehicleDetailsActivity extends AppCompatActivity {
                     }
                 });
     }
+
+
+    // ======================================= PAY CAR =============================================
+
+    private void payCar() {
+        startActivity(new Intent(this, ClientPagerActivity.class));
+    }
+
 }

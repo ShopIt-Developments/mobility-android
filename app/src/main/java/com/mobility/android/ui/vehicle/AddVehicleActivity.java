@@ -31,11 +31,11 @@ import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
+import com.mobility.android.Config;
 import com.mobility.android.R;
 import com.mobility.android.data.network.RestClient;
 import com.mobility.android.data.network.api.VehicleApi;
 import com.mobility.android.data.network.model.VehicleObject;
-import com.mobility.android.data.network.response.AddVehicleResponse;
 import com.mobility.android.util.UIUtils;
 
 import java.io.ByteArrayOutputStream;
@@ -259,7 +259,7 @@ public class AddVehicleActivity extends AppCompatActivity implements
         api.addVehicle(vehicle)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<AddVehicleResponse>() {
+                .subscribe(new Observer<VehicleObject>() {
                     @Override
                     public void onCompleted() {
 
@@ -273,9 +273,14 @@ public class AddVehicleActivity extends AppCompatActivity implements
                     }
 
                     @Override
-                    public void onNext(AddVehicleResponse addVehicleResponse) {
+                    public void onNext(VehicleObject object) {
                         Timber.w("Added vehicle");
                         dialog.dismiss();
+
+                        Intent intent = new Intent(AddVehicleActivity.this, VehicleDetailsActivity.class);
+                        intent.putExtra(Config.EXTRA_VEHICLE, object);
+                        startActivity(intent);
+                        finish();
                     }
                 });
     }

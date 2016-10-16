@@ -2,6 +2,7 @@ package com.mobility.android.fcm;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+import com.mobility.android.fcm.command.ActionCommand;
 import com.mobility.android.fcm.command.FcmCommand;
 import com.mobility.android.fcm.command.TestCommand;
 
@@ -18,6 +19,7 @@ public class FcmService extends FirebaseMessagingService {
     static {
         Map<String, FcmCommand> receivers = new HashMap<>();
         receivers.put("test", new TestCommand());
+        receivers.put("action", new ActionCommand());
 
         MESSAGE_RECEIVERS = Collections.unmodifiableMap(receivers);
     }

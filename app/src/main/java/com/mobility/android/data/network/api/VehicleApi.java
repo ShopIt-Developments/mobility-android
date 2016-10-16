@@ -2,12 +2,12 @@ package com.mobility.android.data.network.api;
 
 import com.mobility.android.data.network.Endpoint;
 import com.mobility.android.data.network.model.VehicleObject;
-import com.mobility.android.data.network.response.AddVehicleResponse;
 import com.mobility.android.data.network.response.MapResponse;
 
 import java.util.List;
 
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
@@ -25,7 +25,10 @@ public interface VehicleApi {
     Observable<List<VehicleObject>> getBookedVehicles();
 
     @POST(Endpoint.VEHICLE_ADD)
-    Observable<AddVehicleResponse> addVehicle(@Body VehicleObject object);
+    Observable<VehicleObject> addVehicle(@Body VehicleObject object);
+
+    @DELETE(Endpoint.VEHICLE_DELETE)
+    Observable<Void> deleteCar(@Path("vehicle_id") String vehicleId);
 
     @POST(Endpoint.VEHICLE_ORDER)
     Observable<Void> order(@Path("vehicle_id") String vehicleId);
