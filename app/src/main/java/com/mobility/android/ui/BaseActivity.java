@@ -263,6 +263,11 @@ public abstract class BaseActivity extends RxAppCompatActivity implements
      * drawer toggle animation.
      */
     private void setUpNavDrawer() {
+        if (mAuth.getCurrentUser() == null) {
+            Timber.e("Mo user signed in");
+            return;
+        }
+
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
         if (mDrawerLayout == null) {
@@ -374,6 +379,11 @@ public abstract class BaseActivity extends RxAppCompatActivity implements
      */
     private void onNavDrawerItemClicked(int itemId) {
         if (itemId == getNavItem()) {
+            closeNavDrawer();
+            return;
+        }
+
+        if (itemId == NAVDRAWER_ITEM_SETTINGS || itemId == NAVDRAWER_ITEM_HELP) {
             closeNavDrawer();
             return;
         }

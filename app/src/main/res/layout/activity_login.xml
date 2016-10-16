@@ -19,7 +19,7 @@
         android:layout_width="210dp"
         android:layout_height="210dp"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="64dp"
+        android:layout_marginTop="96dp"
         android:src="@drawable/ic_launcher"/>
 
     <LinearLayout
@@ -33,7 +33,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:fontFamily="sans-serif-thin"
-            android:text="Sign in"
+            android:text="Mobility"
             android:textColor="@color/text_primary_light"
             android:textSize="36sp"/>
 
@@ -41,7 +41,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            android:layout_marginBottom="32dp"
+            android:layout_marginBottom="48dp"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             android:layout_marginTop="12dp"
