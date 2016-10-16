@@ -207,8 +207,8 @@ public class AddVehicleActivity extends AppCompatActivity implements
             error = true;
         } else {
             int enteredPrice = Integer.parseInt(price.getText().toString());
-            if (enteredPrice <= 5) {
-                priceLayout.setError("The car should cost at least 1€");
+            if (enteredPrice < 5) {
+                priceLayout.setError("The car should cost at least 5€");
                 error = true;
             } else if (enteredPrice > 100) {
                 priceLayout.setError("The car should cost at most 100€");

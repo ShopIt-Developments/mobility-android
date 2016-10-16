@@ -92,4 +92,10 @@ public class MyVehiclesActivity extends BaseActivity implements View.OnClickList
                     }
                 });
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadData();
+    }
 }
