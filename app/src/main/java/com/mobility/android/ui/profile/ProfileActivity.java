@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.Toolbar;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -40,7 +41,8 @@ public class ProfileActivity extends RxAppCompatActivity {
     @BindView(R.id.profile_points) TextView points;
     @BindView(R.id.profile_refresh) SwipeRefreshLayout swipeRefreshLayout;
     @BindView(R.id.profile_avoided_co2) TextView avoidedCO2;
-    @BindView(R.id.profile_reputation) TextView reputation;
+    @BindView(R.id.profile_reputation_bar) RatingBar ratingBar;
+    @BindView(R.id.profile_num_ratings) TextView numRatings;
 
     private FirebaseUser mUser;
 
@@ -99,7 +101,8 @@ public class ProfileActivity extends RxAppCompatActivity {
                     public void onNext(UserModel userModel) {
                         points.setText(String.valueOf(userModel.points));
                         avoidedCO2.setText(String.format(Locale.getDefault(), "%d grams", userModel.emissions));
-                        reputation.setText(String.valueOf(userModel.averageRating));
+                        ratingBar.setRating(userModel.averageRating);
+                        numRatings.setText(String.valueOf(userModel.ratingsCount));
                     }
                 });
 
