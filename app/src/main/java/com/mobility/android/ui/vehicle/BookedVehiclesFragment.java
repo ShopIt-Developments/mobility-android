@@ -27,7 +27,7 @@ import rx.schedulers.Schedulers;
 public class BookedVehiclesFragment extends RxFragment {
 
     @BindView(R.id.refresh) SwipeRefreshLayout mRefresh;
-    @BindView(R.id.activity_my_cars_recycler) RecyclerView mRecyclerView;
+    @BindView(R.id.activity_my_vehicles_recycler) RecyclerView mRecyclerView;
 
     private BookedVehiclesAdapter mAdapter;
 

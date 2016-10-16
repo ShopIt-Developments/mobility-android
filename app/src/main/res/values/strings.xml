@@ -7,7 +7,7 @@
     <string name="description">Description</string>
     <string name="price_per_hour">Price/Hour</string>
     <string name="licence_plate">Licence Plate</string>
-    <string name="my_cars">My cars</string>
+    <string name="my_vehicles">My vehicles</string>
     <string name="support">Support</string>
 
     <string name="error_wifi_title">Wi-Fi or Mobile Data required</string>

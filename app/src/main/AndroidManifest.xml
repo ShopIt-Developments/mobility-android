@@ -48,7 +48,7 @@
 
         <activity
             android:name=".ui.vehicle.MyVehiclesActivity"
-            android:label="@string/my_cars"
+            android:label="@string/my_vehicles"
             android:screenOrientation="portrait"/>
 
         <activity

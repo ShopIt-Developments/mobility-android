@@ -130,7 +130,7 @@ public class MapFragment extends RxFragment implements OnMapReadyCallback,
 
             String url = Endpoint.API_DATA + Endpoint.MAP_TILES;
             urlFormatted = String.format(Locale.ROOT, url, x, y, zoom,
-                    lineObject.lineId, lineObject.variant);
+                    lineObject.line, lineObject.variant);
 
             Timber.d(urlFormatted);
 

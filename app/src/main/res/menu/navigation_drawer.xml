@@ -12,7 +12,7 @@
         <item
             android:id="@+id/nav_my_cars"
             android:icon="@drawable/ic_directions_car_white_24dp"
-            android:title="@string/my_cars" />
+            android:title="@string/my_vehicles" />
 
     </group>
 

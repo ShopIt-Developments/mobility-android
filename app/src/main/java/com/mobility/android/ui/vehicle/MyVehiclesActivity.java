@@ -26,8 +26,8 @@ import rx.schedulers.Schedulers;
 public class MyVehiclesActivity extends BaseActivity implements View.OnClickListener {
 
     @BindView(R.id.refresh) SwipeRefreshLayout mRefresh;
-    @BindView(R.id.activity_my_cars_recycler) RecyclerView mRecyclerView;
-    @BindView(R.id.activity_my_cars_add) FloatingActionButton mFab;
+    @BindView(R.id.activity_my_vehicles_recycler) RecyclerView mRecyclerView;
+    @BindView(R.id.activity_my_vehicles_add) FloatingActionButton mFab;
 
     private MyVehiclesAdapter mAdapter;
 
