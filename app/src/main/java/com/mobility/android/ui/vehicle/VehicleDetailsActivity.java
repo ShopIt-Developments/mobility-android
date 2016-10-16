@@ -18,6 +18,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -55,7 +56,10 @@ public class VehicleDetailsActivity extends AppCompatActivity {
     @BindView(R.id.vehicle_details_location) TextView location;
     @BindView(R.id.vehicle_details_licence_plate) TextView licencePlate;
 
+    @BindView(R.id.activity_vehicle_details_licence) RelativeLayout licenceLayout;
+
     @BindView(R.id.backdrop) ImageView backdrop;
+    @BindView(R.id.bus_details_card_icon_1) ImageView icon_car_bike;
 
     private VehicleObject vehicle;
 
@@ -97,6 +101,12 @@ public class VehicleDetailsActivity extends AppCompatActivity {
             bookButton.setVisibility(View.GONE);
         } else {
             bookButton.setVisibility(View.VISIBLE);
+        }
+
+        if (vehicle.type.equalsIgnoreCase("bike")) {
+            icon_car_bike.setImageResource(R.drawable.ic_directions_bike_white_24dp);
+
+            licenceLayout.setVisibility(View.GONE);
         }
 
         if (vehicle.borrower != null && !vehicle.borrower.isEmpty()) { // TODO: 16.10.2016 Check if this works

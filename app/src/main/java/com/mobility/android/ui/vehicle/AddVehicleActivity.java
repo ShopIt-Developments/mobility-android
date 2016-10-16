@@ -146,7 +146,7 @@ public class AddVehicleActivity extends AppCompatActivity implements
                 if (licencePlateLayout.getVisibility() == View.VISIBLE) {
                     licencePlateLayout.setVisibility(View.GONE);
                 }
-
+                licencePlate.setText("");
                 isCar = false;
                 break;
         }
@@ -207,8 +207,8 @@ public class AddVehicleActivity extends AppCompatActivity implements
             error = true;
         } else {
             int enteredPrice = Integer.parseInt(price.getText().toString());
-            if (enteredPrice < 5) {
-                priceLayout.setError("The car should cost at least 5€");
+            if (enteredPrice < 1) {
+                priceLayout.setError("The car should cost at least 1€");
                 error = true;
             } else if (enteredPrice > 100) {
                 priceLayout.setError("The car should cost at most 100€");
@@ -246,7 +246,7 @@ public class AddVehicleActivity extends AppCompatActivity implements
 
         vehicle.name = name.getText().toString();
         vehicle.availability = availability.getText().toString();
-        vehicle.licencePlate = licencePlate.getText().toString();
+        vehicle.licencePlate = isCar ? licencePlate.getText().toString() : null;
         vehicle.description = description.getText().toString();
         vehicle.pricePerHour = Float.parseFloat(price.getText().toString());
         vehicle.currency = "EUR";

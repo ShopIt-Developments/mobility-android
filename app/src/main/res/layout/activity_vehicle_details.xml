@@ -1,7 +1,7 @@
 <android.support.design.widget.CoordinatorLayout
-    android:id="@+id/main_content"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main_content"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
@@ -285,6 +285,7 @@
                         android:background="@color/divider_light"/>
 
                     <RelativeLayout
+                        android:id="@+id/activity_vehicle_details_licence"
                         android:layout_width="match_parent"
                         android:layout_height="64dp"
                         android:layout_marginTop="8dp">
