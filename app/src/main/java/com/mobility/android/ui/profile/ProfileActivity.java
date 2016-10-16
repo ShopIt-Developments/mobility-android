@@ -16,9 +16,7 @@ import com.mobility.android.data.network.RestClient;
 import com.mobility.android.data.network.api.UserApi;
 import com.mobility.android.data.network.model.User;
 import com.mobility.android.ui.BaseActivity;
-import com.mobility.android.util.TimeUtils;
 
-import java.util.Calendar;
 import java.util.Locale;
 
 import butterknife.BindView;
@@ -108,10 +106,8 @@ public class ProfileActivity extends BaseActivity {
 
                         usedVehicles.setText(String.valueOf(userModel.usedVehicles));
                         offeredVehicles.setText(String.valueOf(userModel.offeredVehicles));
-                        
-                        Calendar calendar = Calendar.getInstance();
-                        calendar.setTime(TimeUtils.isoToDate(userModel.drivenTime));
 
+                        drivenTime.setText(String.format(Locale.getDefault(), "%s %s", userModel.drivenTime, getString(R.string.hours)));
                     }
                 });
 

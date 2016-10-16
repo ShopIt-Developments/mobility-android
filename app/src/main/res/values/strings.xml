@@ -47,5 +47,6 @@
     <string name="solaris_urbino_12">Solaris Urbino 12</string>
     <string name="my_profile">My Profile</string>
     <string name="leaderboard">Leaderboard</string>
+    <string name="hours">hours</string>
 
 </resources>
