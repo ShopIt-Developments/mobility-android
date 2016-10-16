@@ -31,7 +31,7 @@ public class LeaderboardAdapter extends RecyclerView.Adapter<LeaderboardAdapter.
     private boolean sortByStars;
 
     public LeaderboardAdapter() {
-        sortByStars = false;
+        sortByStars = true;
         items = new ArrayList<>();
     }
 
@@ -53,6 +53,7 @@ public class LeaderboardAdapter extends RecyclerView.Adapter<LeaderboardAdapter.
         this.items.clear();
         if (items != null) {
             this.items.addAll(items);
+            sortByStars = !sortByStars;
             sort();
         }
         notifyDataSetChanged();
@@ -73,7 +74,7 @@ public class LeaderboardAdapter extends RecyclerView.Adapter<LeaderboardAdapter.
         holder.name.setText(user.name);
         holder.points.setText(String.format(Locale.getDefault(), "%d Points", user.points));
         holder.stars.setRating(user.averageRating);
-        holder.numStars.setText(String.format(Locale.getDefault(), "(%d)", user.ratingsCount));
+        holder.numStars.setText(String.format(Locale.getDefault(), "%d", user.ratingsCount));
     }
 
     @Override
