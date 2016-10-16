@@ -38,5 +38,8 @@
     <string name="points">Points:</string>
     <string name="avoided_co_emissions">Avoided CO² emissions:</string>
     <string name="reputation">Reputation:</string>
+    <string name="driven_time">Driven time</string>
+    <string name="rented_cars">Rented cars</string>
+    <string name="borrowed_cars">Borrowed cars</string>
 
 </resources>
