@@ -35,6 +35,8 @@ public class MainActivity extends BaseActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
+        getToolbar().setTitle("Map");
+
         mMapFragment = new MapFragment();
         mBookedFragment = new BookedVehiclesFragment();
 

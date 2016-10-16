@@ -29,7 +29,7 @@ public class MyVehiclesActivity extends BaseActivity implements View.OnClickList
     @BindView(R.id.activity_my_vehicles_recycler) RecyclerView mRecyclerView;
     @BindView(R.id.activity_my_vehicles_add) FloatingActionButton mFab;
 
-    private MyVehiclesAdapter mAdapter;
+    private VehiclesAdapter mAdapter;
 
     private VehicleApi mApi;
 
@@ -40,7 +40,7 @@ public class MyVehiclesActivity extends BaseActivity implements View.OnClickList
         setContentView(R.layout.activity_my_vehicles);
         ButterKnife.bind(this);
 
-        mAdapter = new MyVehiclesAdapter(this);
+        mAdapter = new VehiclesAdapter(this);
 
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -59,7 +59,7 @@ public class MyVehiclesActivity extends BaseActivity implements View.OnClickList
 
     @Override
     protected int getNavItem() {
-        return NAVDRAWER_ITEM_MYCARS;
+        return NAVDRAWER_ITEM_MY_VEHICLES;
     }
 
     @Override

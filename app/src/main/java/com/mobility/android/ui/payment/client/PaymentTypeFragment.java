@@ -14,7 +14,7 @@ import com.mobility.android.data.model.Payment;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class ChoosePaymentTypeFragment extends Fragment implements View.OnClickListener {
+public class PaymentTypeFragment extends Fragment implements View.OnClickListener {
 
     @BindView(R.id.payment_button_type_credit_card) FrameLayout buttonCreditCard;
     @BindView(R.id.payment_button_type_cash) FrameLayout buttonCash;

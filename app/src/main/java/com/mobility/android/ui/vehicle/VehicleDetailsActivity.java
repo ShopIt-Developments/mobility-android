@@ -13,6 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
+import android.text.TextUtils;
 import android.util.Base64;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -59,7 +60,7 @@ public class VehicleDetailsActivity extends AppCompatActivity {
     @BindView(R.id.activity_vehicle_details_licence) RelativeLayout licenceLayout;
 
     @BindView(R.id.backdrop) ImageView backdrop;
-    @BindView(R.id.bus_details_card_icon_1) ImageView icon_car_bike;
+    @BindView(R.id.vehicle_details_name_icon) ImageView iconCarBike;
 
     private VehicleObject vehicle;
 
@@ -89,34 +90,39 @@ public class VehicleDetailsActivity extends AppCompatActivity {
             return;
         }
 
+        toolbar.setNavigationOnClickListener(v -> finish());
+        collapsingToolbarLayout.setTitle(vehicle.name);
+
+        boolean userHasBorrowed;
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
             userIsOwner = vehicle.owner.equals(user.getUid());
+            userHasBorrowed = vehicle.borrower.equals(user.getUid());
+        } else {
+            Timber.e("User doesn't exist");
+            finish();
+            return;
         }
 
         bookButton.setOnClickListener(v -> bookCarConfirmation());
         payButton.setOnClickListener(v -> payCar());
 
-        if (userIsOwner) {
+        if (userIsOwner || userHasBorrowed) {
             bookButton.setVisibility(View.GONE);
         } else {
             bookButton.setVisibility(View.VISIBLE);
         }
 
-        if (vehicle.type.equalsIgnoreCase("bike")) {
-            icon_car_bike.setImageResource(R.drawable.ic_directions_bike_white_24dp);
-
-            licenceLayout.setVisibility(View.GONE);
-        }
-
-        if (vehicle.borrower != null && !vehicle.borrower.isEmpty()) { // TODO: 16.10.2016 Check if this works
+        if (!TextUtils.isEmpty(vehicle.borrower)) {
             payButton.setVisibility(View.VISIBLE);
         } else {
             payButton.setVisibility(View.GONE);
         }
 
-        toolbar.setNavigationOnClickListener(v -> finish());
-        collapsingToolbarLayout.setTitle(vehicle.name);
+        if (vehicle.type.equalsIgnoreCase("bike")) {
+            iconCarBike.setImageResource(R.drawable.ic_directions_bike_white_24dp);
+            licenceLayout.setVisibility(View.GONE);
+        }
 
         name.setText(vehicle.name);
         description.setText(vehicle.description);
@@ -273,6 +279,9 @@ public class VehicleDetailsActivity extends AppCompatActivity {
                         dialog.dismiss();
 
                         UIUtils.okDialog(VehicleDetailsActivity.this, "Car booked", "Car booking was successful");
+
+                        bookButton.setVisibility(View.GONE);
+                        payButton.setVisibility(View.VISIBLE);
                     }
                 });
     }
@@ -283,5 +292,4 @@ public class VehicleDetailsActivity extends AppCompatActivity {
     private void payCar() {
         startActivity(new Intent(this, ClientPagerActivity.class));
     }
-
 }

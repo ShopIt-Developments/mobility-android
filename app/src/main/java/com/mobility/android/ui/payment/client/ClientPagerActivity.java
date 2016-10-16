@@ -19,8 +19,8 @@ public class ClientPagerActivity extends AppCompatActivity {
     @BindView(R.id.viewpager) LockViewPager mViewPager;
     @BindView(R.id.toolbar) Toolbar toolbar;
 
-    private ChoosePaymentTypeFragment choosePaymentTypeFragment;
-    private ScanQrCodeClientFragment scanQrCodeFragment;
+    private PaymentTypeFragment choosePaymentTypeFragment;
+    private ScanQrCodeFragment scanQrCodeFragment;
 
     private Payment payment;
 
@@ -36,8 +36,8 @@ public class ClientPagerActivity extends AppCompatActivity {
 
         payment = new Payment();
 
-        choosePaymentTypeFragment = new ChoosePaymentTypeFragment();
-        scanQrCodeFragment = new ScanQrCodeClientFragment();
+        choosePaymentTypeFragment = new PaymentTypeFragment();
+        scanQrCodeFragment = new ScanQrCodeFragment();
 
         TabsAdapter mAdapter = new TabsAdapter(getSupportFragmentManager());
         mAdapter.addFragment(choosePaymentTypeFragment, null);

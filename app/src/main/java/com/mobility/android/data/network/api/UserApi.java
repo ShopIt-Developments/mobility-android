@@ -1,7 +1,7 @@
 package com.mobility.android.data.network.api;
 
 import com.mobility.android.data.network.Endpoint;
-import com.mobility.android.data.network.model.UserModel;
+import com.mobility.android.data.network.model.User;
 
 import retrofit2.http.GET;
 import rx.Observable;
@@ -15,6 +15,6 @@ import rx.Observable;
 public interface UserApi {
 
     @GET(Endpoint.USER)
-    Observable<UserModel> getUser();
+    Observable<User> getUser();
 
 }

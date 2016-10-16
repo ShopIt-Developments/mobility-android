@@ -34,4 +34,14 @@ public class TimeUtils {
         return "";
     }
 
+    public static Date isoToDate(String isoDate) {
+        try {
+            return ISO_8601.parse(isoDate);
+        } catch (ParseException e) {
+            Timber.e(e, "Unable to parse date. date=%s", isoDate);
+            e.printStackTrace();
+        }
+
+        return null;
+    }
 }

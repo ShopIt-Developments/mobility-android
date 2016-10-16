@@ -19,8 +19,7 @@ public class DelivererPagerActivity extends AppCompatActivity {
     @BindView(R.id.viewpager) LockViewPager mViewPager;
     @BindView(R.id.toolbar) Toolbar toolbar;
 
-    private ScanBillFragment choosePaymentTypeFragment;
-    private ScanQrCodeDelivererFragment scanQrCodeFragment;
+    private ShowQrCodeFragment scanQrCodeFragment;
 
     private Payment payment;
 
@@ -36,14 +35,11 @@ public class DelivererPagerActivity extends AppCompatActivity {
 
         payment = new Payment();
 
-        choosePaymentTypeFragment = new ScanBillFragment();
-        scanQrCodeFragment = new ScanQrCodeDelivererFragment();
+        scanQrCodeFragment = new ShowQrCodeFragment();
 
         TabsAdapter mAdapter = new TabsAdapter(getSupportFragmentManager());
-        mAdapter.addFragment(choosePaymentTypeFragment, null);
         mAdapter.addFragment(scanQrCodeFragment, null);
 
-        mViewPager.setOffscreenPageLimit(3);
         mViewPager.setAdapter(mAdapter);
     }
 

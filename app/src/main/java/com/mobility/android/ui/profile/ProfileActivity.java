@@ -14,8 +14,8 @@ import com.mobility.android.Config;
 import com.mobility.android.R;
 import com.mobility.android.data.network.RestClient;
 import com.mobility.android.data.network.api.UserApi;
-import com.mobility.android.data.network.model.UserModel;
-import com.trello.rxlifecycle.components.support.RxAppCompatActivity;
+import com.mobility.android.data.network.model.User;
+import com.mobility.android.ui.BaseActivity;
 
 import java.util.Locale;
 
@@ -25,7 +25,6 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
-import timber.log.Timber;
 
 /**
  * Created on 15.10.2016.
@@ -33,20 +32,21 @@ import timber.log.Timber;
  * @author Martin
  */
 
-public class ProfileActivity extends RxAppCompatActivity {
+public class ProfileActivity extends BaseActivity {
 
-    @BindView(R.id.toolbar) Toolbar toolbar;
     @BindView(R.id.profile_picture) CircleImageView profilePicture;
     @BindView(R.id.profile_name) TextView name;
     @BindView(R.id.profile_points) TextView points;
-    @BindView(R.id.profile_refresh) SwipeRefreshLayout swipeRefreshLayout;
     @BindView(R.id.profile_avoided_co2) TextView avoidedCO2;
     @BindView(R.id.profile_reputation_bar) RatingBar ratingBar;
     @BindView(R.id.profile_num_ratings) TextView numRatings;
 
-    private FirebaseUser mUser;
+    @BindView(R.id.toolbar) Toolbar toolbar;
+    @BindView(R.id.refresh) SwipeRefreshLayout mRefresh;
 
     private UserApi mApi;
+
+    private FirebaseUser mUser;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -55,14 +55,8 @@ public class ProfileActivity extends RxAppCompatActivity {
         setContentView(R.layout.activity_profile);
         ButterKnife.bind(this);
 
-        mUser = FirebaseAuth.getInstance().getCurrentUser();
-
-        if (mUser == null) {
-            Timber.e("User is not logged in!");
-            return;
-        }
-
         mApi = RestClient.ADAPTER.create(UserApi.class);
+        mUser = FirebaseAuth.getInstance().getCurrentUser();
 
         setSupportActionBar(toolbar);
         //noinspection ConstantConditions
@@ -71,34 +65,38 @@ public class ProfileActivity extends RxAppCompatActivity {
 
         getSupportActionBar().setTitle(mUser.getDisplayName());
 
-        swipeRefreshLayout.setOnRefreshListener(this::loadUserInfo);
-        swipeRefreshLayout.setColorSchemeResources(Config.REFRESH_COLORS);
+        mRefresh.setOnRefreshListener(this::loadUserInfo);
+        mRefresh.setColorSchemeResources(Config.REFRESH_COLORS);
 
-        swipeRefreshLayout.setRefreshing(true);
         loadUserInfo();
     }
 
+    @Override
+    protected int getNavItem() {
+        return NAVDRAWER_ITEM_PROFILE;
+    }
+
     private void loadUserInfo() {
-        swipeRefreshLayout.setRefreshing(true);
+        mRefresh.setRefreshing(true);
 
         mApi.getUser()
                 .compose(bindToLifecycle())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<UserModel>() {
+                .subscribe(new Observer<User>() {
                     @Override
                     public void onCompleted() {
-                        swipeRefreshLayout.setRefreshing(false);
+                        mRefresh.setRefreshing(false);
                     }
 
                     @Override
                     public void onError(Throwable e) {
                         e.printStackTrace();
-                        swipeRefreshLayout.setRefreshing(false);
+                        mRefresh.setRefreshing(false);
                     }
 
                     @Override
-                    public void onNext(UserModel userModel) {
+                    public void onNext(User userModel) {
                         points.setText(String.valueOf(userModel.points));
                         avoidedCO2.setText(String.format(Locale.getDefault(), "%d grams", userModel.emissions));
                         ratingBar.setRating(userModel.averageRating);

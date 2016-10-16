@@ -65,7 +65,8 @@ public abstract class BaseActivity extends RxAppCompatActivity implements
     protected static final int NAVDRAWER_ITEM_INVALID = -1;
 
     protected static final int NAVDRAWER_ITEM_MAP = R.id.nav_orders;
-    protected static final int NAVDRAWER_ITEM_MYCARS = R.id.nav_my_cars;
+    protected static final int NAVDRAWER_ITEM_MY_VEHICLES = R.id.nav_my_vehicles;
+    protected static final int NAVDRAWER_ITEM_PROFILE = R.id.nav_profile;
 
     /**
      * Delay to launch nav drawer item, to allow close animation to play
@@ -217,7 +218,10 @@ public abstract class BaseActivity extends RxAppCompatActivity implements
 
             mAuth.removeAuthStateListener(this);
 
-            startActivity(new Intent(this, LoginActivity.class));
+            Intent intent = new Intent(this, LoginActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+            startActivity(intent);
+
             finish();
         }
     }
@@ -239,16 +243,6 @@ public abstract class BaseActivity extends RxAppCompatActivity implements
     private void setUpToolbar() {
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
-
-        /*if (mToolbar != null) {
-            try {
-                int labelRes = getPackageManager().getActivityInfo(getComponentName(), 0).labelRes;
-                mToolbar.setTitle(labelRes);
-            } catch (PackageManager.NameNotFoundException ignored) {
-            }
-
-            setSupportActionBar(mToolbar);
-        }*/
     }
 
     /**
@@ -311,16 +305,13 @@ public abstract class BaseActivity extends RxAppCompatActivity implements
             case NAVDRAWER_ITEM_MAP:
                 createBackStack(new Intent(this, MainActivity.class));
                 break;
-            case NAVDRAWER_ITEM_MYCARS:
+            case NAVDRAWER_ITEM_MY_VEHICLES:
                 createBackStack(new Intent(this, MyVehiclesActivity.class));
                 break;
-            /*case NAVDRAWER_ITEM_DELIVERIES:
-                createBackStack(new Intent(this, DeliveriesActivity.class));
+            case NAVDRAWER_ITEM_PROFILE:
+                createBackStack(new Intent(this, ProfileActivity.class));
                 break;
-            case NAVDRAWER_ITEM_HISTORY:
-                createBackStack(new Intent(this, HistoryActivity.class));
-                break;
-            case NAVDRAWER_ITEM_SETTINGS:
+            /*case NAVDRAWER_ITEM_SETTINGS:
                 Intent intent = new Intent(this, SettingsActivity.class);
                 startActivity(intent);
                 finish();

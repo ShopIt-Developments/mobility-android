@@ -24,10 +24,17 @@ public class ActionCommand implements FcmCommand {
             case "payment_successful":
                 paymentSuccessful();
                 break;
+            case "payment_initiate":
+                initiatePayment();
+                break;
         }
     }
 
     private void paymentSuccessful() {
+
+    }
+
+    private void initiatePayment() {
 
     }
 }

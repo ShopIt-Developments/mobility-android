@@ -29,7 +29,7 @@ public class BookedVehiclesFragment extends RxFragment {
     @BindView(R.id.refresh) SwipeRefreshLayout mRefresh;
     @BindView(R.id.activity_my_vehicles_recycler) RecyclerView mRecyclerView;
 
-    private BookedVehiclesAdapter mAdapter;
+    private VehiclesAdapter mAdapter;
 
     VehicleApi mApi;
 
@@ -41,7 +41,7 @@ public class BookedVehiclesFragment extends RxFragment {
         View view = inflater.inflate(R.layout.fragment_booked_vehicles, container, false);
         ButterKnife.bind(this, view);
 
-        mAdapter = new BookedVehiclesAdapter(getActivity());
+        mAdapter = new VehiclesAdapter(getActivity());
 
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
