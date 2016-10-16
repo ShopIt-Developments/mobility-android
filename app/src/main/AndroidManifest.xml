@@ -90,6 +90,11 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Dark"/>
 
+        <activity
+            android:name=".ui.leaderboard.LeaderboardActivity"
+            android:label="@string/leaderboard"
+            android:screenOrientation="portrait"/>
+
         <!-- =================================================================================== -->
 
         <meta-data

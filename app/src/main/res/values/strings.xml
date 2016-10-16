@@ -45,5 +45,7 @@
 
     <string name="transition_morph_view" translatable="false">morph_view_transition</string>
     <string name="solaris_urbino_12">Solaris Urbino 12</string>
+    <string name="my_profile">My Profile</string>
+    <string name="leaderboard">Leaderboard</string>
 
 </resources>
