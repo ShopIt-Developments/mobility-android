@@ -1,6 +1,7 @@
 package com.mobility.android.ui.map;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.ActivityOptions;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -219,7 +220,16 @@ public class MapFragment extends RxFragment implements OnMapReadyCallback,
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Timber.e("Got activity results");
+        if (requestCode == ACTION_SHOW_FILTER && resultCode == Activity.RESULT_OK) {
+            Timber.e("Got filter result intent");
+
+            filterEnabled = data.getBooleanExtra(FilterActivity.EXTRA_FILTER_ENABLED, true);
+            showBuses = data.getBooleanExtra(FilterActivity.EXTRA_SHOW_BUSES, true);
+            showCars = data.getBooleanExtra(FilterActivity.EXTRA_SHOW_CARS, true);
+            showBikes = data.getBooleanExtra(FilterActivity.EXTRA_SHOW_BIKES, true);
+
+            updateFilter();
+        }
     }
 
     @Override
