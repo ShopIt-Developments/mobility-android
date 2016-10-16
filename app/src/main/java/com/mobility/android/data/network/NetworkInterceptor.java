@@ -29,7 +29,7 @@ class NetworkInterceptor implements Interceptor {
 
         Request.Builder newRequest = originalRequest
                 .newBuilder()
-                .addHeader("User-Agent", "SasaBus Android")
+                .addHeader("User-Agent", "Mobility South Tyrol Android")
                 .addHeader("X-Device", Build.MODEL)
                 .addHeader("X-Language", Utils.locale(mContext))
                 .addHeader("X-Serial", Build.SERIAL)

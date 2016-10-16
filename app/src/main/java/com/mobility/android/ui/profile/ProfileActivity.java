@@ -65,8 +65,6 @@ public class ProfileActivity extends BaseActivity {
         //noinspection ConstantConditions
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        getSupportActionBar().setTitle(mUser.getDisplayName());
-
         mRefresh.setOnRefreshListener(this::loadUserInfo);
         mRefresh.setColorSchemeResources(Config.REFRESH_COLORS);
 

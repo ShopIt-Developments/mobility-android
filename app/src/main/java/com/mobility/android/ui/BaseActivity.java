@@ -294,16 +294,15 @@ public abstract class BaseActivity extends RxAppCompatActivity implements
             CircleImageView userProfilePicture = (CircleImageView) navigationView.getHeaderView(0).findViewById(R.id.partial_nav_header_profile_pic);
             TextView name = (TextView) navigationView.getHeaderView(0).findViewById(R.id.partial_nav_header_name);
             TextView points = (TextView) navigationView.getHeaderView(0).findViewById(R.id.partial_nav_header_points);
-            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
-            if (user != null) {
-                name.setText(user.getDisplayName());
-                Glide.with(this).load(user.getPhotoUrl()).into(userProfilePicture);
-            }
+            FirebaseUser user = mAuth.getCurrentUser();
+            name.setText(user.getDisplayName());
+
+            Glide.with(this).load(user.getPhotoUrl()).into(userProfilePicture);
+
             userProfilePicture.setOnClickListener((v) -> startActivity(new Intent(BaseActivity.this, ProfileActivity.class)));
 
-            RestClient.ADAPTER.
-                    create(UserApi.class)
+            RestClient.ADAPTER.create(UserApi.class)
                     .getUser()
                     .compose(bindToLifecycle())
                     .subscribeOn(Schedulers.io())
@@ -320,7 +319,7 @@ public abstract class BaseActivity extends RxAppCompatActivity implements
 
                         @Override
                         public void onNext(User userModel) {
-                            points.setText(String.valueOf(userModel.points));
+                            points.setText(userModel.points + " points");
                         }
                     });
         }

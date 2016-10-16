@@ -15,20 +15,12 @@
         android:layout_marginTop="@dimen/round_background_margin_side"
         android:background="@drawable/bg_round_grey"/>
 
-    <FrameLayout
+    <ImageView
         android:layout_width="210dp"
         android:layout_height="210dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="64dp"
-        android:background="@drawable/bg_round_grey_small">
-
-        <ImageView
-            android:layout_width="128dp"
-            android:layout_height="128dp"
-            android:layout_gravity="center"
-            android:src="@mipmap/ic_launcher"/>
-
-    </FrameLayout>
+        android:src="@drawable/ic_launcher"/>
 
     <LinearLayout
         android:layout_width="match_parent"
