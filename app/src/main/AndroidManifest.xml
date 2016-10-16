@@ -94,10 +94,7 @@
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyAlaL9-CoWw7NAE5mvqEvzQaiCgekffS3Y"/>
-        <meta-data
-            android:name="com.google.android.awareness.API_KEY"
-            android:value="AIzaSyAlaL9-CoWw7NAE5mvqEvzQaiCgekffS3Y"/>
+            android:value="AIzaSyCgq_ZVq9V6H0Z3fOl54zGoQBfYxatfLtU"/>
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version"/>

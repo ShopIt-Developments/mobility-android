@@ -131,7 +131,7 @@ public class VehicleDetailsActivity extends AppCompatActivity {
         location.setText(vehicle.address);
         licencePlate.setText(vehicle.licencePlate);
 
-        price.setText(format.format(vehicle.pricePerHour));
+        price.setText(format.format(vehicle.pricePerHour) + "/h");
 
         new Thread(() -> {
             byte[] image = Base64.decode(vehicle.image, Base64.DEFAULT);
