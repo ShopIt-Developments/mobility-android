@@ -87,6 +87,11 @@ public final class BusBeaconHandler implements IBeaconHandler {
 
     @Override
     public void stopRanging() {
+        if (busBeacon.title == null) {
+            Timber.e("Trip %s is not valid", busBeacon.id);
+            return;
+        }
+
         Notifications.cancelBus(mContext);
 
         addTrip(busBeacon);
@@ -119,12 +124,12 @@ public final class BusBeaconHandler implements IBeaconHandler {
                     public void onNext(BusObject response) {
                         Timber.e("getBusInformation: %d", beacon.id);
 
-                        beacon.title = response.name + " heading to Ospedale";
+                        beacon.title = "Line " + response.name + " heading to Ospedale";
                     }
                 });
     }
 
-    public void addTrip(BusBeacon beacon) {
+    private void addTrip(BusBeacon beacon) {
         Trip trip = new Trip();
         trip.departure = TimeUtils.dateToIso(beacon.getStartDate());
         trip.arrival = TimeUtils.getCurrentIsoTime();

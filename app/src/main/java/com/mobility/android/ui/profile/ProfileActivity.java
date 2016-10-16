@@ -66,7 +66,6 @@ public class ProfileActivity extends BaseActivity {
         setSupportActionBar(toolbar);
         //noinspection ConstantConditions
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        toolbar.setNavigationOnClickListener((v) -> finish());
 
         getSupportActionBar().setTitle(mUser.getDisplayName());
 

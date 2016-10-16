@@ -37,7 +37,7 @@ public class BusBeacon {
     }
 
     public String getContent() {
-        int seenMinutes = (int) Math.floor(seenSeconds);
+        int seenMinutes = Math.round(seenSeconds / 60);
 
         return String.format(Locale.getDefault(),
                 "%d minute in bus, currently %s points", seenMinutes, points);
