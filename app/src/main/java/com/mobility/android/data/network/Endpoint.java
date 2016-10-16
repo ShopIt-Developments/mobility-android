@@ -14,14 +14,14 @@ public final class Endpoint {
 
     public static final String VEHICLE_ORDER = "order/{vehicle_id}";
     public static final String VEHICLE_ADD = "vehicle";
-    public static final String VEHICLE_DELETE = "vehicles/{vehicle_id}";
+    public static final String VEHICLE_DELETE = "vehicle/{vehicle_id}";
 
     public static final String PAYMENT_SCAN = "payment/scan/{order_id}";
     public static final String PAYMENT_PRICE = "payment/price/{order_id}";
     public static final String PAYMENT_APPROVE = "/payment/approve/{order_id}";
     public static final String PAYMENT_CANCEL = "/payment/cancel/{order_id}";
 
-    public static final String FCM_TOKEN = "fcm/token/{token}";
+    public static final String FCM_TOKEN = "token/{token}";
     public static final String USER = "user";
 
     public static final String TRIP_ADD = "trip";

@@ -1,9 +1,11 @@
 package com.mobility.android.ui.map;
 
 import android.Manifest;
+import android.app.ActivityOptions;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Point;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
@@ -253,7 +255,15 @@ public class MapFragment extends RxFragment implements OnMapReadyCallback,
                 intent.putExtra(FilterActivity.EXTRA_SHOW_BUSES, showBuses);
                 intent.putExtra(FilterActivity.EXTRA_SHOW_CARS, showCars);
                 intent.putExtra(FilterActivity.EXTRA_SHOW_BIKES, showBikes);
-                startActivityForResult(intent, ACTION_SHOW_FILTER);
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(getActivity(),
+                            v, getString(R.string.transition_morph_view));
+
+                    startActivityForResult(intent, ACTION_SHOW_FILTER, options.toBundle());
+                } else {
+                    startActivityForResult(intent, ACTION_SHOW_FILTER);
+                }
                 break;
         }
     }

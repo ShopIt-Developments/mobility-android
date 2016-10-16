@@ -48,7 +48,7 @@
 
         <activity
             android:name=".ui.map.FilterActivity"
-            android:label="Filter"/>
+            android:theme="@style/TranslucentActivity"/>
 
         <activity
             android:name=".ui.vehicle.MyVehiclesActivity"

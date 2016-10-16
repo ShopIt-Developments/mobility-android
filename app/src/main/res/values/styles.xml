@@ -42,6 +42,14 @@
         <item name="colorPrimaryDark">@color/dark_gray_dark</item>
     </style>
 
+    <style name="TranslucentActivity" parent="BaseTheme">
+        <item name="android:windowBackground">@color/filter_scrim</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowAnimationStyle">@null</item>
+
+        <item name="colorAccent">@color/primary</item>
+    </style>
+
 
     <!-- ======================================== TOOLBAR =======================================-->
 

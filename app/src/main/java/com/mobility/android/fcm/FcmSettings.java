@@ -15,7 +15,7 @@ public final class FcmSettings {
 
     static void setToken(Context context, String token) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        sp.edit().putString(PREF_GCM_TOKEN, token).apply();
+        sp.edit().putString(PREF_GCM_TOKEN, token).commit();
     }
 
     @Nullable

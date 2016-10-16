@@ -49,8 +49,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="16dp"
-                        android:text="Add car photo"
-                        android:textAllCaps="true"
+                        android:text="ADD PICTURE"
                         android:textColor="@color/text_secondary"
                         android:textSize="16sp"
                         android:textStyle="bold"/>

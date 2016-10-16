@@ -12,7 +12,6 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
 import com.mobility.android.data.network.RestClient;
 import com.mobility.android.data.network.auth.AuthHelper;
-import com.mobility.android.fcm.FcmSettings;
 import com.mobility.android.fcm.FcmUtils;
 import com.mobility.android.receiver.BluetoothReceiver;
 
@@ -65,10 +64,7 @@ public class AppApplication extends Application {
 
         sendBroadcast(new Intent(this, BluetoothReceiver.class));
 
-        String token = FcmSettings.getToken(this);
-        if (FcmSettings.shouldSendToken(this)) {
-            FcmUtils.uploadToken(this, token);
-        }
+        FcmUtils.sendTokenIfNeeded(this);
     }
 
     public GoogleApiClient getGoogleApiClient() {

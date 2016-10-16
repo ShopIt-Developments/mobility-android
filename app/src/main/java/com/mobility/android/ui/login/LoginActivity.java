@@ -18,7 +18,6 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.mobility.android.AppApplication;
 import com.mobility.android.R;
-import com.mobility.android.fcm.FcmSettings;
 import com.mobility.android.fcm.FcmUtils;
 import com.mobility.android.ui.MainActivity;
 
@@ -31,6 +30,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public static final int RC_SIGN_IN = 100;
 
     private FirebaseAuth mAuth;
+
+    private boolean isLoggedIn;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -50,14 +51,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
         FirebaseUser user = firebaseAuth.getCurrentUser();
         if (user != null) {
-            Timber.e("Got user: %s", user.getEmail());
+            if (isLoggedIn) return;
+            isLoggedIn = true;
 
             mAuth.removeAuthStateListener(this);
 
-            String token = FcmSettings.getToken(this);
-            if (token != null && FcmSettings.shouldSendToken(this)) {
-                FcmUtils.uploadToken(this, token);
-            }
+            Timber.e("Got user: %s", user.getEmail());
+
+            FcmUtils.sendTokenIfNeeded(this);
 
             startActivity(new Intent(this, MainActivity.class));
             finish();
