@@ -1,18 +1,22 @@
 package com.mobility.android.ui.payment.client;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 
+import com.mobility.android.Config;
 import com.mobility.android.R;
 import com.mobility.android.data.model.Payment;
+import com.mobility.android.data.network.model.VehicleObject;
 import com.mobility.android.ui.widget.LockViewPager;
 import com.mobility.android.ui.widget.TabsAdapter;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import timber.log.Timber;
 
 public class ClientPagerActivity extends AppCompatActivity {
 
@@ -34,7 +38,17 @@ public class ClientPagerActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(null);
 
+        Intent intent = getIntent();
+        VehicleObject object = intent.getParcelableExtra(Config.EXTRA_VEHICLE);
+
+        if (object == null) {
+            Timber.e("Missing intent extra %s", Config.EXTRA_VEHICLE);
+            finish();
+            return;
+        }
+
         payment = new Payment();
+        payment.setId(object.id);
 
         choosePaymentTypeFragment = new PaymentTypeFragment();
         scanQrCodeFragment = new ScanQrCodeFragment();

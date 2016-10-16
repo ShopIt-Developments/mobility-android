@@ -40,7 +40,7 @@ public class ActionCommand implements FcmCommand {
 
     private void initiatePayment(Context context, @NonNull Map<String, String> data) {
         String qrCode = data.get("qr_code");
-        String name = data.get("name");
+        String name = data.get("username");
 
         Timber.w("Got initiate payment command: qrCode=%s, name=%s", qrCode, name);
 

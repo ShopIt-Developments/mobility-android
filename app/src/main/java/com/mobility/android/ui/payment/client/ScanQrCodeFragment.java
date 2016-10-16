@@ -5,10 +5,12 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.ArgbEvaluator;
 import android.animation.ValueAnimator;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Vibrator;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -93,6 +95,9 @@ public class ScanQrCodeFragment extends Fragment implements BarcodeCallback {
     public void barcodeResult(BarcodeResult result) {
         Timber.e("Got barcode result: %s", result.toString());
 
+        Vibrator vibrator = (Vibrator) getActivity().getSystemService(Context.VIBRATOR_SERVICE);
+        vibrator.vibrate(500);
+
         payment.setQrCode(result.getText());
 
         submitQrCodeAndPayment();
@@ -142,7 +147,7 @@ public class ScanQrCodeFragment extends Fragment implements BarcodeCallback {
         scan.type = payment.getType();
 
         PaymentApi api = RestClient.ADAPTER.create(PaymentApi.class);
-        api.scan(payment.getOrderId(), scan)
+        api.scan(payment.getId(), scan)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<ScanResponse>() {
@@ -198,7 +203,7 @@ public class ScanQrCodeFragment extends Fragment implements BarcodeCallback {
         dialog.show();
 
         PaymentApi api = RestClient.ADAPTER.create(PaymentApi.class);
-        api.approve(payment.getOrderId())
+        api.approve(payment.getId())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<Void>() {

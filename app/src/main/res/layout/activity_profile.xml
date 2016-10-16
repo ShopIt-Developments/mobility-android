@@ -179,9 +179,10 @@
                                     android:layout_height="match_parent"
                                     android:layout_gravity="center_vertical"
                                     android:layout_weight="2"
+                                    android:fontFamily="sans-serif-medium"
                                     android:text="@string/avoided_co_emissions"
                                     android:textColor="@color/black"
-                                    android:textSize="20sp"/>
+                                    android:textSize="18sp"/>
 
                                 <TextView
                                     android:id="@+id/profile_avoided_co2"

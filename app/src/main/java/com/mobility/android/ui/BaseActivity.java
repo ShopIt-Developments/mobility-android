@@ -76,6 +76,8 @@ public abstract class BaseActivity extends RxAppCompatActivity implements
     protected static final int NAVDRAWER_ITEM_PROFILE = R.id.nav_profile;
     protected static final int NAVDRAWER_ITEM_LEADERBOARD = R.id.nav_leaderboard;
 
+    protected static final int NAVDRAWER_ITEM_SIGN_OUT = R.id.nav_signout;
+
     /**
      * Delay to launch nav drawer item, to allow close animation to play
      */
@@ -343,6 +345,9 @@ public abstract class BaseActivity extends RxAppCompatActivity implements
                 break;
             case NAVDRAWER_ITEM_LEADERBOARD:
                 createBackStack(new Intent(this, LeaderboardActivity.class));
+                break;
+            case NAVDRAWER_ITEM_SIGN_OUT:
+                mAuth.signOut();
                 break;
             /*case NAVDRAWER_ITEM_SETTINGS:
                 Intent intent = new Intent(this, SettingsActivity.class);

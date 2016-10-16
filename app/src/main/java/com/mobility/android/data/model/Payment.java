@@ -10,7 +10,7 @@ public class Payment {
 
     private String qrCode;
     private String currency = "EUR";
-    private String orderId;
+    private String id;
 
     private String type;
 
@@ -30,12 +30,13 @@ public class Payment {
         this.currency = currency;
     }
 
-    public String getOrderId() {
-        return orderId;
+    public String getId() {
+        return id;
     }
 
-    public void setOrderId(String orderId) {
-        this.orderId = orderId;
+    public void setId(String id) {
+        Timber.i("Set new id: %s", id);
+        this.id = id;
     }
 
     public String getType() {

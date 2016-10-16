@@ -97,12 +97,9 @@ public class ShowQrCodeActivity extends RxAppCompatActivity {
         int px = (int) (TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 156, getResources()
                 .getDisplayMetrics()) + 0.5);
 
-        int margin = (int) (TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1, getResources()
-                .getDisplayMetrics()) + 0.5);
-
         Bitmap bitmap = QRCode.from(qrCodeString)
                 .withSize(px, px)
-                .withHint(EncodeHintType.MARGIN, margin)
+                .withHint(EncodeHintType.MARGIN, 3)
                 .withCharset("UTF-8")
                 .bitmap();
 

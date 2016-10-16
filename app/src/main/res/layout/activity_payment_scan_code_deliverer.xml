@@ -27,16 +27,16 @@
 
     <FrameLayout
         android:id="@+id/payment_circle_grey"
-        android:layout_width="256dp"
-        android:layout_height="256dp"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="64dp"
+        android:layout_marginTop="32dp"
         android:background="@drawable/bg_round_grey_small">
 
         <ImageView
             android:id="@+id/payment_qr_code"
-            android:layout_width="156dp"
-            android:layout_height="156dp"
+            android:layout_width="180dp"
+            android:layout_height="180dp"
             android:layout_gravity="center"/>
 
     </FrameLayout>

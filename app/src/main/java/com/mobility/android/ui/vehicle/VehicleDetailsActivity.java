@@ -13,7 +13,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
-import android.text.TextUtils;
 import android.util.Base64;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -114,7 +113,7 @@ public class VehicleDetailsActivity extends AppCompatActivity {
             bookButton.setVisibility(View.VISIBLE);
         }
 
-        if (!TextUtils.isEmpty(vehicle.borrower)) {
+        if (userHasBorrowed && !userIsOwner) {
             payButton.setVisibility(View.VISIBLE);
         } else {
             payButton.setVisibility(View.GONE);
@@ -318,8 +317,11 @@ public class VehicleDetailsActivity extends AppCompatActivity {
                     @Override
                     public void onNext(Void aVoid) {
                         dialog.cancel();
-                        startActivity(new Intent(VehicleDetailsActivity.this,
-                                ClientPagerActivity.class));
+
+                        Intent intent = new Intent(VehicleDetailsActivity.this,
+                                ClientPagerActivity.class);
+                        intent.putExtra(Config.EXTRA_VEHICLE, vehicle);
+                        startActivity(intent);
                     }
                 });
     }
