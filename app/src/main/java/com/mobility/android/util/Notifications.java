@@ -10,10 +10,9 @@ import android.support.v4.content.ContextCompat;
 
 import com.mobility.android.R;
 import com.mobility.android.beacon.bus.BusBeacon;
-import com.mobility.android.data.network.model.User;
-import com.mobility.android.data.network.model.VehicleObject;
 import com.mobility.android.data.network.response.TripsResponse;
 import com.mobility.android.ui.MainActivity;
+import com.mobility.android.ui.payment.deliverer.ShowQrCodeActivity;
 import com.trello.rxlifecycle.internal.Preconditions;
 
 public class Notifications {
@@ -37,10 +36,8 @@ public class Notifications {
 
         Intent resultIntent = new Intent(context, MainActivity.class);
 
-        PendingIntent pendingIntent = PendingIntent.getActivity(context,
-                TRIP_PROGRESS,
-                resultIntent,
-                PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, TRIP_PROGRESS,
+                resultIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         mBuilder.setContentIntent(pendingIntent);
 
@@ -70,10 +67,8 @@ public class Notifications {
 
         Intent resultIntent = new Intent(context, MainActivity.class);
 
-        PendingIntent pendingIntent = PendingIntent.getActivity(context,
-                TRIP_COMPLETE,
-                resultIntent,
-                PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, TRIP_COMPLETE,
+                resultIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         mBuilder.setContentIntent(pendingIntent);
 
@@ -82,12 +77,12 @@ public class Notifications {
         notificationManager.notify(TRIP_COMPLETE, mBuilder.build());
     }
 
-    public static void initiatePayment(Context context, VehicleObject object, User user) {
+    public static void initiatePayment(Context context, String qrCode, String user) {
         Preconditions.checkNotNull(context, "context == null");
-        Preconditions.checkNotNull(object, "object == null");
+        Preconditions.checkNotNull(qrCode, "qrCode == null");
         Preconditions.checkNotNull(user, "user == null");
 
-        String title = user.name + " wants to pay";
+        String title = user + " wants to pay";
         String content = "Click to complete payment";
 
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context)
@@ -99,12 +94,11 @@ public class Notifications {
                 .setColor(ContextCompat.getColor(context, R.color.accent))
                 .setCategory(NotificationCompat.CATEGORY_EVENT);
 
-        Intent resultIntent = new Intent(context, MainActivity.class);
+        Intent resultIntent = new Intent(context, ShowQrCodeActivity.class);
+        resultIntent.putExtra(ShowQrCodeActivity.EXTRA_QR_CODE, qrCode);
 
-        PendingIntent pendingIntent = PendingIntent.getActivity(context,
-                TRIP_COMPLETE,
-                resultIntent,
-                PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, TRIP_COMPLETE,
+                resultIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         mBuilder.setContentIntent(pendingIntent);
 

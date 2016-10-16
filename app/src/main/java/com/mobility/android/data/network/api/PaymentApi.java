@@ -22,6 +22,9 @@ public interface PaymentApi {
     @POST(Endpoint.PAYMENT_CANCEL)
     Observable<Void> cancel(@Path("order_id") String order);
 
+    @POST(Endpoint.PAYMENT_INITIATE)
+    Observable<Void> initiate(@Path("order_id") String order);
+
     class PaymentScan {
 
         @SerializedName("qr_code")

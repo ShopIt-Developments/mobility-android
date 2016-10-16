@@ -79,15 +79,13 @@
         <activity
             android:name=".ui.payment.client.ClientPagerActivity"
             android:exported="true"
-            android:label="Payment client"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Dark"/>
 
         <activity
-            android:name=".ui.payment.deliverer.DelivererPagerActivity"
+            android:name=".ui.payment.deliverer.ShowQrCodeActivity"
             android:exported="true"
-            android:label="Payment deliverer"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Dark"/>

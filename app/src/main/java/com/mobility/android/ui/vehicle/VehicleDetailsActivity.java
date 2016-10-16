@@ -28,6 +28,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.mobility.android.Config;
 import com.mobility.android.R;
 import com.mobility.android.data.network.RestClient;
+import com.mobility.android.data.network.api.PaymentApi;
 import com.mobility.android.data.network.api.VehicleApi;
 import com.mobility.android.data.network.model.VehicleObject;
 import com.mobility.android.ui.payment.client.ClientPagerActivity;
@@ -290,6 +291,36 @@ public class VehicleDetailsActivity extends AppCompatActivity {
     // ======================================= PAY CAR =============================================
 
     private void payCar() {
-        startActivity(new Intent(this, ClientPagerActivity.class));
+        ProgressDialog dialog = new ProgressDialog(this, R.style.DialogStyle);
+        dialog.setMessage("Starting payment...");
+        dialog.setIndeterminate(true);
+        dialog.setCancelable(false);
+        dialog.show();
+
+        PaymentApi paymentApi = RestClient.ADAPTER.create(PaymentApi.class);
+        paymentApi.initiate(vehicle.id)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<Void>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        e.printStackTrace();
+                        dialog.cancel();
+
+                        UIUtils.okDialog(VehicleDetailsActivity.this, "Error", "Couldn't start payment.");
+                    }
+
+                    @Override
+                    public void onNext(Void aVoid) {
+                        dialog.cancel();
+                        startActivity(new Intent(VehicleDetailsActivity.this,
+                                ClientPagerActivity.class));
+                    }
+                });
     }
 }

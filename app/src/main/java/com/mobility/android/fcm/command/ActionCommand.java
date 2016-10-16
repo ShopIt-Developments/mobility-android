@@ -3,6 +3,8 @@ package com.mobility.android.fcm.command;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
+import com.mobility.android.util.Notifications;
+
 import java.util.Map;
 
 import timber.log.Timber;
@@ -20,12 +22,14 @@ public class ActionCommand implements FcmCommand {
             return;
         }
 
+        Timber.w("Got command action: %s", action);
+
         switch (action) {
             case "payment_successful":
                 paymentSuccessful();
                 break;
             case "payment_initiate":
-                initiatePayment();
+                initiatePayment(context, data);
                 break;
         }
     }
@@ -34,7 +38,12 @@ public class ActionCommand implements FcmCommand {
 
     }
 
-    private void initiatePayment() {
+    private void initiatePayment(Context context, @NonNull Map<String, String> data) {
+        String qrCode = data.get("qr_code");
+        String name = data.get("name");
 
+        Timber.w("Got initiate payment command: qrCode=%s, name=%s", qrCode, name);
+
+        Notifications.initiatePayment(context, qrCode, name);
     }
 }

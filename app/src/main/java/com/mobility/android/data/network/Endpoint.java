@@ -18,8 +18,9 @@ public final class Endpoint {
 
     public static final String PAYMENT_SCAN = "payment/scan/{order_id}";
     public static final String PAYMENT_PRICE = "payment/price/{order_id}";
-    public static final String PAYMENT_APPROVE = "/payment/approve/{order_id}";
-    public static final String PAYMENT_CANCEL = "/payment/cancel/{order_id}";
+    public static final String PAYMENT_APPROVE = "payment/approve/{order_id}";
+    public static final String PAYMENT_CANCEL = "payment/cancel/{order_id}";
+    public static final String PAYMENT_INITIATE = "payment/notify/{order_id}";
 
     public static final String FCM_TOKEN = "token/{token}";
     public static final String USER = "user";

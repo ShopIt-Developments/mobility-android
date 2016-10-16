@@ -37,7 +37,7 @@
             android:layout_height="match_parent"
             app:zxing_scanner_layout="@layout/include_barcode_scanner"/>
 
-        <com.shopit.android.ui.widget.FocusView
+        <com.mobility.android.ui.widget.FocusView
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
 

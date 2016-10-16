@@ -14,10 +14,6 @@ public class Payment {
 
     private String type;
 
-    private float price;
-
-    private String encodedBillImage;
-
     public String getQrCode() {
         return qrCode;
     }
@@ -49,35 +45,5 @@ public class Payment {
     public void setType(String type) {
         Timber.w("Set payment type: %s", type);
         this.type = type;
-    }
-
-    public float getPrice() {
-        return price;
-    }
-
-    public void setPrice(float price) {
-        Timber.w("Set payment price: %s", price);
-
-        this.price = price;
-    }
-
-    public String getEncodedBillImage() {
-        return encodedBillImage;
-    }
-
-    public void setEncodedBillImage(String encodedBillImage) {
-        this.encodedBillImage = encodedBillImage;
-    }
-
-    @Override
-    public String toString() {
-        return "Payment{" +
-                "qrCode='" + qrCode + '\'' +
-                ", currency='" + currency + '\'' +
-                ", orderId='" + orderId + '\'' +
-                ", type='" + type + '\'' +
-                ", price=" + price +
-                ", encodedBillImage='" + encodedBillImage + '\'' +
-                '}';
     }
 }
