@@ -67,7 +67,8 @@
 
         <activity
             android:name=".ui.profile.ProfileActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:label="@string/my_profile"/>
 
         <activity
             android:name=".ui.bus.BusDetailsActivity"
