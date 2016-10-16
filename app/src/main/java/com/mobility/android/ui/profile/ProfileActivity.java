@@ -61,10 +61,6 @@ public class ProfileActivity extends BaseActivity {
         mApi = RestClient.ADAPTER.create(UserApi.class);
         mUser = FirebaseAuth.getInstance().getCurrentUser();
 
-        setSupportActionBar(toolbar);
-        //noinspection ConstantConditions
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
         mRefresh.setOnRefreshListener(this::loadUserInfo);
         mRefresh.setColorSchemeResources(Config.REFRESH_COLORS);
 
