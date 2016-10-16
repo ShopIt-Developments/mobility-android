@@ -160,6 +160,8 @@ public class ScanQrCodeFragment extends Fragment implements BarcodeCallback {
                     public void onError(Throwable e) {
                         e.printStackTrace();
                         dialog.dismiss();
+
+                        UIUtils.okDialog(getActivity(), "Error", "Couldn't verify QR code.");
                     }
 
                     @Override

@@ -28,8 +28,6 @@ public class BusDetailsActivity extends RxAppCompatActivity {
     @BindView(R.id.bus_details_name) TextView name;
     @BindView(R.id.bus_details_location) TextView location;
 
-    private BusObject mBus;
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,7 +36,7 @@ public class BusDetailsActivity extends RxAppCompatActivity {
         ButterKnife.bind(this);
 
         Intent intent = getIntent();
-        mBus = (BusObject) intent.getParcelableExtra(Config.EXTRA_BUS);
+        BusObject mBus = intent.getParcelableExtra(Config.EXTRA_BUS);
 
         if (mBus == null) {
             Timber.e("Missing intent extra %s", Config.EXTRA_BUS);

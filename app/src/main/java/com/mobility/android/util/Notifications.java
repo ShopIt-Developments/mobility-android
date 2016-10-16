@@ -87,7 +87,7 @@ public class Notifications {
         String content = "Click to complete payment";
 
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context)
-                .setSmallIcon(R.drawable.ic_directions_bus_white_24dp)
+                .setSmallIcon(R.drawable.ic_attach_money_white_24dp)
                 .setContentTitle(title)
                 .setContentText(content)
                 .setAutoCancel(true)
