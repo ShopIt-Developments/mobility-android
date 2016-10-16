@@ -176,6 +176,7 @@
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             android:layout_marginTop="16dp"
+            android:visibility="visible"
             app:cardBackgroundColor="@color/card_background">
 
             <LinearLayout
@@ -184,7 +185,7 @@
                 android:orientation="vertical">
 
                 <FrameLayout
-                    android:id="@+id/payment_button_add_order"
+                    android:id="@+id/payment_button_view_map"
                     android:layout_width="match_parent"
                     android:layout_height="64dp"
                     android:background="?attr/selectableItemBackground"
@@ -195,7 +196,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="16dp"
-                        android:src="@drawable/ic_add_white_24dp"
+                        android:src="@drawable/ic_map_white_24dp"
                         android:tint="@color/icon_grey"/>
 
                     <TextView
@@ -203,7 +204,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="72dp"
                         android:layout_marginTop="13dp"
-                        android:text="Add order"
+                        android:text="Go to the map"
                         android:textColor="@color/text_primary"
                         android:textSize="16sp"
                         android:textStyle="bold"/>
@@ -214,7 +215,7 @@
                         android:layout_gravity="bottom"
                         android:layout_marginBottom="13dp"
                         android:layout_marginLeft="72dp"
-                        android:text="Add another order"
+                        android:text="View all available vehicles on the map"
                         android:textColor="@color/text_secondary"/>
 
                 </FrameLayout>
@@ -225,7 +226,7 @@
                     android:background="@color/divider_light"/>
 
                 <FrameLayout
-                    android:id="@+id/payment_button_view_orders"
+                    android:id="@+id/payment_button_view_vehicles"
                     android:layout_width="match_parent"
                     android:layout_height="64dp"
                     android:background="?attr/selectableItemBackground"
@@ -244,7 +245,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="72dp"
                         android:layout_marginTop="13dp"
-                        android:text="My orders"
+                        android:text="My vehicles"
                         android:textColor="@color/text_primary"
                         android:textSize="16sp"
                         android:textStyle="bold"/>
@@ -255,7 +256,7 @@
                         android:layout_gravity="bottom"
                         android:layout_marginBottom="13dp"
                         android:layout_marginLeft="72dp"
-                        android:text="View all past orders"
+                        android:text="View all my vehicles"
                         android:textColor="@color/text_secondary"/>
 
                 </FrameLayout>
@@ -281,7 +282,7 @@
                 android:orientation="vertical">
 
                 <FrameLayout
-                    android:id="@+id/payment_button_my_account"
+                    android:id="@+id/payment_button_view_profile"
                     android:layout_width="match_parent"
                     android:layout_height="64dp"
                     android:background="?attr/selectableItemBackground"
@@ -300,7 +301,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="72dp"
                         android:layout_marginTop="13dp"
-                        android:text="My account"
+                        android:text="My profile"
                         android:textColor="@color/text_primary"
                         android:textSize="16sp"
                         android:textStyle="bold"/>
@@ -311,7 +312,7 @@
                         android:layout_gravity="bottom"
                         android:layout_marginBottom="13dp"
                         android:layout_marginLeft="72dp"
-                        android:text="Go to my account"
+                        android:text="Go to my profile"
                         android:textColor="@color/text_secondary"/>
 
                 </FrameLayout>

@@ -29,7 +29,7 @@ public class ActionCommand implements FcmCommand {
 
         switch (action) {
             case "payment_successful":
-                paymentSuccessful(context);
+                paymentSuccessful(context, data);
                 break;
             case "payment_initiate":
                 initiatePayment(context, data);
@@ -37,8 +37,10 @@ public class ActionCommand implements FcmCommand {
         }
     }
 
-    private void paymentSuccessful(Context context) {
+    private void paymentSuccessful(Context context, @NonNull Map<String, String> data) {
         Intent filter = new Intent(ShowQrCodeActivity.ACTION_PAYMENT_COMPLETE);
+        filter.putExtra(ShowQrCodeActivity.EXTRA_PRICE, data.get("price"));
+
         LocalBroadcastManager.getInstance(context).sendBroadcast(filter);
     }
 

@@ -37,6 +37,8 @@ import com.mobility.android.data.model.Payment;
 import com.mobility.android.data.network.RestClient;
 import com.mobility.android.data.network.api.PaymentApi;
 import com.mobility.android.data.network.response.ScanResponse;
+import com.mobility.android.ui.profile.ProfileActivity;
+import com.mobility.android.ui.vehicle.MyVehiclesActivity;
 import com.mobility.android.util.UIUtils;
 
 import java.text.NumberFormat;
@@ -50,7 +52,7 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import timber.log.Timber;
 
-public class ScanQrCodeFragment extends Fragment implements BarcodeCallback {
+public class ScanQrCodeFragment extends Fragment implements BarcodeCallback, View.OnClickListener {
 
     @BindView(R.id.payment_background_grey) FrameLayout backgroundGrey;
     @BindView(R.id.payment_background_green) FrameLayout backgroundGreen;
@@ -66,6 +68,10 @@ public class ScanQrCodeFragment extends Fragment implements BarcodeCallback {
 
     @BindView(R.id.payment_menu_complete_title) TextView completeTitle;
     @BindView(R.id.payment_menu_complete_subtitle) TextView completeSubtitle;
+
+    @BindView(R.id.payment_button_leave_feedback) FrameLayout leaveFeedback;
+    @BindView(R.id.payment_button_view_vehicles) FrameLayout viewVehicles;
+    @BindView(R.id.payment_button_view_profile) FrameLayout viewProfile;
 
     @BindView(R.id.zxing_barcode_scanner) DecoratedBarcodeView barcodeScannerView;
 
@@ -85,6 +91,10 @@ public class ScanQrCodeFragment extends Fragment implements BarcodeCallback {
         scan.setOnClickListener(v -> showCompleteMenu());
 
         payment = ((ClientPagerActivity) getActivity()).getPayment();
+
+        leaveFeedback.setOnClickListener(this);
+        viewVehicles.setOnClickListener(this);
+        viewProfile.setOnClickListener(this);
 
         setupScanner();
 
@@ -130,6 +140,23 @@ public class ScanQrCodeFragment extends Fragment implements BarcodeCallback {
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         capture.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.payment_button_leave_feedback:
+                showFeedbackDialog();
+                break;
+            case R.id.payment_button_view_vehicles:
+                startActivity(new Intent(getActivity(), MyVehiclesActivity.class));
+                getActivity().finish();
+                break;
+            case R.id.payment_button_view_profile:
+                startActivity(new Intent(getActivity(), ProfileActivity.class));
+                getActivity().finish();
+                break;
+        }
     }
 
 
@@ -358,6 +385,10 @@ public class ScanQrCodeFragment extends Fragment implements BarcodeCallback {
                 .setInterpolator(new DecelerateInterpolator())
                 .setDuration(animTime(500))
                 .start();
+    }
+
+    private void showFeedbackDialog() {
+
     }
 
     private int animTime(int time) {

@@ -47,4 +47,14 @@ public class Payment {
         Timber.w("Set payment type: %s", type);
         this.type = type;
     }
+
+    @Override
+    public String toString() {
+        return "Payment{" +
+                "qrCode='" + qrCode + '\'' +
+                ", currency='" + currency + '\'' +
+                ", id='" + id + '\'' +
+                ", type='" + type + '\'' +
+                '}';
+    }
 }

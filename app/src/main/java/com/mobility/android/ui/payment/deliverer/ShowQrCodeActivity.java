@@ -30,19 +30,26 @@ import android.widget.TextView;
 
 import com.google.zxing.EncodeHintType;
 import com.mobility.android.R;
+import com.mobility.android.ui.MainActivity;
+import com.mobility.android.ui.profile.ProfileActivity;
+import com.mobility.android.ui.vehicle.MyVehiclesActivity;
 import com.trello.rxlifecycle.components.support.RxAppCompatActivity;
 
 import net.glxn.qrgen.android.QRCode;
+
+import java.text.NumberFormat;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import timber.log.Timber;
 
-public class ShowQrCodeActivity extends RxAppCompatActivity {
+public class ShowQrCodeActivity extends RxAppCompatActivity implements View.OnClickListener {
 
     public static final String EXTRA_QR_CODE = "com.mobility.android.EXTRA_QR_CODE";
 
     public static final String ACTION_PAYMENT_COMPLETE = "com.mobility.android.ACTION_PAYMENT_COMPLETE";
+    public static final String EXTRA_PRICE = "com.mobility.android.EXTRA_PRICE";
 
     @BindView(R.id.payment_background_grey) FrameLayout backgroundGrey;
     @BindView(R.id.payment_background_green) FrameLayout backgroundGreen;
@@ -59,6 +66,10 @@ public class ShowQrCodeActivity extends RxAppCompatActivity {
     @BindView(R.id.payment_menu_complete_title) TextView completeTitle;
     @BindView(R.id.payment_menu_complete_subtitle) TextView completeSubtitle;
 
+    @BindView(R.id.payment_button_view_map) FrameLayout viewMap;
+    @BindView(R.id.payment_button_view_vehicles) FrameLayout viewVehicles;
+    @BindView(R.id.payment_button_view_profile) FrameLayout viewProfile;
+
     @BindView(R.id.toolbar) Toolbar toolbar;
 
     private boolean isCompleted;
@@ -68,7 +79,12 @@ public class ShowQrCodeActivity extends RxAppCompatActivity {
         public void onReceive(Context context, Intent intent) {
             Timber.e("Got %s broadcast", ACTION_PAYMENT_COMPLETE);
 
-            showCompleteMenu();
+            float price = intent.getFloatExtra(EXTRA_PRICE, -1);
+            if (price == -1) {
+                Timber.e("Missing intent extra %s", EXTRA_PRICE);
+            }
+
+            showCompleteMenu(price);
         }
     };
 
@@ -92,7 +108,6 @@ public class ShowQrCodeActivity extends RxAppCompatActivity {
         }
 
         ImageView qrCode = (ImageView) findViewById(R.id.payment_qr_code);
-        qrCode.setOnClickListener(v -> showCompleteMenu());
 
         int px = (int) (TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 156, getResources()
                 .getDisplayMetrics()) + 0.5);
@@ -107,6 +122,10 @@ public class ShowQrCodeActivity extends RxAppCompatActivity {
 
         IntentFilter filter = new IntentFilter(ACTION_PAYMENT_COMPLETE);
         LocalBroadcastManager.getInstance(this).registerReceiver(receiver, filter);
+
+        viewMap.setOnClickListener(this);
+        viewVehicles.setOnClickListener(this);
+        viewProfile.setOnClickListener(this);
     }
 
     @Override
@@ -123,9 +142,31 @@ public class ShowQrCodeActivity extends RxAppCompatActivity {
         return true;
     }
 
-    private void showCompleteMenu() {
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.payment_button_view_map:
+                startActivity(new Intent(this, MainActivity.class));
+                finish();
+                break;
+            case R.id.payment_button_view_vehicles:
+                startActivity(new Intent(this, MyVehiclesActivity.class));
+                finish();
+                break;
+            case R.id.payment_button_view_profile:
+                startActivity(new Intent(this, ProfileActivity.class));
+                finish();
+                break;
+        }
+    }
+
+
+    private void showCompleteMenu(float price) {
         if (isCompleted) return;
         isCompleted = true;
+
+        NumberFormat format = NumberFormat.getCurrencyInstance(Locale.ITALY);
+        completeSubtitle.setText("You were rewarded " + format.format(price));
 
         backgroundGreen.setVisibility(View.VISIBLE);
 
