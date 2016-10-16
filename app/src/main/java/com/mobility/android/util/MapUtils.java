@@ -24,8 +24,6 @@ public final class MapUtils {
 
     // ===================================== PREFERENCES ===========================================
 
-    private static final String PREF_DEFAULT_MAP_POSITION = "pref_default_map_position";
-
     private static final String PREF_MAP_OVERLAY = "pref_map_overlay";
 
     private static final String PREF_MAP_TYPE = "pref_map_type";
@@ -33,30 +31,12 @@ public final class MapUtils {
 
     // ======================================== CAMERA =============================================
 
-    public static CameraUpdate defaultCamera() {
-        return CameraUpdateFactory.newLatLngZoom(new LatLng(46.58, 11.25), 10);
-    }
-
-    private static CameraUpdate cameraBz() {
-        return CameraUpdateFactory.newLatLngZoom(new LatLng(46.486, 11.333), 12);
-    }
-
-    private static CameraUpdate cameraMe() {
-        return CameraUpdateFactory.newLatLngZoom(new LatLng(46.6532, 11.1606), 12);
+    private static CameraUpdate defaultCamera() {
+        return CameraUpdateFactory.newLatLngZoom(new LatLng(46.5, 11.33), 10);
     }
 
     public static CameraUpdate getDefaultPosition(Context context) {
-        int position = Integer.parseInt(PreferenceManager.getDefaultSharedPreferences(context)
-                .getString(PREF_DEFAULT_MAP_POSITION, "1"));
-
-        switch (position) {
-            case 2:
-                return cameraBz();
-            case 3:
-                return cameraMe();
-            default:
-                return defaultCamera();
-        }
+        return defaultCamera();
     }
 
 
@@ -107,7 +87,7 @@ public final class MapUtils {
         return LocationServices.FusedLocationApi.getLastLocation(client);
     }
 
-    public static float distance(double lat1, double lon1, double lat2, double lon2) {
+    private static float distance(double lat1, double lon1, double lat2, double lon2) {
         Location l1 = new Location("");
         l1.setLatitude(lat1);
         l1.setLongitude(lon1);
