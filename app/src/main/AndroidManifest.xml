@@ -1,6 +1,6 @@
 <manifest
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.mobility.android">
+    package="com.mobility.android"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <permission
         android:name="com.mobility.android.permission.MAPS_RECEIVE"
@@ -121,6 +121,13 @@
                 <action android:name="android.bluetooth.adapter.action.STATE_CHANGED"/>
             </intent-filter>
         </receiver>
+        <receiver android:name="org.altbeacon.beacon.startup.StartupBroadcastReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="android.intent.action.ACTION_POWER_CONNECTED"/>
+                <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED"/>
+            </intent-filter>
+        </receiver>
 
         <service android:name=".beacon.BeaconService"/>
         <service
@@ -133,14 +140,6 @@
             android:name="org.altbeacon.beacon.BeaconIntentProcessor"
             android:enabled="true"
             android:exported="false"/>
-
-        <receiver android:name="org.altbeacon.beacon.startup.StartupBroadcastReceiver">
-            <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED"/>
-                <action android:name="android.intent.action.ACTION_POWER_CONNECTED"/>
-                <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED"/>
-            </intent-filter>
-        </receiver>
 
     </application>
 

@@ -50,7 +50,7 @@ public class Notifications {
         Preconditions.checkNotNull(context, "context == null");
         Preconditions.checkNotNull(response, "response == null");
 
-        int minutes = (int) Math.floor(response.duration);
+        int minutes = Math.round(response.duration / 60);
 
         String title = "Trip complete!";
         String content = String.format("You earned %s points for driving %s' with the bus.",
@@ -60,6 +60,7 @@ public class Notifications {
                 .setSmallIcon(R.drawable.ic_directions_bus_white_24dp)
                 .setContentTitle(title)
                 .setContentText(content)
+                .setStyle(new NotificationCompat.BigTextStyle().bigText(content))
                 .setAutoCancel(true)
                 .setLights(Color.GREEN, 500, 5000)
                 .setColor(ContextCompat.getColor(context, R.color.accent))

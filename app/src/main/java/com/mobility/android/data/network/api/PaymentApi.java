@@ -2,6 +2,7 @@ package com.mobility.android.data.network.api;
 
 import com.google.gson.annotations.SerializedName;
 import com.mobility.android.data.network.Endpoint;
+import com.mobility.android.data.network.response.ScanResponse;
 
 import retrofit2.http.Body;
 import retrofit2.http.POST;
@@ -11,16 +12,10 @@ import rx.Observable;
 public interface PaymentApi {
 
     @POST(Endpoint.PAYMENT_SCAN)
-    Observable<Void> scan(@Path("order_id") String order, @Body PaymentScan payment);
-
-    @POST(Endpoint.PAYMENT_PRICE)
-    Observable<Void> price(@Path("order_id") String order, @Body PaymentPrice payment);
+    Observable<ScanResponse> scan(@Path("order_id") String order, @Body PaymentScan payment);
 
     @POST(Endpoint.PAYMENT_APPROVE)
     Observable<Void> approve(@Path("order_id") String order);
-
-    @POST(Endpoint.PAYMENT_CANCEL)
-    Observable<Void> cancel(@Path("order_id") String order);
 
     @POST(Endpoint.PAYMENT_INITIATE)
     Observable<Void> initiate(@Path("order_id") String order);
@@ -47,17 +42,5 @@ public interface PaymentApi {
             @SerializedName("security_code")
             public String securityCode;
         }
-    }
-
-    class PaymentPrice {
-
-        @SerializedName("price")
-        public float price;
-
-        @SerializedName("currency")
-        public String currency;
-
-        @SerializedName("bill")
-        public String bill;
     }
 }

@@ -13,6 +13,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.animation.FastOutSlowInInterpolator;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewAnimationUtils;
@@ -33,8 +34,12 @@ import com.mobility.android.R;
 import com.mobility.android.data.model.Payment;
 import com.mobility.android.data.network.RestClient;
 import com.mobility.android.data.network.api.PaymentApi;
+import com.mobility.android.data.network.response.ScanResponse;
+import com.mobility.android.util.UIUtils;
 
+import java.text.NumberFormat;
 import java.util.List;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -140,7 +145,7 @@ public class ScanQrCodeFragment extends Fragment implements BarcodeCallback {
         api.scan(payment.getOrderId(), scan)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<Void>() {
+                .subscribe(new Observer<ScanResponse>() {
                     @Override
                     public void onCompleted() {
 
@@ -149,18 +154,25 @@ public class ScanQrCodeFragment extends Fragment implements BarcodeCallback {
                     @Override
                     public void onError(Throwable e) {
                         e.printStackTrace();
+                        dialog.dismiss();
                     }
 
                     @Override
-                    public void onNext(Void nothing) {
+                    public void onNext(ScanResponse response) {
                         Timber.w("Sending QR code success");
+
+                        dialog.dismiss();
+
+                        NumberFormat format = NumberFormat.getCurrencyInstance(Locale.ITALY);
+
+                        String message = String.format("Confirm payment of <b>%s</b> for this booked vehicle?",
+                                format.format(response.price));
+
+                        UIUtils.okDialog(getActivity(), "Confirm payment", Html.fromHtml(message), (dialog1, which) -> {
+                            approvePayment();
+                        });
                     }
                 });
-
-        new Handler().postDelayed(() -> {
-            dialog.dismiss();
-            showCompleteMenu();
-        }, 500);
     }
 
     private void setupScanner() {
@@ -174,6 +186,42 @@ public class ScanQrCodeFragment extends Fragment implements BarcodeCallback {
 
         capture = new CaptureManager(getActivity(), barcodeScannerView);
         capture.initializeFromIntent(scanIntent, null);
+    }
+
+    private void approvePayment() {
+        Timber.w("Approving payment");
+
+        ProgressDialog dialog = new ProgressDialog(getActivity(), R.style.DialogStyle);
+        dialog.setMessage("Completing payment...");
+        dialog.setIndeterminate(true);
+        dialog.setCancelable(false);
+        dialog.show();
+
+        PaymentApi api = RestClient.ADAPTER.create(PaymentApi.class);
+        api.approve(payment.getOrderId())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<Void>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        e.printStackTrace();
+                        dialog.dismiss();
+                    }
+
+                    @Override
+                    public void onNext(Void nothing) {
+                        Timber.w("Approving payment successful");
+
+                        dialog.dismiss();
+
+                        showCompleteMenu();
+                    }
+                });
     }
 
     private void showCompleteMenu() {

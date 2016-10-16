@@ -71,11 +71,11 @@ public final class UIUtils {
                 .show();
     }
 
-    public static void okDialog(Context context, String title, String message) {
+    public static void okDialog(Context context, CharSequence title, CharSequence message) {
         okDialog(context, title, message, (dialogInterface, i) -> dialogInterface.dismiss());
     }
 
-    public static void okDialog(Context context, String title, String message,
+    public static void okDialog(Context context, CharSequence title, CharSequence message,
                                 DialogInterface.OnClickListener listener) {
         new AlertDialog.Builder(context, R.style.DialogStyle)
                 .setTitle(title)

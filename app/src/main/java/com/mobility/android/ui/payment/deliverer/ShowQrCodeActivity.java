@@ -4,13 +4,17 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ArgbEvaluator;
 import android.animation.ValueAnimator;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.animation.FastOutSlowInInterpolator;
 import android.support.v7.widget.Toolbar;
 import android.util.TypedValue;
@@ -38,6 +42,8 @@ public class ShowQrCodeActivity extends RxAppCompatActivity {
 
     public static final String EXTRA_QR_CODE = "com.mobility.android.EXTRA_QR_CODE";
 
+    public static final String ACTION_PAYMENT_COMPLETE = "com.mobility.android.ACTION_PAYMENT_COMPLETE";
+
     @BindView(R.id.payment_background_grey) FrameLayout backgroundGrey;
     @BindView(R.id.payment_background_green) FrameLayout backgroundGreen;
 
@@ -54,6 +60,17 @@ public class ShowQrCodeActivity extends RxAppCompatActivity {
     @BindView(R.id.payment_menu_complete_subtitle) TextView completeSubtitle;
 
     @BindView(R.id.toolbar) Toolbar toolbar;
+
+    private boolean isCompleted;
+
+    private BroadcastReceiver receiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Timber.e("Got %s broadcast", ACTION_PAYMENT_COMPLETE);
+
+            showCompleteMenu();
+        }
+    };
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -90,6 +107,16 @@ public class ShowQrCodeActivity extends RxAppCompatActivity {
                 .bitmap();
 
         qrCode.setImageBitmap(bitmap);
+
+        IntentFilter filter = new IntentFilter(ACTION_PAYMENT_COMPLETE);
+        LocalBroadcastManager.getInstance(this).registerReceiver(receiver, filter);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+
     }
 
     @Override
@@ -100,6 +127,9 @@ public class ShowQrCodeActivity extends RxAppCompatActivity {
     }
 
     private void showCompleteMenu() {
+        if (isCompleted) return;
+        isCompleted = true;
+
         backgroundGreen.setVisibility(View.VISIBLE);
 
         toolbar.animate()

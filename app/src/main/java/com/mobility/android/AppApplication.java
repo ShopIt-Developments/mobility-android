@@ -3,7 +3,6 @@ package com.mobility.android;
 import android.app.Application;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.StrictMode;
 import android.support.annotation.Nullable;
 
 import com.google.android.gms.auth.api.Auth;
@@ -26,11 +25,6 @@ public class AppApplication extends Application {
         super.onCreate();
 
         Timber.plant(new Timber.DebugTree());
-
-        new StrictMode.ThreadPolicy.Builder()
-                .detectAll()
-                .build();
-
         RestClient.init(this);
 
         GoogleSignInOptions options = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -62,9 +56,14 @@ public class AppApplication extends Application {
 
         mApiClient.connect();
 
-        sendBroadcast(new Intent(this, BluetoothReceiver.class));
-
         FcmUtils.sendTokenIfNeeded(this);
+
+        startBeacons();
+    }
+
+    private void startBeacons() {
+        Timber.e("Starting beacons");
+        sendBroadcast(new Intent(this, BluetoothReceiver.class));
     }
 
     public GoogleApiClient getGoogleApiClient() {
