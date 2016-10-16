@@ -106,11 +106,12 @@ public class ProfileActivity extends BaseActivity {
                         ratingBar.setRating(userModel.averageRating);
                         numRatings.setText(String.valueOf(userModel.ratingsCount));
 
+                        usedVehicles.setText(String.valueOf(userModel.usedVehicles));
+                        offeredVehicles.setText(String.valueOf(userModel.offeredVehicles));
+                        
                         Calendar calendar = Calendar.getInstance();
                         calendar.setTime(TimeUtils.isoToDate(userModel.drivenTime));
 
-                        usedVehicles.setText(String.valueOf(userModel.usedVehicles));
-                        offeredVehicles.setText(String.valueOf(userModel.offeredVehicles));
                     }
                 });
 

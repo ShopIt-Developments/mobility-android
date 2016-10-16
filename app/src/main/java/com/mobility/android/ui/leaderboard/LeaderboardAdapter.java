@@ -13,6 +13,7 @@ import com.mobility.android.data.network.model.User;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -27,24 +28,32 @@ public class LeaderboardAdapter extends RecyclerView.Adapter<LeaderboardAdapter.
 
     private List<User> items;
 
+    private boolean sortByStars;
+
     public LeaderboardAdapter() {
+        sortByStars = false;
         items = new ArrayList<>();
     }
 
-    public void sortByStars(boolean sortByStars) {
+    public void sort() {
         Collections.sort(items, (o1, o2) -> {
+            int ret;
             if (sortByStars) {
-                return (int) (10 * o1.averageRating - 10 * o2.averageRating);
+                ret = (int) (10 * o2.averageRating - 10 * o1.averageRating);
             } else {
-                return o1.points - o2.points;
+                ret =  o2.points - o1.points;
             }
+            return ret;
         });
+        sortByStars = !sortByStars;
+        notifyDataSetChanged();
     }
 
     public void setItems(List<User> items) {
         this.items.clear();
         if (items != null) {
             this.items.addAll(items);
+            sort();
         }
         notifyDataSetChanged();
     }
@@ -60,10 +69,11 @@ public class LeaderboardAdapter extends RecyclerView.Adapter<LeaderboardAdapter.
     public void onBindViewHolder(LeaderboardViewHolder holder, int position) {
         User user = items.get(position);
 
-        holder.rank.setText(String.valueOf(position));
+        holder.rank.setText(String.valueOf(position + 1));
         holder.name.setText(user.name);
-        holder.points.setText(String.valueOf(user.points));
+        holder.points.setText(String.format(Locale.getDefault(), "%d Points", user.points));
         holder.stars.setRating(user.averageRating);
+        holder.numStars.setText(String.format(Locale.getDefault(), "(%d)", user.ratingsCount));
     }
 
     @Override
@@ -77,6 +87,7 @@ public class LeaderboardAdapter extends RecyclerView.Adapter<LeaderboardAdapter.
         @BindView(R.id.item_user_name) TextView name;
         @BindView(R.id.item_user_points) TextView points;
         @BindView(R.id.item_user_stars) RatingBar stars;
+        @BindView(R.id.item_user_num_rating) TextView numStars;
 
         LeaderboardViewHolder(View itemView) {
             super(itemView);

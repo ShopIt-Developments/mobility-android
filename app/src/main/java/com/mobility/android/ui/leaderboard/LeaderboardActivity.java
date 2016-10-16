@@ -1,10 +1,11 @@
 package com.mobility.android.ui.leaderboard;
 
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
+import android.view.View;
 
 import com.mobility.android.Config;
 import com.mobility.android.R;
@@ -27,15 +28,16 @@ import rx.schedulers.Schedulers;
  * @author Martin
  */
 
-public class LeaderboardActivity extends BaseActivity {
+public class LeaderboardActivity extends BaseActivity implements View.OnClickListener {
 
     @BindView(R.id.activity_leaderboard_recycler) RecyclerView mRecycler;
     @BindView(R.id.refresh) SwipeRefreshLayout mRefresh;
-    @BindView(R.id.toolbar) Toolbar toolbar;
+    @BindView(R.id.activity_leaderboard_fab_sort) FloatingActionButton fabSort;
 
     private LeaderboardAdapter mAdapter;
     private UserApi mApi;
 
+    private boolean sortByStars;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,12 +46,6 @@ public class LeaderboardActivity extends BaseActivity {
         setContentView(R.layout.activity_leaderboard);
         ButterKnife.bind(this);
 
-        setSupportActionBar(toolbar);
-        //noinspection ConstantConditions
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        toolbar.setNavigationOnClickListener((l) -> finish());
-
         mAdapter = new LeaderboardAdapter();
 
         mRecycler.setLayoutManager(new LinearLayoutManager(this));
@@ -57,8 +53,11 @@ public class LeaderboardActivity extends BaseActivity {
         mRecycler.setAdapter(mAdapter);
 
         mRefresh.setColorSchemeResources(Config.REFRESH_COLORS);
+        mRefresh.setOnRefreshListener(this::loadLeaderBoard);
 
         mApi = RestClient.ADAPTER.create(UserApi.class);
+
+        fabSort.setOnClickListener(this);
 
         loadLeaderBoard();
     }
@@ -92,5 +91,16 @@ public class LeaderboardActivity extends BaseActivity {
     @Override
     protected int getNavItem() {
         return NAVDRAWER_ITEM_LEADERBOARD;
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.activity_leaderboard_fab_sort:
+                fabSort.setImageResource(sortByStars ? R.drawable.ic_star_white_24dp : R.drawable.ic_unfold_more_white_24dp);
+                mAdapter.sort();
+                sortByStars = !sortByStars;
+                break;
+        }
     }
 }
