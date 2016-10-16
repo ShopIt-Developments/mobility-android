@@ -21,6 +21,9 @@ import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.mobility.android.R;
+import com.mobility.android.data.network.RestClient;
+import com.mobility.android.data.network.api.UserApi;
+import com.mobility.android.data.network.model.User;
 import com.mobility.android.ui.login.LoginActivity;
 import com.mobility.android.ui.profile.ProfileActivity;
 import com.mobility.android.ui.vehicle.MyVehiclesActivity;
@@ -29,6 +32,9 @@ import com.trello.rxlifecycle.android.ActivityEvent;
 import com.trello.rxlifecycle.components.support.RxAppCompatActivity;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import rx.Observer;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 import timber.log.Timber;
 
 /**
@@ -285,6 +291,7 @@ public abstract class BaseActivity extends RxAppCompatActivity implements
 
             CircleImageView userProfilePicture = (CircleImageView) navigationView.getHeaderView(0).findViewById(R.id.partial_nav_header_profile_pic);
             TextView name = (TextView) navigationView.getHeaderView(0).findViewById(R.id.partial_nav_header_name);
+            TextView points = (TextView) navigationView.getHeaderView(0).findViewById(R.id.partial_nav_header_points);
             FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
             if (user != null) {
@@ -292,6 +299,28 @@ public abstract class BaseActivity extends RxAppCompatActivity implements
                 Glide.with(this).load(user.getPhotoUrl()).into(userProfilePicture);
             }
             userProfilePicture.setOnClickListener((v) -> startActivity(new Intent(BaseActivity.this, ProfileActivity.class)));
+
+            RestClient.ADAPTER.
+                    create(UserApi.class)
+                    .getUser()
+                    .compose(bindToLifecycle())
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Observer<User>() {
+                        @Override
+                        public void onCompleted() {
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            e.printStackTrace();
+                        }
+
+                        @Override
+                        public void onNext(User userModel) {
+                            points.setText(String.valueOf(userModel.points));
+                        }
+                    });
         }
     }
 

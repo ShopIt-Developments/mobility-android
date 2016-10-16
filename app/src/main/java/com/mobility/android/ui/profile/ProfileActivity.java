@@ -16,7 +16,9 @@ import com.mobility.android.data.network.RestClient;
 import com.mobility.android.data.network.api.UserApi;
 import com.mobility.android.data.network.model.User;
 import com.mobility.android.ui.BaseActivity;
+import com.mobility.android.util.TimeUtils;
 
+import java.util.Calendar;
 import java.util.Locale;
 
 import butterknife.BindView;
@@ -40,6 +42,9 @@ public class ProfileActivity extends BaseActivity {
     @BindView(R.id.profile_avoided_co2) TextView avoidedCO2;
     @BindView(R.id.profile_reputation_bar) RatingBar ratingBar;
     @BindView(R.id.profile_num_ratings) TextView numRatings;
+    @BindView(R.id.profile_driven_time) TextView drivenTime;
+    @BindView(R.id.profile_borrowed_cars) TextView usedVehicles;
+    @BindView(R.id.profile_rented_cars) TextView offeredVehicles;
 
     @BindView(R.id.toolbar) Toolbar toolbar;
     @BindView(R.id.refresh) SwipeRefreshLayout mRefresh;
@@ -101,6 +106,12 @@ public class ProfileActivity extends BaseActivity {
                         avoidedCO2.setText(String.format(Locale.getDefault(), "%d grams", userModel.emissions));
                         ratingBar.setRating(userModel.averageRating);
                         numRatings.setText(String.valueOf(userModel.ratingsCount));
+
+                        Calendar calendar = Calendar.getInstance();
+                        calendar.setTime(TimeUtils.isoToDate(userModel.drivenTime));
+
+                        usedVehicles.setText(String.valueOf(userModel.usedVehicles));
+                        offeredVehicles.setText(String.valueOf(userModel.offeredVehicles));
                     }
                 });
 
