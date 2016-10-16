@@ -1,7 +1,9 @@
 package com.mobility.android;
 
 import android.app.Application;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.support.annotation.Nullable;
 
 import com.google.android.gms.auth.api.Auth;
@@ -9,6 +11,10 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
 import com.mobility.android.data.network.RestClient;
+import com.mobility.android.data.network.auth.AuthHelper;
+import com.mobility.android.fcm.FcmSettings;
+import com.mobility.android.fcm.FcmUtils;
+import com.mobility.android.receiver.BluetoothReceiver;
 
 import timber.log.Timber;
 
@@ -16,21 +22,20 @@ public class AppApplication extends Application {
 
     private GoogleApiClient mApiClient;
 
-    private GoogleSignInOptions signInOptions;
-
-    private static final String GOOGLE_ID_TOKEN =
-            "344692989639-t2q93r2tme7loa1vke8huu8h4r6ng765.apps.googleusercontent.com";
-
     @Override
     public void onCreate() {
         super.onCreate();
 
         Timber.plant(new Timber.DebugTree());
 
+        new StrictMode.ThreadPolicy.Builder()
+                .detectAll()
+                .build();
+
         RestClient.init(this);
 
-        signInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(GOOGLE_ID_TOKEN)
+        GoogleSignInOptions options = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(AuthHelper.GOOGLE_ID_TOKEN)
                 .requestProfile()
                 .requestEmail()
                 .build();
@@ -53,17 +58,20 @@ public class AppApplication extends Application {
                     Timber.e("Connection to google api failed: %s", connectionResult);
                 })
                 .addApi(LocationServices.API)
-                .addApi(Auth.GOOGLE_SIGN_IN_API, signInOptions)
+                .addApi(Auth.GOOGLE_SIGN_IN_API, options)
                 .build();
 
         mApiClient.connect();
+
+        sendBroadcast(new Intent(this, BluetoothReceiver.class));
+
+        String token = FcmSettings.getToken(this);
+        if (FcmSettings.shouldSendToken(this)) {
+            FcmUtils.uploadToken(this, token);
+        }
     }
 
     public GoogleApiClient getGoogleApiClient() {
         return mApiClient;
-    }
-
-    public GoogleSignInOptions getSignInOptions() {
-        return signInOptions;
     }
 }

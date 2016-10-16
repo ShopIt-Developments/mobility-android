@@ -11,6 +11,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.design.widget.BottomSheetBehavior;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.view.InflateException;
@@ -76,10 +77,13 @@ public class MapFragment extends RxFragment implements OnMapReadyCallback,
         View.OnClickListener, GoogleMap.OnMarkerClickListener, Observer<MapResponse>,
         GoogleMap.OnInfoWindowCloseListener {
 
+    public static final int ACTION_SHOW_FILTER = 100;
+
     @BindView(R.id.refresh) NestedSwipeRefreshLayout mRefresh;
     @BindView(R.id.bottom_sheet) FrameLayout bottomSheet;
     @BindView(R.id.bottom_sheet_peek_title) TextView bottomSheetTitle;
     @BindView(R.id.bottom_sheet_peek_sub) TextView bottomSheetSub;
+    @BindView(R.id.map_filter_fab) FloatingActionButton mFilterFab;
 
     private Map<String, Marker> mMarkers = new HashMap<>();
     private ArrayList<MapObject> mBusData;
@@ -100,6 +104,11 @@ public class MapFragment extends RxFragment implements OnMapReadyCallback,
     private BitmapDescriptor iconBus;
     private BitmapDescriptor iconBike;
     private BitmapDescriptor iconCar;
+
+    private boolean filterEnabled = true;
+    private boolean showBuses = true;
+    private boolean showCars = true;
+    private boolean showBikes = true;
 
     private final Handler HANDLER = new Handler();
 
@@ -197,11 +206,18 @@ public class MapFragment extends RxFragment implements OnMapReadyCallback,
 
         setupBottomSheet(state);
 
+        mFilterFab.setOnClickListener(this);
+
         mRefresh.setColorSchemeResources(Config.REFRESH_COLORS);
 
         iconBike = BitmapDescriptorFactory.defaultMarker(125);
         iconCar = BitmapDescriptorFactory.defaultMarker(230);
         iconBus = BitmapDescriptorFactory.defaultMarker(30);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Timber.e("Got activity results");
     }
 
     @Override
@@ -231,6 +247,14 @@ public class MapFragment extends RxFragment implements OnMapReadyCallback,
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.map_filter_fab:
+                Intent intent = new Intent(getActivity(), FilterActivity.class);
+                intent.putExtra(FilterActivity.EXTRA_FILTER_ENABLED, filterEnabled);
+                intent.putExtra(FilterActivity.EXTRA_SHOW_BUSES, showBuses);
+                intent.putExtra(FilterActivity.EXTRA_SHOW_CARS, showCars);
+                intent.putExtra(FilterActivity.EXTRA_SHOW_BIKES, showBikes);
+                startActivityForResult(intent, ACTION_SHOW_FILTER);
+                break;
         }
     }
 
@@ -323,23 +347,32 @@ public class MapFragment extends RxFragment implements OnMapReadyCallback,
             if (marker == null) {
                 BitmapDescriptor icon = null;
                 String name = object.name;
+                boolean visible = true;
 
                 if (object instanceof BusObject) {
                     icon = iconBus;
                     name = "Line " + object.name;
+                    visible = showBuses;
                 } else if (object instanceof VehicleObject) {
                     VehicleObject vehicle = (VehicleObject) object;
                     if (vehicle.type.equals("car")) {
                         icon = iconCar;
+                        visible = showCars;
                     } else {
                         icon = iconBike;
+                        visible = showBikes;
                     }
+                }
+
+                if (!filterEnabled) {
+                    visible = true;
                 }
 
                 marker = mGoogleMap.addMarker(new MarkerOptions()
                         .title(name)
                         .position(new LatLng(object.lat, object.lng))
-                        .icon(icon));
+                        .icon(icon)
+                        .visible(visible));
 
                 marker.setTag(object);
             } else {
@@ -477,22 +510,38 @@ public class MapFragment extends RxFragment implements OnMapReadyCallback,
         }
     }
 
+    private void updateFilter() {
+        for (Map.Entry<String, Marker> entry : mMarkers.entrySet()) {
+            Marker marker = entry.getValue();
+            MapObject object = (MapObject) marker.getTag();
+
+            if (object instanceof BusObject) {
+                marker.setVisible(!filterEnabled || showBuses);
+            } else {
+                VehicleObject vehicleObject = (VehicleObject) object;
+                if (vehicleObject.type.equals("car")) {
+                    marker.setVisible(!filterEnabled || showCars);
+                } else {
+                    marker.setVisible(!filterEnabled || showBikes);
+                }
+            }
+        }
+    }
+
 
     private void setupBottomSheet(@BottomSheetBehavior.State int state) {
         behavior = BottomSheet.from(bottomSheet, state);
 
         bottomSheet.setOnClickListener(v -> {
-            Intent intent;
             if (selectedItem instanceof VehicleObject) {
-                intent = new Intent(getActivity(), VehicleDetailsActivity.class);
+                Intent intent = new Intent(getActivity(), VehicleDetailsActivity.class);
                 intent.putExtra(Config.EXTRA_VEHICLE, selectedItem);
-            } else if (selectedItem instanceof BusObject){
-                intent = new Intent(getActivity(), BusDetailsActivity.class);
-                intent.putExtra(Config.EXTRA_BUS, selectedItem);
+                startActivity(intent);
             } else {
-                return;
+                Intent intent = new Intent(getActivity(), BusDetailsActivity.class);
+                intent.putExtra(Config.EXTRA_BUS, selectedItem);
+                startActivity(intent);
             }
-            startActivity(intent);
         });
 
         behavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {

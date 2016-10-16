@@ -67,6 +67,7 @@ dependencies {
     compile "com.android.support:recyclerview-v7:$SUPPORT_LIBRARY_VERSION"
     compile "com.android.support:design:$SUPPORT_LIBRARY_VERSION"
     compile 'de.hdodenhof:circleimageview:2.1.0'
+    compile 'jp.wasabeef:recyclerview-animators:2.2.3'
 
     // Play services
     compile "com.google.android.gms:play-services-maps:$PLAY_SERVICES_VERSION"
@@ -90,6 +91,10 @@ dependencies {
     compile 'io.reactivex:rxandroid:1.2.1'
     compile 'com.trello:rxlifecycle:0.8.0'
     compile 'com.trello:rxlifecycle-components:0.8.0'
+
+    // Beacon
+    //noinspection NewerVersionAvailable
+    compile 'org.altbeacon:android-beacon-library:2.7.1'
 
     // ButterKnife
     compile 'com.jakewharton:butterknife:8.4.0'

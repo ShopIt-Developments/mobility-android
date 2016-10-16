@@ -22,7 +22,6 @@ import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import timber.log.Timber;
 
 class MyVehiclesAdapter extends RecyclerView.Adapter<MyVehiclesAdapter.MyVehicleViewHolder> {
 
@@ -53,8 +52,6 @@ class MyVehiclesAdapter extends RecyclerView.Adapter<MyVehiclesAdapter.MyVehicle
         VehicleObject item = mItems.get(position);
 
         byte[] image = Base64.decode(item.image, Base64.DEFAULT);
-
-        Timber.e("Image: %s", item.image);
 
         Glide.with(mContext)
                 .load(image)

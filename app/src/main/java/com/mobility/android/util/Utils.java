@@ -8,6 +8,8 @@ import com.google.android.gms.common.GoogleApiAvailability;
 import com.mobility.android.BuildConfig;
 import com.trello.rxlifecycle.internal.Preconditions;
 
+import timber.log.Timber;
+
 /**
  * Utility class which holds various methods to help with things like logging exceptions.
  *
@@ -88,5 +90,24 @@ public final class Utils {
             result = context.getResources().getDimensionPixelSize(resourceId);
         }
         return result;
+    }
+
+    public static boolean areBeaconsEnabled(Context context) {
+        if (!DeviceUtils.isBluetoothEnabled()) {
+            Timber.e("Bluetooth is disabled");
+            return false;
+        }
+
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR2) {
+            Timber.e("Device does not support beacons, SDK_INT < JELLY_BEAN_MR2");
+            return false;
+        }
+
+        if (!DeviceUtils.hasBle(context)) {
+            Timber.e("Device does not support BLE");
+            return false;
+        }
+
+        return true;
     }
 }

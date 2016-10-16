@@ -10,6 +10,7 @@ public final class Endpoint {
     public static final String VEHICLES_AVAILABLE = "vehicles/available";
     public static final String VEHICLES_MY = "vehicles/my";
     public static final String VEHICLES_BOOKED = "vehicles/booked";
+    public static final String BUS = "bus/{id}";
 
     public static final String VEHICLE_ORDER = "order/{vehicle_id}";
     public static final String VEHICLE_ADD = "vehicle";
@@ -22,6 +23,8 @@ public final class Endpoint {
 
     public static final String FCM_TOKEN = "fcm/token/{token}";
     public static final String USER = "user";
+
+    public static final String TRIP_ADD = "trip";
 
     private Endpoint() {
     }

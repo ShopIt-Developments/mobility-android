@@ -14,58 +14,46 @@ public class BusObject extends MapObject {
 
     public int variant;
 
-    BusObject(Parcel in) {
-        id = in.readString();
-        name = in.readString();
-        description = in.readString();
+    private BusObject(Parcel in) {
+        super(in);
+
         hydrogenBus = in.readInt() == 1;
-        lat = in.readFloat();
-        lng = in.readFloat();
         line = in.readInt();
         variant = in.readInt();
     }
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(id);
-        dest.writeString(name);
-        dest.writeString(description);
+        super.writeToParcel(dest, flags);
+
         dest.writeInt(hydrogenBus ? 1 : 0);
-        dest.writeFloat(lat);
-        dest.writeFloat(lng);
         dest.writeInt(line);
         dest.writeInt(variant);
     }
 
     @Override
     public int describeContents() {
-        return 0;
+        return super.describeContents();
     }
-
-    public static final Creator<MapObject> CREATOR = new Creator<MapObject>() {
-        @Override
-        public MapObject createFromParcel(Parcel in) {
-            return new MapObject(in);
-        }
-
-        @Override
-        public MapObject[] newArray(int size) {
-            return new MapObject[size];
-        }
-    };
 
     @Override
     public String toString() {
-        return "MapObject{" +
-                "id='" + id + '\'' +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", hydrogen_bus='" + hydrogenBus + '\'' +
-                ", lat=" + lat +
-                ", lng=" + lng +
+        return "BusObject{" +
+                "hydrogenBus=" + hydrogenBus +
                 ", line=" + line +
                 ", variant=" + variant +
-                '}';
+                "} " + super.toString();
     }
 
+    public static final Creator<BusObject> CREATOR = new Creator<BusObject>() {
+        @Override
+        public BusObject createFromParcel(Parcel in) {
+            return new BusObject(in);
+        }
+
+        @Override
+        public BusObject[] newArray(int size) {
+            return new BusObject[size];
+        }
+    };
 }

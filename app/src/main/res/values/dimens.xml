@@ -20,6 +20,8 @@
 
     <dimen name="recycler_padding">4dp</dimen>
 
+    <dimen name="dialog_corners">4dp</dimen>
+
     <dimen name="title_small">22sp</dimen>
     <dimen name="title_large">36sp</dimen>
 

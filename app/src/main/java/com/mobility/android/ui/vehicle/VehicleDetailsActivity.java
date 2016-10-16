@@ -13,11 +13,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
+import android.util.Base64;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.mobility.android.Config;
@@ -50,6 +53,9 @@ public class VehicleDetailsActivity extends AppCompatActivity {
     @BindView(R.id.vehicle_details_price) TextView price;
     @BindView(R.id.vehicle_details_availability) TextView availability;
     @BindView(R.id.vehicle_details_location) TextView location;
+    @BindView(R.id.vehicle_details_licence_plate) TextView licencePlate;
+
+    @BindView(R.id.backdrop) ImageView backdrop;
 
     private VehicleObject vehicle;
 
@@ -106,8 +112,17 @@ public class VehicleDetailsActivity extends AppCompatActivity {
         description.setText(vehicle.description);
         availability.setText(vehicle.availability);
         location.setText(vehicle.address);
+        licencePlate.setText(vehicle.licencePlate);
 
         price.setText(format.format(vehicle.pricePerHour));
+
+        new Thread(() -> {
+            byte[] image = Base64.decode(vehicle.image, Base64.DEFAULT);
+
+            runOnUiThread(() -> Glide.with(this)
+                    .load(image)
+                    .into(backdrop));
+        }).start();
     }
 
     @Override

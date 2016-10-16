@@ -1,6 +1,7 @@
 package com.mobility.android.data.network.api;
 
 import com.mobility.android.data.network.Endpoint;
+import com.mobility.android.data.network.model.BusObject;
 import com.mobility.android.data.network.model.VehicleObject;
 import com.mobility.android.data.network.response.MapResponse;
 
@@ -32,4 +33,7 @@ public interface VehicleApi {
 
     @POST(Endpoint.VEHICLE_ORDER)
     Observable<Void> order(@Path("vehicle_id") String vehicleId);
+
+    @GET(Endpoint.BUS)
+    Observable<BusObject> getBus(@Path("id") int vehicle);
 }

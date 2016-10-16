@@ -12,6 +12,9 @@ public class TimeUtils {
     private static final SimpleDateFormat ISO_8601 =
             new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.US);
 
+    public static String dateToIso(Date date) {
+        return ISO_8601.format(date);
+    }
 
     public static String getCurrentIsoTime() {
         return ISO_8601.format(new Date());
