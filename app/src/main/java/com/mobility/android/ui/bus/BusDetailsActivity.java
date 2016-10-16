@@ -26,7 +26,6 @@ public class BusDetailsActivity extends RxAppCompatActivity {
 
     @BindView(R.id.bus_details_line) TextView line;
     @BindView(R.id.bus_details_name) TextView name;
-    @BindView(R.id.bus_details_availability) TextView destination;
     @BindView(R.id.bus_details_location) TextView location;
 
     private BusObject mBus;
@@ -47,6 +46,8 @@ public class BusDetailsActivity extends RxAppCompatActivity {
             return;
         }
 
-        line.setText(mBus.id); // TODO: 16.10.2016 fix this
+        line.setText(mBus.name);
+        location.setText(mBus.description);
+        name.setText(getString(R.string.solaris_urbino_12));
     }
 }
