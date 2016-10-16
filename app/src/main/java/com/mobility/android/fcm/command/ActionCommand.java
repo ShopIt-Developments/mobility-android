@@ -1,8 +1,11 @@
 package com.mobility.android.fcm.command;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.v4.content.LocalBroadcastManager;
 
+import com.mobility.android.ui.payment.deliverer.ShowQrCodeActivity;
 import com.mobility.android.util.Notifications;
 
 import java.util.Map;
@@ -26,7 +29,7 @@ public class ActionCommand implements FcmCommand {
 
         switch (action) {
             case "payment_successful":
-                paymentSuccessful();
+                paymentSuccessful(context);
                 break;
             case "payment_initiate":
                 initiatePayment(context, data);
@@ -34,8 +37,9 @@ public class ActionCommand implements FcmCommand {
         }
     }
 
-    private void paymentSuccessful() {
-
+    private void paymentSuccessful(Context context) {
+        Intent filter = new Intent(ShowQrCodeActivity.ACTION_PAYMENT_COMPLETE);
+        LocalBroadcastManager.getInstance(context).sendBroadcast(filter);
     }
 
     private void initiatePayment(Context context, @NonNull Map<String, String> data) {

@@ -205,7 +205,7 @@ public class ScanQrCodeFragment extends Fragment implements BarcodeCallback {
         dialog.show();
 
         PaymentApi api = RestClient.ADAPTER.create(PaymentApi.class);
-        api.approve(payment.getId())
+        api.accept(payment.getId())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<Void>() {
@@ -218,6 +218,8 @@ public class ScanQrCodeFragment extends Fragment implements BarcodeCallback {
                     public void onError(Throwable e) {
                         e.printStackTrace();
                         dialog.dismiss();
+
+                        UIUtils.okDialog(getActivity(), "Error", "Couldn't accept payment.");
                     }
 
                     @Override

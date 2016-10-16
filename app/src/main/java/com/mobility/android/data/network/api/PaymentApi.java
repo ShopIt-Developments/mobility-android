@@ -14,8 +14,8 @@ public interface PaymentApi {
     @POST(Endpoint.PAYMENT_SCAN)
     Observable<ScanResponse> scan(@Path("order_id") String order, @Body PaymentScan payment);
 
-    @POST(Endpoint.PAYMENT_APPROVE)
-    Observable<Void> approve(@Path("order_id") String order);
+    @POST(Endpoint.PAYMENT_ACCEPT)
+    Observable<Void> accept(@Path("order_id") String order);
 
     @POST(Endpoint.PAYMENT_INITIATE)
     Observable<Void> initiate(@Path("order_id") String order);
