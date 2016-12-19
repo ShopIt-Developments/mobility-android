@@ -18,6 +18,7 @@
             android:layout_height="match_parent"
             android:fitsSystemWindows="true"
             app:collapsedTitleTextAppearance="@style/CollapsingToolbar.Collapsed"
+            app:expandedTitleTextAppearance="@style/CollapsingToolbar.Expanded"
             app:contentScrim="?attr/colorPrimary"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
@@ -277,6 +278,7 @@
                     </RelativeLayout>
 
                     <View
+                        android:id="@+id/activity_vehicle_details_divider"
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
                         android:layout_marginLeft="72dp"

@@ -59,6 +59,8 @@ public class VehicleDetailsActivity extends AppCompatActivity {
 
     @BindView(R.id.activity_vehicle_details_licence) RelativeLayout licenceLayout;
 
+    @BindView(R.id.activity_vehicle_details_divider) View divider;
+
     @BindView(R.id.backdrop) ImageView backdrop;
     @BindView(R.id.vehicle_details_name_icon) ImageView iconCarBike;
 
@@ -122,6 +124,7 @@ public class VehicleDetailsActivity extends AppCompatActivity {
         if (vehicle.type.equalsIgnoreCase("bike")) {
             iconCarBike.setImageResource(R.drawable.ic_directions_bike_white_24dp);
             licenceLayout.setVisibility(View.GONE);
+            divider.setVisibility(View.GONE);
         }
 
         name.setText(vehicle.name);
